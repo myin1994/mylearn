@@ -81,10 +81,25 @@
 + 其它基本操作
   
     + git clone #克隆仓库至本地
+    
     + touch filename 新建文件
+    
     + ls 显示当前所有文件
+    
     + git status -s 显示当前状态（不加-s会显示更详细的内容）
+    
     + vim filename 编辑文件
+    
+    + 码云平台和github平台上传同一仓库
+    
+      + ```Git
+        
+        - git remote add github https://github.com/gongqingfeng/Drcom.git
+        - git push github master
+        
+        ```
+    
+        
 
 
 
