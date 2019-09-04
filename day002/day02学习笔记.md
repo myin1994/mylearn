@@ -66,7 +66,7 @@
   + 冲突1：远程仓库与原始文件不统一（删除了远程仓库中文件）
 
     + git pull origin master  #远程同步到本地再重新提交（i进入插入模式；esc进入命令行模式“:wq”退出）
-  + git push -f origin master 强制推送
+  + git push -f origin master 强制推送（慎用！慎用！）
   
 + 冲突2：重建文件夹后冲突
   

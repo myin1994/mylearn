@@ -11,7 +11,7 @@
 
 6.git pull/push origin/github master 拉/推远程仓库
 
-7.git push -f origin master 强制推送
+7.git push -f origin master 强制推送（慎用！慎用！）
 
 8.git pull origin master  --allow-unrelated-histories 将远程同步后重新提交
 
@@ -28,3 +28,5 @@
 13.git status -s 显示当前状态（不加-s会显示更详细的内容）
 
 14.vim filename 编辑文件（:wq退出）
+
+15：git remote remove origin/github xxx.git 删除仓库路径
