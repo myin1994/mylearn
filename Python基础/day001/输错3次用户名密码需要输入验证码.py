@@ -27,14 +27,16 @@ while flag1:
             print('验证码错误')
 """
 ###优化版
+import random
 flag1 = True
 flag2 = 0
 while flag1:
     user_name = input('请输入用户名：')
     user_password = input('请输入密码：')
     if flag2 > 2:
-        verifycode = input('请输入验证码：')
-        if verifycode != '验证码':
+        systemcode = ''.join(random.sample('zyxwvutsrqponmlkjihgfedcba',6))
+        verifycode = input('请输入验证码(不区分大小写){}：'.format(systemcode))
+        if verifycode.lower() != systemcode:
             print('验证码错误')
             continue
     if user_name == '用户名' and user_password == '密码':
