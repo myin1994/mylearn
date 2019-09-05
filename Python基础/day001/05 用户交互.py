@@ -15,14 +15,18 @@
 # print(int(num) + 5)
 
 
-a = '10'
-b = int(a)
+# a = '10'
+# b = int(a)
 # str -> int (字符串转换整型)
 # int -> str (整型转换字符串)
-print(a,b) #print是给用户看的，输出值是经过加工的
+# print(a,b) #print是给用户看的，输出值是经过加工的
 
 # 总结：
 # input() 输入，获取的内容是字符串
 # type() 查看数据类型
 # int('字符串') 字符串中的内容必须全是数字
-# 还有一个
+# str()
+i = 123
+j = str(i)
+print(type(i),i,end="")
+print(type(j),j)
