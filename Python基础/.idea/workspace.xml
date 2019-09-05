@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/day001/day001学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/day001/day001学习笔记.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day001/s_26 day01 作业.py" beforeDir="false" afterPath="$PROJECT_DIR$/day001/s_26 day01 作业.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -185,6 +187,7 @@
       <workItem from="1567667264198" duration="5713000" />
       <workItem from="1567675315673" duration="76000" />
       <workItem from="1567675741207" duration="4773000" />
+      <workItem from="1567682739366" duration="38000" />
     </task>
     <servers />
   </component>
