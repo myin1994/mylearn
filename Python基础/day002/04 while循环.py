@@ -85,14 +85,14 @@
 # else: #理解为while某次次判断不满足条件时执行
 #     print(222)
 
-# print(111)
-# count = 0
-# while count < 3:
-#     print(count)
-#     count += 1
-#     break
-# else:
-#     print(222)
+print(111)
+count = 0
+while count < 3:
+    print(count)
+    count += 1
+    break
+else:
+    print(222)
 
 # print(111)
 # count = 0

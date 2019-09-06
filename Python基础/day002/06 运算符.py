@@ -54,18 +54,29 @@
 # print(1 and 3)
 # print(0 and 8)
 # print(9 and 0)
+# print(9 and True)
+# print(True and 9)
+# print(9 and False)
+# print(2 or -2)
+
+
+
 # or数字不为0时和不为False：or算选择or前面的内容
-# or两边都为假时选择and右边
+# or两边都为假时选择or左边
 # 一真一假选真
+
+# print(1 or 2)
+# print(1 or 0)
+# print(-2 or 0)
 
 # 5.成员运算符
 """
 in：在
 not in：不在
 """
-name = 'name'
-msg = input('输入内容')
-if name in msg:
-    print("在")
-else:
-    print("不在")
+# name = 'name'
+# msg = input('输入内容')
+# if name in msg:
+#     print("在")
+# else:
+#     print("不在")

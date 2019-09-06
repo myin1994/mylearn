@@ -17,9 +17,9 @@
 
 # 单位转换：
 # 1字节 = 8位
-    # 1Bytes = 8bit   ****
-    # 1024bytes = 1KB ****
-    # 1024KB = 1MB
-    # 124MB = 1GB
-    # 1024GB = 1TB #够用
-    # 1024TB = 1PB
+#     1Bytes = 8bit   ****
+#     1024bytes = 1KB ****
+#     1024KB = 1MB
+#     124MB = 1GB
+#     1024GB = 1TB #够用
+#     1024TB = 1PB
