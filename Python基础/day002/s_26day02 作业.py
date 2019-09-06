@@ -115,10 +115,13 @@ else：#while的条件不满足时执行
 """
 9.使用while循环输出 1 2 3 4 5 6 8 9 10
 """
-# count = 1
-# while count < 11:
-#     print(count)
-#     count += 1
+count = 0
+while count < 10:
+    count += 1
+    if count == 7:
+        continue
+    print(count)
+
 
 """
 10.求1-100的所有数的和
