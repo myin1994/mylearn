@@ -175,8 +175,7 @@ s_26 day03 作业
 # while True:
 #     select1 = input("请输入A、B、C:").upper()
 #     if select1 == "A":
-#         print("走大路回家")
-#         select2 = input("请选择公交车或步行：")
+#         select2 = input("你选择了走大路回家\n请选择公交车或步行：")
 #         if select2 == "公交车":
 #             print("10分钟到家")
 #             break
@@ -189,8 +188,7 @@ s_26 day03 作业
 #         print("走小路回家")
 #         break
 #     elif select1 == "C":
-#         print("绕道回家")
-#         select2 = input("请选择游戏厅玩会或网吧：")
+#         select2 = input("你选择了绕道回家\n请选择游戏厅玩会或网吧：")
 #         if select2 == "游戏厅玩会":
 #             print("一个半小时到家，爸爸在家，拿棍等你")
 #         elif select2 == "网吧":
