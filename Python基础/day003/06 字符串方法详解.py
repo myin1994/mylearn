@@ -28,8 +28,8 @@
 # name = "  你\n好   "  #\n 换行
 # name1 = "  你\t好   \t"  #\n 制表符（tab）
 # print(name1.strip())  #去除头尾两端及换行符，制表符
-# name = "aa  33a"
-# print(name.strip("a"))  #去除头尾两端指定字符串（全部，直到没有）
+name = "aa  33a"
+print(name.strip("a"))  #去除头尾两端指定字符串（全部，直到没有）
 
 # 应用场景：
 # account = input("账号：").strip()
@@ -40,11 +40,11 @@
 #     print("NO")
 
 # 分割：
-a = "alex:alex1234"
-print(a.split())  #默认按照空格及换行符，制表符进行分割(同时；返回值为列表
-print(a.split(":"))  #可指定，被选中的分割符消失
-b = "alex: a\nlex\t1234"
-print(b.split())
+# a = "alex:alex1234"
+# print(a.split())  #默认按照空格及换行符，制表符进行分割(同时；返回值为列表
+# print(a.split(":"))  #可指定，被选中的分割符消失
+# b = "alex: a\nlex\t1234"
+# print(b.split())
 
 # 替换：
 # name = "alexcnb"
