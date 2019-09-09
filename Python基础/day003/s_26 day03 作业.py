@@ -76,7 +76,7 @@ s_26 day03 作业
 # s2 = s[3:-2]
 # s3 = s[::2]
 # s4 = s[1:-2:2]
-# s5 = s[-1]
+# s5 = s[-1:]
 # s6 = s[-3::-2]
 # print(s1)
 # print(s2)
@@ -185,7 +185,6 @@ s_26 day03 作业
 #             break
 #         else:
 #             print("输入错误")
-#             continue
 #     elif select1 == "B":
 #         print("走小路回家")
 #         break
@@ -194,13 +193,10 @@ s_26 day03 作业
 #         select2 = input("请选择游戏厅玩会或网吧：")
 #         if select2 == "游戏厅玩会":
 #             print("一个半小时到家，爸爸在家，拿棍等你")
-#             continue
 #         elif select2 == "网吧":
 #             print("两个小时到家，妈妈已做好了战斗准备。")
-#             continue
 #         else:
 #             print("输入错误")
-#             continue
 
 """
 12.选做题：判断⼀句话是否是回⽂. 回⽂: 正着念和反着念是⼀样的. 例如, 上海⾃来⽔来⾃海上
