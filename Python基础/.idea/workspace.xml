@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="" />
+    <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Python全栈学习.xmind" beforeDir="false" afterPath="$PROJECT_DIR$/../Python全栈学习.xmind" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day004/02 昨日回顾.py" beforeDir="false" afterPath="$PROJECT_DIR$/day004/02 昨日回顾.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day004/08 今日总结.py" beforeDir="false" afterPath="$PROJECT_DIR$/day004/08 今日总结.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day004/day04学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/day004/day04学习笔记.md" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,6 +206,7 @@
       <workItem from="1568102432739" duration="5849000" />
       <workItem from="1568108414828" duration="146000" />
       <workItem from="1568109047400" duration="38000" />
+      <workItem from="1568120988587" duration="1508000" />
     </task>
     <servers />
   </component>
