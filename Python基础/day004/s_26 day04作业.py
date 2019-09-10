@@ -217,6 +217,11 @@ ritian
 # for i in li:
 #     if type(i) == list:
 #         for k in i:
-#             print(k)
+#             if type(k) == str:
+#                 print(k.lower())
+#             else:
+#                 print(k)
+#     elif type(i) == str:
+#         print(i.lower())
 #     else:
 #         print(i)
