@@ -145,17 +145,20 @@ s_26 day03 作业
 # content = input("请输入内容：")
 # count = 0
 # for i in content:
-#     if i.isdecimal() == True:
+#     if i.isdecimal():
 #         count += 1
 # print(f"总共{count}个整数")
 
 """
-10.写代码：计算 1 - 2 + 3 ... + 99 中除了88以外所有数的总和？
+10.写代码：计算 1 - 2 + 3 -4... + 99 中除了88以外所有数的总和？
 """
 # s = 0
-# for i in range(100):
-#     s += i
-#     if i == 88:
+# for i in range(1,100):
+#     if i % 2 == 1:
+#         s += i
+#     else:
+#         if i == 88:
+#             continue
 #         s -= i
 # print(s)
 
