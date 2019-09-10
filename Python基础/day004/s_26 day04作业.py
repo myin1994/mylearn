@@ -181,7 +181,8 @@ li = ["TaiBai ", "alexC", "AbC ", "egon", " riTiAn", "WuSir", " aqc"]
 # for i in li:
 #     if i.replace(" ","").upper().startswith("A") and i.replace(" ","").endswith("c"):
 #         lis.append(i.replace(" ",""))
-# print(lis)
+# for i in lis:
+#     print(i)
 
 """
 12.开发敏感词语过滤程序，提示用户输入评论内容，如果用户输入的内容中包含特殊的字符：

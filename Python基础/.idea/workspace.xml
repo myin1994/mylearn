@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/day004/s_26 day04作业.py" beforeDir="false" afterPath="$PROJECT_DIR$/day004/s_26 day04作业.py" afterDir="false" />
-    </list>
+    <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,6 +199,7 @@
       <workItem from="1568097796645" duration="2550000" />
       <workItem from="1568102432739" duration="5849000" />
       <workItem from="1568108414828" duration="146000" />
+      <workItem from="1568109047400" duration="38000" />
     </task>
     <servers />
   </component>
