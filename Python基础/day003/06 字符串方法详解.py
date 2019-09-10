@@ -28,8 +28,8 @@
 # name = "  你\n好   "  #\n 换行
 # name1 = "  你\t好   \t"  #\n 制表符（tab）
 # print(name1.strip())  #去除头尾两端及换行符，制表符
-name = "aa  33a"
-print(name.strip("a"))  #去除头尾两端指定字符串（全部，直到没有）
+# name = "aa  33a"
+# print(name.strip("a"))  #去除头尾两端指定字符串（全部，直到没有）
 
 # 应用场景：
 # account = input("账号：").strip()
