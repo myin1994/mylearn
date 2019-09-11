@@ -180,7 +180,8 @@ li = ["TaiBai ", "alexC", "AbC ", "egon", " riTiAn", "WuSir", " aqc"]
 # lis = []
 # for i in li:
 #     if i.replace(" ","").upper().startswith("A") and i.replace(" ","").endswith("c"):
-#         lis.append(i.replace(" ",""))
+#         lis.append
+#         (i.replace(" ",""))
 # for i in lis:
 #     print(i)
 
