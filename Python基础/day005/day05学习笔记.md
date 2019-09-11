@@ -32,7 +32,7 @@
 
 + 创建字典
 
-  + [`dict()`](https://docs.python.org/zh-cn/3/library/stdtypes.html#dict) 构造函数
+  + `dict()`构造函数
 
     ```
     dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
