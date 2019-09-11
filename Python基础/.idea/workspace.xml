@@ -233,6 +233,7 @@
       <workItem from="1568203800800" duration="4000" />
       <workItem from="1568204444015" duration="114000" />
       <workItem from="1568204761537" duration="151000" />
+      <workItem from="1568205184123" duration="305000" />
     </task>
     <servers />
   </component>
@@ -256,7 +257,7 @@
     <SUITE FILE_PATH="coverage/Python$s_26_day03_.coverage" NAME="s_26 day03 作业 Coverage Results" MODIFIED="1568079438714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day003" />
     <SUITE FILE_PATH="coverage/Python$.coverage" NAME="字典思想 Coverage Results" MODIFIED="1568188234706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day005" />
     <SUITE FILE_PATH="coverage/Python$s_26_day04.coverage" NAME="s_26 day04作业 Coverage Results" MODIFIED="1568168192367" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day004" />
-    <SUITE FILE_PATH="coverage/Python$s_26_day05_.coverage" NAME="s_26 day05 作业 Coverage Results" MODIFIED="1568204883867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day005" />
+    <SUITE FILE_PATH="coverage/Python$s_26_day05_.coverage" NAME="s_26 day05 作业 Coverage Results" MODIFIED="1568205433307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day005" />
     <SUITE FILE_PATH="coverage/Python$3.coverage" NAME="输错3次用户名密码需要输入验证码 Coverage Results" MODIFIED="1567691632732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day001" />
     <SUITE FILE_PATH="coverage/Python$07_for.coverage" NAME="07 for循环 Coverage Results" MODIFIED="1568018692168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day003" />
     <SUITE FILE_PATH="coverage/Python$06_.coverage" NAME="06 元组 Coverage Results" MODIFIED="1568088458054" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day004" />

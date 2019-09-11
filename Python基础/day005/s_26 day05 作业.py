@@ -152,6 +152,17 @@ info = {'k1':'v1','k2':'v2','k3':'v3'}
 #     dic[k] = v
 # print(dic)
 
+# str1 = "k: 1|k1:2|k2:3 |k3 :4"
+# dic = {}
+# str2 = str1.replace(" ","").split("|")
+# for i in range(len(str2)):
+#     str2[i] = str2[i].split(":")
+#     k,v = str2[i]
+#     if  k == "k2":
+#         continue
+#     dic[k] = v
+# print(dic)
+
 """
 10.有如下值 li= [11,22,33,44,55,77,88,99,90] ,将所有大于 66 的值保存至字典的第一个key对应的列表中，将小于 66 的值保存至第二个key对应的列表中。
 result = {'k1':[],'k2':[]}
