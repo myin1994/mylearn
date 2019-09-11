@@ -133,15 +133,9 @@ info = {'k1':'v1','k2':'v2','k3':'v3'}
 # 'k1':'v1',
 # 'k2':[('alex'),('wupeiqi'),('oldboy')],
 # }
-# for i in info.values(): #打印值
+#
+# for i in info["k2"]:#每个元素
 #     print(i)
-
-# for i in info.values():#每个元素
-#     if type(i) == str:
-#         print(i)
-#     else:
-#         for j in i:
-#             print(j)
 
 """
 9.有字符串"k: 1|k1:2|k2:3 |k3 :4" 处理成字典 {'k':1,'k1':2,'k3':4}
