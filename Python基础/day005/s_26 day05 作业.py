@@ -153,6 +153,8 @@ info = {'k1':'v1','k2':'v2','k3':'v3'}
 # for i in range(len(str2)):
 #     str2[i] = str2[i].split(":")
 # for k,v in str2:
+#     if  k == "k2":
+#         continue
 #     dic[k] = v
 # print(dic)
 
