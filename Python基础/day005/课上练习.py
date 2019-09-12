@@ -27,3 +27,33 @@ dic = {1:"name",2:"sex",4:"hobby"}
 # print(dic)
 # for k,v in enumerate(dic):
 #     print(k,v)
+
+
+
+
+
+
+
+goods = [
+    {"name": "电脑", "price": 1999},
+    {"name": "鼠标", "price": 10},
+    {"name": "游艇", "price": 20},
+    {"name": "美女", "price": 998}
+]
+
+dic = {}
+
+for i in range(len(goods)):
+    goods[i]["index"] = i
+    print(goods[i]["index"] + 1, goods[i]["name"], goods[i]["price"])
+    dic[goods[i]["index"] + 1] = [goods[i]["name"], goods[i]["price"]]
+
+# print(dic)
+while True:
+    seq = input("请输入商品序号(按Q退出)：")
+    if seq.upper() == "Q":
+        break
+    elif int(seq) in dic:
+        print(dic[int(seq)])
+    else:
+        print("输入有误，请重新输入！")
