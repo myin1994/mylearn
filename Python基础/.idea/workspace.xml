@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Python全栈学习.xmind" beforeDir="false" afterPath="$PROJECT_DIR$/../Python全栈学习.xmind" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day005/day05学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/day005/day05学习笔记.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day005/课上练习.py" beforeDir="false" afterPath="$PROJECT_DIR$/day005/课上练习.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day006/s_26 day06 大作业.py" beforeDir="false" afterPath="$PROJECT_DIR$/day006/s_26 day06 大作业.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -54,29 +54,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.05 集合">
-    <configuration name="字典思想" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python基础" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/day005" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/day005/字典思想.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.s_26 day06 大作业">
     <configuration name="02 昨日回顾" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Python基础" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -165,7 +143,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="s_26 day06 大作业" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Python基础" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -173,12 +151,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="F:/PyProgram/test98" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/day006" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="F:/PyProgram/test98/test1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/day006/s_26 day06 大作业.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -189,11 +167,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.s_26 day06 大作业" />
         <item itemvalue="Python.05 集合" />
         <item itemvalue="Python.04 深浅拷贝" />
         <item itemvalue="Python.03 小数据池" />
         <item itemvalue="Python.02 昨日回顾" />
-        <item itemvalue="Python.test1" />
       </list>
     </recent_temporary>
   </component>
@@ -237,6 +215,9 @@
       <workItem from="1568204761537" duration="151000" />
       <workItem from="1568205184123" duration="305000" />
       <workItem from="1568247657475" duration="26619000" />
+      <workItem from="1568282887190" duration="625000" />
+      <workItem from="1568374225794" duration="13528000" />
+      <workItem from="1568387780987" duration="433000" />
     </task>
     <servers />
   </component>
@@ -272,6 +253,7 @@
     <SUITE FILE_PATH="coverage/Python$s_26_day01_.coverage" NAME="s_26 day01 作业 Coverage Results" MODIFIED="1567682326632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day001" />
     <SUITE FILE_PATH="coverage/Python$day01.coverage" NAME="day01作业 Coverage Results" MODIFIED="1567670496570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day001" />
     <SUITE FILE_PATH="coverage/Python$02_.coverage" NAME="02 昨日回顾 Coverage Results" MODIFIED="1568254602321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day006" />
+    <SUITE FILE_PATH="coverage/Python$s_26_day06_.coverage" NAME="s_26 day06 大作业 Coverage Results" MODIFIED="1568388065629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day006" />
     <SUITE FILE_PATH="coverage/Python$day0102.coverage" NAME="day01作业02代码练习 Coverage Results" MODIFIED="1567672773469" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day001" />
   </component>
 </project>
