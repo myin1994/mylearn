@@ -295,9 +295,9 @@ goods = [{"name": "电脑", "price": 1999},
 # flag = 1
 # while flag:
 #     account = input("请给账户充值:")
-#     if account.isdecimal():
-#         if int(account) > 0:
-#             account = int(account)
+#     if account.replace(".","",1).isdecimal():
+#         if float(account) > 0:
+#             account = float(account)
 #             print("充值成功！")
 #             flag = 0
 #     else:
