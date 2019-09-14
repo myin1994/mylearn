@@ -295,11 +295,10 @@ goods = [{"name": "电脑", "price": 1999},
 # flag = 1
 # while flag:
 #     account = input("请给账户充值:")
-#     if account.replace(".","",1).isdecimal(): #判断充值金额是否正确，大于0的数字（可为小数）
-#         if float(account) > 0:
-#             account = float(account)
-#             print("充值成功！")
-#             flag = 0
+#     if account.replace(".","",1).isdecimal() and float(account) > 0: #判断充值金额是否正确，大于0的数字（可为小数）
+#         account = float(account)
+#         print("充值成功！")
+#         flag = 0
 #     else:
 #         print("充值金额错误！")
 # while True:
@@ -342,6 +341,9 @@ goods = [{"name": "电脑", "price": 1999},
 #                         print("输入有误，请重新输入！")
 #                 else:
 #                     print("输入有误，请重新输入！")
+#             elif cost == 0:
+#                 print("当前购物车为空！请添加商品！")
+#                 break
 #             else:
 #                 for k,v in shop_cart.items():#可进行结算时将购物车添加进总购买记录字典，每次结算更新
 #                     if k not in shop_cart_sum:
@@ -356,7 +358,8 @@ goods = [{"name": "电脑", "price": 1999},
 #         continue
 #     if good_select.isdecimal():
 #         if int(good_select) in list(range(1,5)):
-#             print(goods[int(good_select)-1]["name"],goods[int(good_select)-1]["price"])
+#             print("当前商品 单价 \n-----------")
+#             print(goods[int(good_select)-1]["name"],"  ",goods[int(good_select)-1]["price"])
 #             if goods[int(good_select)-1]["name"] not in shop_cart.keys():#购物车中无商品添加新的键
 #                 shop_cart[goods[int(good_select)-1]["name"]] = [int(good_select),1,goods[int(good_select)-1]["price"]]
 #             else:#购物车中已有商品数量+1
