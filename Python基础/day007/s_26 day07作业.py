@@ -278,3 +278,14 @@ locals = {'沪':'上海', '⿊':'⿊⻰江', '鲁':'⼭东', '鄂':'湖北', '�
 #         result1[locals[i[0]]] = 1
 #         result2.append(i[0])
 # print(result1)
+
+# cars = ['鲁A32444','鲁B12333','京B8989M','⿊C49678','⿊C46555','沪 B25041']
+# locals = {'沪':'上海', '⿊':'⿊⻰江', '鲁':'⼭东', '鄂':'湖北', '湘':'湖南'}
+# result = {}
+# for i in cars:
+#     if i[0] in locals:
+#         if locals[i[0]] not in result:
+#             result[locals[i[0]]] = 1
+#         else:
+#             result[locals[i[0]]] += 1
+# print(result)
