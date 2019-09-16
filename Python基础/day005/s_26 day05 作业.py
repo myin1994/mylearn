@@ -13,7 +13,7 @@ users = ['西游记','红楼梦','三国演义']
 users = ['秀色可餐','岳新力',666,'孙一帆']
 """
 users = ['秀色可餐','岳新力',666,'孙一帆']
-# print("_".join(list(map(str,users))))  #map函数
+# print("_".join(map(str,users)))  #map函数
 
 # st1 = ""  #遍历
 # for i in users:
@@ -37,7 +37,7 @@ v3 = [44,55,66] 中。
 # for i in range(0,len(v1),2):
 #     v3.append(v1[i])
 # print(v3)
-
+# 还可以使用切片
 """
 5.将字典的键和值分别追加到 key_list 和 value_list 两个列表中，如：
 key_list = []
@@ -163,6 +163,13 @@ info = {'k1':'v1','k2':'v2','k3':'v3'}
 #     dic[k] = v
 # print(dic)
 
+# dic = {}
+# str1 = "k: 1|k1:2|k2:3 |k3 :4"
+# for i in str1.replace(" ","").split("|"):
+#     k,v = i.split(":")
+#     if k != "k2":
+#         dic[k] = int(v)
+# print(dic)
 """
 10.有如下值 li= [11,22,33,44,55,77,88,99,90] ,将所有大于 66 的值保存至字典的第一个key对应的列表中，将小于 66 的值保存至第二个key对应的列表中。
 result = {'k1':[],'k2':[]}
