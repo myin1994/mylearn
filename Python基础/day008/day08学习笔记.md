@@ -27,7 +27,7 @@
 
   with open("file1","mode1",encoding="code1") as f1,open("file2","mode2",encoding="code2") as f2:
 
-  **注意**：with open下需要在缩紧内进行操作，外部不支持使用
+  **注意**：with open下需要在缩进内进行操作，外部不支持使用
 
 + 路径
 
