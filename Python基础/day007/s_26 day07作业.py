@@ -60,7 +60,7 @@ v2 = copy.copy(v1)
 v3 = copy.deepcopy(v1)
 print(v1 is v2) #浅拷贝元素不可变数据类型共用内存地址，True
 print(v1 is v3) #深拷贝元素不可变数据类型共用内存地址，True
-一开始忽略了元素类型是不可变数据类型，对不可变数据类型而言深浅拷贝都是共用内存地址的
+驻留机制---一开始忽略了元素类型是不可变数据类型，对不可变数据类型而言深浅拷贝都是共用内存地址的
 """
 
 """
@@ -249,6 +249,11 @@ b为utf-8的bytes类型，请转换成gbk的bytes类型。
 # else:
 #     print("不是水仙数")
 
+# a = "是水仙花" if int(num)  == num_sum else "不是水仙花"
+
+
+# a = "是水仙花" if int(num)  == num_sum else "不是水仙花"
+
 """
 20.把列表中所有姓周的⼈的信息删掉(此题有坑, 请慎重):
 lst = ['周⽼⼆', '周星星', '麻花藤', '周扒⽪']
@@ -289,3 +294,11 @@ locals = {'沪':'上海', '⿊':'⿊⻰江', '鲁':'⼭东', '鄂':'湖北', '�
 #         else:
 #             result[locals[i[0]]] += 1
 # print(result)
+
+cars = ['鲁A32444','鲁B12333','京B8989M','⿊C49678','⿊C46555','沪 B25041']
+locals = {'沪':'上海', '⿊':'⿊⻰江', '鲁':'⼭东', '鄂':'湖北', '湘':'湖南'}
+result = {}
+for i in cars:
+    if i[0] in locals:
+        result[locals[i[0]]] = result.get(locals[i[0]],0) + 1
+print(result)
