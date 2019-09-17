@@ -86,7 +86,7 @@ chicken 10 3
 #     lst2 = i.strip().split(" ")
 #     lst2[-1] = int(lst2[-1])
 #     lst2[-2] = int(lst2[-2])
-#     price_sum += lst2[-2]
+#     price_sum += lst2[-2] * lst2[-1]
 #     dic["name"],dic["price"],dic["amount"] = lst2
 #     lst[lst.index(i)] = dic.copy()
 # print(f"总价钱：{price_sum}")
@@ -131,9 +131,8 @@ name:tesla price:100000 amount:1 year:2013
 #         if lst3[-1].isdecimal():
 #             lst3[-1] = int(lst3[-1])
 #         dic[lst3[0]] = lst3[1]
-#         if lst3[0] == "price":
-#             price_sum += lst3[1]
-#     lst[lst.index(i)] = dic
+#     price_sum += dic["price"] * dic["amount"]
+#     lst[lst.index(i)] = dic.copy()
 # print(f"总价钱：{price_sum}")
 # print(lst)
 
