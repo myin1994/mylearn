@@ -56,7 +56,7 @@ e,以a+模式打开文件，先追加一行：‘老男孩教育’然后在从�
 # for i in f.readlines():
 #     print(i)
 # f.close()
-# a,b两种方式在输出内容上没有区别，但是遍历的对象不同，a是对句柄，b是对列表
+# a,b两种方式在输出内容上没有区别，但是遍历的对象不同，a是对句柄，b是对列表,并且列表 占据内存更多
 
 # with open("t1.txt","r",encoding="utf-8") as f:
 #     print(f.read(4))
@@ -83,7 +83,7 @@ chicken 10 3
 # lst =f.readlines()
 # price_sum = 0
 # for i in lst:
-#     lst2 = i.strip().split(" ")
+#     lst2 = i.strip().split()
 #     lst2[-1] = int(lst2[-1])
 #     lst2[-2] = int(lst2[-2])
 #     price_sum += lst2[-2] * lst2[-1]
@@ -92,6 +92,16 @@ chicken 10 3
 # print(f"总价钱：{price_sum}")
 # print(lst)
 
+# lst = []
+# f = open("a.txt","r",encoding="utf-8")
+# price_sum = 0
+# for i in f:
+#     a,b,c = i.split()
+#     price_sum += int(b) * int(c)
+#     dic = {"name":a,"price":int(b),"amount":int(c)}
+#     lst.append(dic)
+# print(lst)
+# print(f"总价钱：{price_sum}")
 """
 4.有如下文件b.txt：
 alex是老男孩python发起人，创建人。
@@ -104,10 +114,18 @@ alex其实是人妖。
 #     content = f1.readlines()
 #     for i in content:
 #         f2.write(i.replace("alex","SB"))
+#         f2.flush()
 # import os
 # os.rename("b.txt","b_2.txt")
 # os.rename("b_1.txt","b.txt")
 
+# with open("b.txt","r",encoding="utf-8") as f1,open("b_1.txt","w",encoding="utf-8") as f2:
+#     for i in f:
+#         f2.write(i.replace("alex","SB"))
+#         f2.flush()
+# import os
+# os.rename("b.txt","b_2.txt")
+# os.rename("b_1.txt","b.txt")
 """
 5.文件c1.txt内容(选做题)
 
@@ -125,7 +143,7 @@ name:tesla price:100000 amount:1 year:2013
 # f = open("c1.txt","r",encoding="utf-8")
 # lst = f.readlines()
 # for i in lst:
-#     lst2 = i.strip().split(" ")
+#     lst2 = i.strip().split()
 #     for j in lst2:
 #         lst3 = j.split(":")
 #         if lst3[-1].isdecimal():
@@ -136,6 +154,15 @@ name:tesla price:100000 amount:1 year:2013
 # print(f"总价钱：{price_sum}")
 # print(lst)
 
+# lst = []
+# f = open("c1.txt","r",encoding="utf-8")
+# for i in f:
+#     dic = {}
+#     for j in i.split():
+#         k,v = j.split(":")
+#         dic[k] = v
+#     lst.append(dic)
+# print(lst)
 """
 6.文件d1.txt内容(选做题)
 序号 部门 人数 平均年龄 备注
@@ -154,7 +181,7 @@ name:tesla price:100000 amount:1 year:2013
 # lst = f.readlines()
 # lst_result = list()
 # for i in lst:
-#      lst2 = i.strip().split(" ")
+#      lst2 = i.strip().split()
 #      for j in lst2:
 #          if lst.index(i) == 0:
 #             dic[j] = None
@@ -165,3 +192,13 @@ name:tesla price:100000 amount:1 year:2013
 #      if lst.index(i) != 0:
 #         lst_result.append(dic.copy())
 # print(lst_result)
+
+# lst = []
+# f = open("d1.txt","r",encoding="utf-8")
+# a,b,c,d,e = f.readline().split()
+# # print(a,b,c,d,e)
+# for i in f:
+#     num,depart,peolpe,age,mark = i.split()
+#     dic = {a:num,b:depart,c:peolpe,d:age,e:mark}
+#     lst.append(dic)
+# print(lst)

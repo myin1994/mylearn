@@ -154,10 +154,10 @@ l1 = [1, 3, 6, 7, 9, 8, 5, 4, 2]
 """
 # l1 = [1, 3, 6, 7, 9, 8, 5, 4, 2]
 # 从大到小排序
-# l1.sort()
+# l1.sort(reverse=True)
 # print(l1)
 # 从小到大排序
-# l1.sort(reverse=True)
+# l1.sort()
 # print(l1)
 # 反转l1列表
 # l1.reverse()
