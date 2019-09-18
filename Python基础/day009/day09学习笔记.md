@@ -21,14 +21,13 @@
       函数体
   ```
   
-  
-```
+  ```
   def my_len():#函数下函数体是被封装内容，被调用时才执行
       count = 0
       for i in s:
           count += 1
       print(count)
-```
+  ```
 
 
 ### 函数的调用
