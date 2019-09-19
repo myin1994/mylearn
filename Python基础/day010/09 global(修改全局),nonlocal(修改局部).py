@@ -63,6 +63,7 @@
 #     a = 10
 #     def foo():
 #         def f():
+#             # a = 1
 #             nonlocal a
 #             a = a +1
 #             print(a)
