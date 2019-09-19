@@ -56,7 +56,7 @@ s_26_day09 作业
 # print(bigger(6,55))
 
 # def bigger(a,b):
-#     return a if a > b else return b  #不能使用三木运算？
+#     return a if a > b else  b
 # print(bigger(6,55))
 """
 7.写函数，检查传入字典的每一个value的长度,如果大于2，那么仅保留前两个长度的内容，并将新内容返回给调用者。
@@ -84,6 +84,14 @@ PS:字典中的value只能是字符串或列表
 #             dic[lst.index(i)] = i
 #     return dic
 # print(lst_dic([11,22,33,44]))
+
+# lst = [11,22,33]
+# def func(lst):
+#     dic = {}
+#     for k,v in enumerate(lst):  #枚举，计数 默认从0开始
+#         dic[k] = v
+#     return  dic
+# print(func(lst))
 
 """
 9.写函数，函数接收四个参数分别是：姓名，性别，年龄，学历。
@@ -134,3 +142,14 @@ PS:字典中的value只能是字符串或列表
 #     os.remove("file_name3")
 #
 # re_file("student1_msg","nb","sb")
+
+# def re_file(file_name,file_rname,file_content,file_recontent):
+#     import os
+#     with open(file_name,"r",encoding="utf-8") as f1 ,\
+#         open(file_rname,"w",encoding="utf-8") as f2:
+#         for i in f1:
+#             f2.write(i.replace(file_content,file_recontent))
+#             f2.flush()
+#     os.rename(file_name,file_name+"bak")
+#
+# re_file("student1_msg","userinfo","nb","sb")
