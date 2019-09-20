@@ -6,11 +6,11 @@
 | input()     | 与输入类型相同；raw_input()获取到的都是字符串                | 均返回字符串                                                 |
 | print       | print "输出内容"                                             | print('输出内容')                                            |
 | int         | int和long（长整型）322145555445L                                                                       范围：2^31~2^31-1 | int                                                        范围：-2^63~2^63-1 |
-| 打印range() | 列表                                                         | 是range()本身                                                |
-|             |                                                              |                                                              |
-|             |                                                              |                                                              |
-|             |                                                              |                                                              |
-|             |                                                              |                                                              |
+| 打印range() | 列表                                                         | 是range()本身,为可迭代对象                                   |
+| xrange()    | 生成的是一个生成器，速度优于range()                          | 无xrange()                                                   |
+| readlines   |                                                              |                                                              |
+| xreadlines  |                                                              |                                                              |
+| 迭代器      | 只有iter()  next()                                           | iter() next()和____iter__    _next__                         |
 |             |                                                              |                                                              |
 |             |                                                              |                                                              |
 |             |                                                              |                                                              |
