@@ -202,3 +202,26 @@ print(next(g))
 # 基于函数创建的生成器，函数体中必须存在yield
 # 查看是否可用send()方法
 # 地址
+def foo():
+    a = 1
+    print(id(a))
+    return 1
+print(foo)
+print(foo)
+
+
+def func():
+    a = [1]
+    print(id(a))
+    yield 1
+    yield 2
+g = func()
+print(g)
+# print(next(g))
+# print(next(g))
+# print(next(func()))
+# print(next(func()))
+print(func())
+print(func())
+
+

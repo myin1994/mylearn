@@ -1,0 +1,12 @@
+用户名:密码:锁定状态
+123:3456789:
+mayang:123456:Y
+mayang123:mayang123:
+222:None:Y
+777:None:Y
+user:dddddddd:Y
+ggh:None:Y
+张碎花:djdjdjd:
+张大大:dddddddddds:
+ggg:None:Y
+ddda:dsdsdd

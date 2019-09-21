@@ -87,7 +87,8 @@ data = run()  #Alex和大家都是好朋友 返回None
 print(data) #None
 看代码写结果： 一开始忽略了run()在等号右边也会打印，其余正确
 """
-
+i = "123"
+i.replace()
 """
 例五:
 
