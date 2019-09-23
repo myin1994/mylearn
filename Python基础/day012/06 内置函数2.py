@@ -146,10 +146,10 @@
 # print("meet",file=f) #文件流
 
 # zip()  拉链
-lst1 = [1,2,3,4,5,6]
-lst2 = [5,4,3,2,1]
-# print(list(map(lambda x,y:(x,y),lst1,lst2)))
-print(zip(lst1,lst2))
-print(dict(zip(lst1,lst2)))
-print(tuple(zip(lst1,lst2)))
-print(list(zip(lst1,lst2)))
+# lst1 = [1,2,3,4,5,6]
+# lst2 = [5,4,3,2,1]
+# # print(list(map(lambda x,y:(x,y),lst1,lst2)))
+# print(zip(lst1,lst2))
+# print(dict(zip(lst1,lst2)))
+# print(tuple(zip(lst1,lst2)))
+# print(list(zip(lst1,lst2)))
