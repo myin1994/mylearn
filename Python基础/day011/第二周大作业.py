@@ -219,139 +219,139 @@ d.用户名和密码一致就终止循环,并提示用户登录成功!
 e.用户名和密码不一致,只有三次登录机会,三次过后提示用户名被锁定,请联系管理员!并终止循环
 f.当用户名错误三次,再次运行程序.登录锁定的账号继续提示用户名被锁定,请联系管理员!
 """
-# def login():
-#     """
-#     登录功能，记录登录状态，登录次数，登录用户名
-#     :return:
-#     """
-#     global login_status,name
-#     login_count = 3
-#     if login_status:
-#         print("已登录！")
-#         return
-#     print("请登录！")
-#     while not login_status:
-#         name = input("请输入用户名：")
-#         if lock_status(name):
-#             print("用户名被锁定,请联系管理员!")
-#             return
-#         psw = input("请输入密码：")
-#         f = open("userinfo.txt", "r", encoding="utf-8")
-#         for i in f:
-#             if i.split(":")[0] == name and i.split(":")[1] == psw:
-#                 print("登录成功！")
-#                 login_status = True
-#                 break
-#         if not login_status:
-#             login_count -= 1
-#             print(f"用户名或密码错误！登录失败！剩余次数{login_count}")
-#             if login_count == 0:
-#                 lock_account(name)
-#                 print("用户名被锁定,请联系管理员!")
-#                 break
-#         f.close()
-#
-#
-#
-# def register():
-#     """
-#     注册功能
-#     :return:
-#     """
-#     f = open("userinfo.txt", "a+", encoding="utf-8")
-#     while True:
-#         name = input("请输入注册用户名（不能有特殊字符）：")
-#         psw = input("请输入注册密码（6~14个字符之间）：")
-#         f1 = open("userinfo.txt", "r", encoding="utf-8")
-#         for i in f1:
-#             if i.split(":")[0] == name:
-#                 print("用户名重复！")
-#                 return
-#         f1.close()
-#         if name.isalnum():
-#             if  5 < len(psw) < 15:
-#                 print("注册成功！")
-#                 f.write(f"\n{name}:{psw}:")
-#                 f.flush()
-#                 f.close()
-#                 break
-#             else:
-#                 print("密码长度不符合要求！")
-#                 continue
-#         else:
-#             print("用户名不能有特殊字符！")
-# def cancel():
-#     """
-#     注销当前账号
-#     :return:
-#     """
-#     global login_status
-#     if login_status == False:
-#         print("登录后可使用该功能！")
-#     else:
-#         print("注销成功")
-#         login_status = False
-#
-# def logout():
-#     """
-#     退出程序
-#     :return:
-#     """
-#     global logout_status
-#     print("退出成功！")
-#     logout_status = True
-#
-# def lock_status(name):
-#     """
-#     检查用户是否被锁定
-#     :param name:
-#     :return: 被锁定返回True 没有返回False
-#     """
-#     f = open("userinfo.txt","r",encoding="utf-8")
-#     for i in f:
-#         if i.split(":")[0] == name and i.split(":")[-1].strip() == "Y":
-#             f.close()
-#             return True
-#     else:
-#         f.close()
-#         return False
-#
-# def lock_account(name):
-#     f = open("userinfo.txt", "r+", encoding="utf-8")
-#     for i in f:
-#         if i.split(":")[0] == name:
-#             f.write("Y")
-#             f.close()
-#             return
-#     else:
-#         f.write(f"\n{name}:{'None'}:Y")
-# msg = """
-# 1.登录
-# 2.注册
-# 3.注销
-# 4.退出
-# 请输入选择序号："""
-#
-# func_choice = {
-#     "1":login,
-#     "2":register,
-#     "3":cancel,
-#     "4":logout
-# }
-#
-# login_status = False
-# logout_status = False
-# def system_choice():
-#     """
-#     功能选择
-#     :return:
-#     """
-#     while True:
-#         choice = input(msg)
-#         if choice in func_choice:
-#             func_choice[choice]()
-#             if logout_status == True:
-#                 break
-#         else:
-#             print("输入错误！请重新选择！")
-# system_choice()
+def login():
+    """
+    登录功能，记录登录状态，登录次数，登录用户名
+    :return:
+    """
+    global login_status,name
+    login_count = 3
+    if login_status:
+        print("已登录！")
+        return
+    print("请登录！")
+    while not login_status:
+        name = input("请输入用户名：")
+        if lock_status(name):
+            print("用户名被锁定,请联系管理员!")
+            return
+        psw = input("请输入密码：")
+        f = open("userinfo.txt", "r", encoding="utf-8")
+        for i in f:
+            if i.split(":")[0] == name and i.split(":")[1] == psw:
+                print("登录成功！")
+                login_status = True
+                break
+        if not login_status:
+            login_count -= 1
+            print(f"用户名或密码错误！登录失败！剩余次数{login_count}")
+            if login_count == 0:
+                lock_account(name)
+                print("用户名被锁定,请联系管理员!")
+                break
+        f.close()
+
+
+
+def register():
+    """
+    注册功能
+    :return:
+    """
+    f = open("userinfo.txt", "a+", encoding="utf-8")
+    while True:
+        name = input("请输入注册用户名（不能有特殊字符）：")
+        psw = input("请输入注册密码（6~14个字符之间）：")
+        f1 = open("userinfo.txt", "r", encoding="utf-8")
+        for i in f1:
+            if i.split(":")[0] == name:
+                print("用户名重复！")
+                return
+        f1.close()
+        if name.isalnum():
+            if  5 < len(psw) < 15:
+                print("注册成功！")
+                f.write(f"\n{name}:{psw}:")
+                f.flush()
+                f.close()
+                break
+            else:
+                print("密码长度不符合要求！")
+                continue
+        else:
+            print("用户名不能有特殊字符！")
+def cancel():
+    """
+    注销当前账号
+    :return:
+    """
+    global login_status
+    if login_status == False:
+        print("登录后可使用该功能！")
+    else:
+        print("注销成功")
+        login_status = False
+
+def logout():
+    """
+    退出程序
+    :return:
+    """
+    global logout_status
+    print("退出成功！")
+    logout_status = True
+
+def lock_status(name):
+    """
+    检查用户是否被锁定
+    :param name:
+    :return: 被锁定返回True 没有返回False
+    """
+    f = open("userinfo.txt","r",encoding="utf-8")
+    for i in f:
+        if i.split(":")[0] == name and i.split(":")[-1].strip() == "Y":
+            f.close()
+            return True
+    else:
+        f.close()
+        return False
+
+def lock_account(name):
+    f = open("userinfo.txt", "r+", encoding="utf-8")
+    for i in f:
+        if i.split(":")[0] == name:
+            f.write("Y")
+            f.close()
+            return
+    else:
+        f.write(f"\n{name}:{'None'}:Y")
+msg = """
+1.登录
+2.注册
+3.注销
+4.退出
+请输入选择序号："""
+
+func_choice = {
+    "1":login,
+    "2":register,
+    "3":cancel,
+    "4":logout
+}
+
+login_status = False
+logout_status = False
+def system_choice():
+    """
+    功能选择
+    :return:
+    """
+    while True:
+        choice = input(msg)
+        if choice in func_choice:
+            func_choice[choice]()
+            if logout_status == True:
+                break
+        else:
+            print("输入错误！请重新选择！")
+system_choice()

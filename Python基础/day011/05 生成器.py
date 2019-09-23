@@ -212,15 +212,13 @@ print(foo)
 
 def func():
     a = [1]
-    print(id(a))
     yield 1
     yield 2
-g = func()
-print(g)
-# print(next(g))
-# print(next(g))
-# print(next(func()))
-# print(next(func()))
+g = func() #新创建并确定为g生成器
+print(next(g))
+print(next(g))
+print(next(func())) #新创建，从头开始时
+print(next(func())) #新创建，从头开始时
 print(func())
 print(func())
 

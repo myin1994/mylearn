@@ -87,8 +87,8 @@ data = run()  #Alex和大家都是好朋友 返回None
 print(data) #None
 看代码写结果： 一开始忽略了run()在等号右边也会打印，其余正确
 """
-i = "123"
-i.replace()
+# i = "123"
+# i.replace()
 """
 例五:
 
@@ -235,7 +235,7 @@ def func():
     print(name) #UnboundLocalError: local variable 'name' referenced before assignment
     name = 'alex'
 func()
-看代码写结果：因为未声明修改全局变量
+看代码写结果：因为未声明修改全局变量报错
 
 如果给一个变量分配一个值，则这个变量会被认为属于当前的代码块，会屏蔽外部代码块（全局）的相同名字的变量。
 因为函数体中的代码中name = 'alex'，相当于给name分配了一个值，则编译器意识到name是一个局部变量，因为name在print后面被赋值，
@@ -283,6 +283,9 @@ print('list3=%s'%list3) #list3=["a"]
 看代码写结果：结果错误   正确结果[10,"a"]  [123]  [10,"a"]
 通过查看调用函数是列表的地址变化，发现不覆盖默认值时每次列表的内存地址相同，所以造成两次结果被追加到同一列表下,猜想可变数据类型会有类似
 的结果
+
+默认陷阱（默认参数为可变数据类型）
+相当于外部有一个列表绑定在函数上，使用默认值时会默认添加到绑定列表中
 """
 # def extendList(val,list=[]):
 #     list.append(val)
