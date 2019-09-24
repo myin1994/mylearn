@@ -74,10 +74,11 @@ portfolio = [
  [(3, 'wusir', '****'), (4, '太白', '*******')]
 这样的数据。
 """
-# l1 = [1, 2, 3, 4, 5, 6]
-# l2 = ['oldboy', 'alex', 'wusir', '太白', '日天']
-# tu = ('**', '***', '****', '*******')
+l1 = [1, 2, 3, 4, 5, 6]
+l2 = ['oldboy', 'alex', 'wusir', '太白', '日天']
+tu = ('**', '***', '****', '*******')
 # print(list(zip(list(filter(lambda x:x > 2,l1)),l2,list(filter(lambda x:len(x) > 3,tu)))))
+# print(list(zip(list(filter(lambda x:x > 2,l1)),list(filter(lambda x:l2.index(x) > 1,l2)),list(filter(lambda x:len(x) > 3,tu)))))
 
 """
 6)有如下数据类型(实战题)：
