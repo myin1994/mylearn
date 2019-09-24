@@ -27,6 +27,7 @@
 
 # g = (lambda i:i+1 for i in range(3))
 # print([em(3) for em in g])
+# print([em(3) for em in g])
 
 # g = [lambda :i+1 for i in range(3)]
 # print([em() for em in g])

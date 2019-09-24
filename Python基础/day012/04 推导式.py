@@ -80,7 +80,11 @@ def test():
 g = test()
 
 for n in [2, 10]:
-    g = (add(n, i) for i in g) #[2,3,4,5]  [10,11,12,13]
+    g = (add(n, i) for i in g) #[2,3,4,5]  [10,11,12,13]  两次循环从生产器的内存地址寻找
 
 print(list(g)) #[20,21,22,23]
+# print(next(g))
+print(list(g)) #[]
+print(list(g)) #
+print(list(g)) #
 
