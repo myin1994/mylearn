@@ -28,7 +28,7 @@ lst = ["alex","wusir","太白","宝元"]
 """
 6.构建一个列表：['python1期', 'python2期', 'python3期', 'python4期', 'python6期', 'python7期', 'python8期', 'python9期', 'python10期']
 """
-# print([f"python{i}期" for i in range(1,11)])
+# print([f"python{i}期" for i in range(1,11) if i != 5])
 
 """
 7.构建一个列表：[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)]
