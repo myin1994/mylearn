@@ -176,7 +176,7 @@ print(next(v)()) #1
 
 """
 9.map(str,[1,2,3,4,5,6,7,8,9])输出是什么? (面试题)
-列表的内存地址，加list()后输出是所有数字转换成字符串的列表
+函数的内存地址，加list()后输出是所有数字转换成字符串的列表
 验证正确
 """
 
@@ -262,7 +262,7 @@ print(result)
 # def wrapper(f):
 #     def inner():
 #         ret = f()
-#         return ret + 7
+#         return ret + 100
 #     return inner
 #
 # @wrapper
