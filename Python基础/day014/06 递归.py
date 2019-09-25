@@ -73,14 +73,14 @@
 #
 # print(feb(5))
 
-# def fib(n):
-#     if n <= 2:
-#         return 1
-#     else:
-#         return fib(n-1) + fib(n-2)
-#
-# print(fib(4))
-# print(list(map(fib,range(1,6))))
+def fib(n):
+    if n <= 2:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+print(fib(5))
+print(list(map(fib,range(1,6))))
 
 # 递归计算1+2+3……+100+n
 # def func(n):
@@ -91,13 +91,13 @@
 # print(func(100))
 
 #上楼梯问题，一次可以上1或2阶，求上n阶有几种可能
-def fun(n):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    elif n == 2:
-        return 2
-    else:
-        return fun(n-1) + fun(n-2)
-print(fun(5))
+# def fun(n):
+#     if n == 0:
+#         return 0
+#     elif n == 1:
+#         return 1
+#     elif n == 2:
+#         return 2
+#     else:
+#         return fun(n-1) + fun(n-2)
+# print(fun(5))
