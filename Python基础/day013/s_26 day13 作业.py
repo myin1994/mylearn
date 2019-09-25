@@ -304,8 +304,9 @@ def func():
 函数名通过： 函数名.__name__获取。
 """
 # import time
-#
+# import functools#
 # def warpper(f):
+#     @functools.wraps(f)  #使用该命可让func函数返回其本身的函数名
 #     def inner():
 #         f1 = open("time.txt","a",encoding="utf-8")
 #         f1.write(f"函数名：{f.__name__} 当前时间节点：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}\n")
@@ -316,6 +317,6 @@ def func():
 #
 # @warpper
 # def func():
-#     print(func.__name__)
+#     print(func.__name__)  #不使用方法打印的是装饰器的名字
 #
 # func()

@@ -135,7 +135,7 @@
       time.sleep(2)  #休眠--2秒
       print("is index yyyy")
   
-  index()
+  index() #实际为inner()
   func()
   ```
 
@@ -170,6 +170,28 @@
       print(2)
   
   index()  #对应被装饰函数不能接收参数
+  ```
+
++ 还原被装饰函数函数名
+
+  ```
+  import time
+  import functools#
+  def warpper(f):
+      @functools.wraps(f)  #使用该命可让func函数返回其本身的函数名
+      def inner():
+          f1 = open("time.txt","a",encoding="utf-8")
+          f1.write(f"函数名：{f.__name__} 当前时间节点：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}\n")
+          f1.flush()
+          f1.close()
+          f()
+      return inner
+  
+  @warpper
+  def func():
+      print(func.__name__)  #不使用方法打印的是装饰器的名字
+  
+  func()
   ```
 
   
