@@ -34,6 +34,14 @@ print(ret.tm_year)  # 2019
 #       f"{local_time.tm_hour-user_time.tm_hour}小时"
 #       f"{local_time.tm_min-user_time.tm_min}分钟")
 
+# from datetime import datetime
+# user_time = input("请输入一个时间：")
+# a, b = user_time.split()
+# lst =str(a).split("-") + str(b).split(":")
+# lst = tuple(map(int,lst))
+# print(datetime.now() - datetime(*lst))
+# print(type(datetime.now() - datetime(*lst)))
+
 """
 4.写函数，生成一个4位随机验证码（包含数字大小写字母)
 """
