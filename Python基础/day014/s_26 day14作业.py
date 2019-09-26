@@ -36,6 +36,26 @@ s_26 day14作业
 #
 # index()
 
+# import time
+# def wrapper(func):
+#     s_time = 0
+#     def inner(*args,**kwargs):
+#         nonlocal s_time
+#         if time.time() - s_time >= 3:
+#             func(*args,**kwargs)
+#             s_time = time.time()
+#         else:
+#             print("被限制了")
+#     return inner
+#
+# @wrapper
+# def index():
+#     print("is index")
+#
+# while True:
+#     index()
+#     time.sleep(1)
+
 """
 2.请写出下列代码片段的输出结果：
 
