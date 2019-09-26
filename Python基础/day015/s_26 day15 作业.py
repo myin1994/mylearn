@@ -38,7 +38,9 @@ print(ret.tm_year)  # 2019
 4.写函数，生成一个4位随机验证码（包含数字大小写字母)
 """
 # import random
-# s = ""
-# for i in range(4):
-#     s += str(random.choice([chr(random.randint(65,90)),chr(random.randint(97,122)),random.randint(0,9)]))
-# print(s)
+# def random_code(n):
+#     s = ""
+#     for i in range(n):
+#         s += str(random.choice([chr(random.randint(65,90)),chr(random.randint(97,122)),random.randint(0,9)]))
+#     print(s)
+# random_code(4)
