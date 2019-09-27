@@ -42,6 +42,19 @@ print(ret.tm_year)  # 2019
 # print(datetime.now() - datetime(*lst))
 # print(type(datetime.now() - datetime(*lst)))
 
+
+# import time
+# str_time = input("输入时间：")
+# struct_time = time.strptime(str_time,"%Y-%m-%d %H:%M:%S")
+# origin_time = time.mktime(struct_time)
+# gap_time = time.time()-origin_time
+# gap_time = time.localtime(gap_time)
+#
+# print(f"过去了：{gap_time.tm_year-1970}年，"
+#       f"{gap_time.tm_mon-1}月，"
+#       f"{gap_time.tm_yday-1}天，"
+#       f"{gap_time.tm_hour-8}时，"
+#       f"{gap_time.tm_min}分")
 """
 4.写函数，生成一个4位随机验证码（包含数字大小写字母)
 """
