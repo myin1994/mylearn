@@ -29,7 +29,7 @@ def login(*args):
                 break
         if not user_dic["login_status"] and not lock_status(name):
             lock_account(name)
-            f3 = open(log_path, "r", encoding="utf-8")
+            f3 = open(log_path, "r+", encoding="utf-8")
             error_times = 0
             for i in f3:
                 if json.loads(i).get(name) != None:
@@ -37,6 +37,10 @@ def login(*args):
                     print(f"用户名或密码错误！登录失败！剩余次数{3-error_times}")
                     f3.close()
                     break
+            else:
+                f3.write(json.dumps({name:1},ensure_ascii=False) + "\n")
+                print(f"用户名或密码错误！登录失败！剩余次数{2}")
+                f3.close()
             if error_times == 3:
                 print("用户名被锁定,请联系管理员!")
                 break
@@ -170,9 +174,9 @@ def lock_account(name):
             else:
                 j[name] += 1
                 f2.write(json.dumps(j,ensure_ascii=False) + "\n")
-    os.rename("userlog.txt","userlog.txt.bak")
+    os.rename("userlog.txt","userlog.txt.ba")
     os.rename("userlog2.txt","userlog.txt")
-    os.remove("userlog.txt.bak")
+    os.rename("userlog.txt.ba","userlog2.txt")
 
 msg = """
 1.登录
