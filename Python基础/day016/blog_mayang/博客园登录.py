@@ -26,6 +26,7 @@ def login(*args):
             if i.split(":")[0] == name and i.split(":")[1] == md5.hexdigest():
                 print("登录成功！")
                 user_dic["login_status"] = True
+                lock_clear(name)
                 break
         if not user_dic["login_status"] and not lock_status(name):
             lock_account(name)
@@ -173,6 +174,19 @@ def lock_account(name):
                 f2.write(json.dumps(j,ensure_ascii=False) + "\n")
             else:
                 j[name] += 1
+                f2.write(json.dumps(j,ensure_ascii=False) + "\n")
+    os.rename("userlog.txt","userlog.txt.ba")
+    os.rename("userlog2.txt","userlog.txt")
+    os.rename("userlog.txt.ba","userlog2.txt")
+
+def lock_clear(name):
+    with open("userlog.txt", "r", encoding="utf-8") as f1,open("userlog2.txt", "w", encoding="utf-8") as f2:
+        for i in f1:
+            j = json.loads(i)
+            if j.get(name) == None:
+                f2.write(json.dumps(j,ensure_ascii=False) + "\n")
+            else:
+                j[name] = 0
                 f2.write(json.dumps(j,ensure_ascii=False) + "\n")
     os.rename("userlog.txt","userlog.txt.ba")
     os.rename("userlog2.txt","userlog.txt")
