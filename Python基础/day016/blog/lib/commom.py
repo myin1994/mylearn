@@ -1,6 +1,12 @@
 from core import src
 from conf import setting
+import os
 login_dic = src.login_dic
+userinfo_path = setting.userinfo_path
+userlog_path = setting.userlog_path
+userlog2_path = setting.userlog_path
+
+
 def login(func=None):
     """
     登录

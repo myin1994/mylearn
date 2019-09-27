@@ -8,6 +8,10 @@
 # conf --配置文件(静态文件)
 import sys
 import os
-base_path = os.path.dirname(os.path.dirname(__file__))
-sys.path.append(base_path)
-print(base_path)
+# base_path = os.path.dirname(os.path.dirname(__file__))
+# sys.path.append(base_path)
+# print(base_path)
+
+base_path = os.path.dirname(os.getcwd())
+log_path = os.path.join(base_path,"day016",'userlog.txt')
+print(log_path)
