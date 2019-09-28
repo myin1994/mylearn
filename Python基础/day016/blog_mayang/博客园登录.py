@@ -2,7 +2,7 @@ import hashlib
 import sys
 import os
 import json
-def login(*args):
+def login(*args,fun = None):
     """
     登录功能，记录登录状态，登录次数，登录用户名
     :return:
@@ -27,6 +27,8 @@ def login(*args):
                 print("登录成功！")
                 user_dic["login_status"] = True
                 lock_clear(name)
+                if fun:
+                    fun(login)
                 break
         if not user_dic["login_status"] and not lock_status(name):
             lock_account(name)
@@ -88,7 +90,7 @@ def article(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = article)
     else:
         print(f"欢迎{name}进入文章页面")
 
@@ -99,7 +101,7 @@ def comment(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = comment)
     else:
         print(f"欢迎{name}进入评论页面")
 
@@ -110,7 +112,7 @@ def diary(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = diary)
     else:
         print(f"欢迎{name}进入日记页面")
 
@@ -121,7 +123,7 @@ def collect(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = collect)
     else:
         print(f"欢迎{name}进入收藏页面")
 
@@ -132,7 +134,7 @@ def cancel(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = cancel)
     else:
         print("注销成功")
         user_dic["login_status"] = False

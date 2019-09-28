@@ -3,14 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog/bin/start.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog/conf/setting.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog/core/src.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog/db/userinfo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog/lib/commom.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog/treefile.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_mayang/userinfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_mayang/userinfo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_mayang/userlog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_mayang/userlog.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day016/blog_com/core/src.py" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/core/src.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day016/blog_com/db/userinfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/db/userinfo.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day016/blog_com/lib/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/lib/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day016/blog_com/log/userlog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/log/userlog.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/day016/blog_com/log/userlog2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/log/userlog2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/day016/blog_mayang/userlog2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_mayang/userlog2.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/day016/blog_mayang/博客园登录.py" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_mayang/博客园登录.py" afterDir="false" />
     </list>
@@ -269,6 +266,7 @@
       <workItem from="1569506006481" duration="222000" />
       <workItem from="1569544969934" duration="40604000" />
       <workItem from="1569595289750" duration="6633000" />
+      <workItem from="1569629568819" duration="1248000" />
     </task>
     <servers />
   </component>
@@ -311,7 +309,7 @@
     <SUITE FILE_PATH="coverage/Python$02_.coverage" NAME="02 昨日回顾 Coverage Results" MODIFIED="1569460369218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day015" />
     <SUITE FILE_PATH="coverage/Python$s_26_day06_.coverage" NAME="s_26 day06 大作业 Coverage Results" MODIFIED="1568631401677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day006" />
     <SUITE FILE_PATH="coverage/Python$05_hashlib.coverage" NAME="05 hashlib Coverage Results" MODIFIED="1569577332649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day016" />
-    <SUITE FILE_PATH="coverage/Python$.coverage" NAME="博客园登录 Coverage Results" MODIFIED="1569600432745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day016/blog_mayang" />
+    <SUITE FILE_PATH="coverage/Python$.coverage" NAME="博客园登录 Coverage Results" MODIFIED="1569630295995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day016/blog_mayang" />
     <SUITE FILE_PATH="coverage/Python$s_26_day04.coverage" NAME="s_26 day04作业 Coverage Results" MODIFIED="1568168192367" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day004" />
     <SUITE FILE_PATH="coverage/Python$01_.coverage" NAME="01 今日内容 Coverage Results" MODIFIED="1569459662910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day015" />
     <SUITE FILE_PATH="coverage/Python$06_datetime.coverage" NAME="06 datetime Coverage Results" MODIFIED="1569494820783" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day015" />
@@ -334,6 +332,6 @@
     <SUITE FILE_PATH="coverage/Python$07_os.coverage" NAME="07 os模块 Coverage Results" MODIFIED="1569497503532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day015" />
     <SUITE FILE_PATH="coverage/Python$day0102.coverage" NAME="day01作业02代码练习 Coverage Results" MODIFIED="1567672773469" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day001" />
     <SUITE FILE_PATH="coverage/Python$08_.coverage" NAME="08 函数的嵌套 Coverage Results" MODIFIED="1568892221291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day010" />
-    <SUITE FILE_PATH="coverage/Python$start__1_.coverage" NAME="start (1) Coverage Results" MODIFIED="1569601844384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day016/blog_com/bin" />
+    <SUITE FILE_PATH="coverage/Python$start__1_.coverage" NAME="start (1) Coverage Results" MODIFIED="1569630438897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/day016/blog_com/bin" />
   </component>
 </project>

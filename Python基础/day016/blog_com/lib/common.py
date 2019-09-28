@@ -10,7 +10,7 @@ userinfo_PATH = setting.userinfo_PATH
 userlog_PATH = setting.userlog_PATH
 userlog2_PATH = setting.userlog2_PATH
 
-def login(*args):
+def login(*args,fun = None):
     """
     登录功能，记录登录状态，登录次数，登录用户名
     :return:
@@ -33,10 +33,9 @@ def login(*args):
             if i.split(":")[0] == name and i.split(":")[1] == md5.hexdigest():
                 print("登录成功！")
                 user_dic["login_status"] = True
-                user_dic["name"] = i.split(":")[0]
-                print(user_dic["name"])
-                print(user_dic["login_status"])
                 lock_clear(name)
+                if fun:
+                    fun(login)
                 break
         if not user_dic["login_status"] and not lock_status(name):
             lock_account(name)

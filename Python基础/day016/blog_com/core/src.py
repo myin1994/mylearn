@@ -9,7 +9,6 @@ userinfo_PATH = setting.userinfo_PATH
 userlog_PATH = setting.userlog_PATH
 userlog2_PATH = setting.userlog2_PATH
 name = user_dic["name"]
-print(user_dic["name"])
 def register(*args):
     """
     注册功能
@@ -50,7 +49,7 @@ def article(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = article)
     else:
         print(f"欢迎{name}进入文章页面")
 
@@ -61,7 +60,7 @@ def comment(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = comment)
     else:
         print(f"欢迎{name}进入评论页面")
 
@@ -72,7 +71,7 @@ def diary(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = diary)
     else:
         print(f"欢迎{name}进入日记页面")
 
@@ -83,7 +82,7 @@ def collect(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = collect)
     else:
         print(f"欢迎{name}进入收藏页面")
 
@@ -94,7 +93,7 @@ def cancel(func):
     """
     if user_dic["login_status"] == False:
         print("登录后可使用该功能！")
-        func()
+        func(fun = cancel)
     else:
         print("注销成功")
         user_dic["login_status"] = False
