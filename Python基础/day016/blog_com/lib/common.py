@@ -33,9 +33,10 @@ def login(*args,fun = None):
             if i.split(":")[0] == name and i.split(":")[1] == md5.hexdigest():
                 print("登录成功！")
                 user_dic["login_status"] = True
+                user_dic["name"] = name
                 lock_clear(name)
                 if fun:
-                    fun(login)
+                    return fun(login)
                 break
         if not user_dic["login_status"] and not lock_status(name):
             lock_account(name)

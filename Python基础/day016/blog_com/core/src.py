@@ -8,7 +8,7 @@ login = common.login
 userinfo_PATH = setting.userinfo_PATH
 userlog_PATH = setting.userlog_PATH
 userlog2_PATH = setting.userlog2_PATH
-name = user_dic["name"]
+# name = user_dic["name"]
 def register(*args):
     """
     注册功能
@@ -51,7 +51,7 @@ def article(func):
         print("登录后可使用该功能！")
         func(fun = article)
     else:
-        print(f"欢迎{name}进入文章页面")
+        print(f"欢迎{user_dic['name']}进入文章页面")
 
 def comment(func):
     """
@@ -62,7 +62,7 @@ def comment(func):
         print("登录后可使用该功能！")
         func(fun = comment)
     else:
-        print(f"欢迎{name}进入评论页面")
+        print(f"欢迎{user_dic['name']}进入评论页面")
 
 def diary(func):
     """
@@ -73,7 +73,7 @@ def diary(func):
         print("登录后可使用该功能！")
         func(fun = diary)
     else:
-        print(f"欢迎{name}进入日记页面")
+        print(f"欢迎{user_dic['name']}进入日记页面")
 
 def collect(func):
     """
@@ -84,7 +84,7 @@ def collect(func):
         print("登录后可使用该功能！")
         func(fun = collect)
     else:
-        print(f"欢迎{name}进入收藏页面")
+        print(f"欢迎{user_dic['name']}进入收藏页面")
 
 def cancel(func):
     """
