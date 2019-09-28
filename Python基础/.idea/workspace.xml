@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_com/core/src.py" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/core/src.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_com/db/userinfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/db/userinfo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_com/lib/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/lib/common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_com/log/userlog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/log/userlog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/day016/blog_com/log/userlog2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/day016/blog_com/log/userlog2.txt" afterDir="false" />
-    </list>
+    <list default="true" id="a1313b0e-d56e-47ec-841a-113ff3360e42" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,6 +280,7 @@
       <workItem from="1569544969934" duration="40604000" />
       <workItem from="1569595289750" duration="6633000" />
       <workItem from="1569629568819" duration="3992000" />
+      <workItem from="1569634800438" duration="617000" />
     </task>
     <servers />
   </component>
