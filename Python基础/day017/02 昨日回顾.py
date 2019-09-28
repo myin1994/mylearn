@@ -46,7 +46,7 @@
 --lib #公共组件
 ---common
 --db  #用户数据
----userinfo.xt
+---userinfo.txt
 --log
 ---a.log
 -README

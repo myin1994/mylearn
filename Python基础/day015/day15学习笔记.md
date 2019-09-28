@@ -382,7 +382,7 @@
       ```
       print(os.path.isdir(r"C:\Users\24479\Desktop\作业上传")) 
       >>>True
-      print(os.path.isdir(r"C:\Users\24479\Desktop\作业上传\一些git命令.md")) #是文件而非文件夹
+      print(os.path.isdir(r"C:\Users\24479\Desktop\作业上传\一些git命令.md")) #是文件夹而非文件
       >>>False
       ```
 
@@ -490,7 +490,7 @@
   print(random.randint(1,5))
   ```
 
-+ 随机按范围与补偿获取整数
++ 随机按范围与步长获取整数
 
   ```
   print(random.randrange(0,10,2)) #随机偶数
@@ -527,7 +527,7 @@
 + 实现任意位数的验证码生成（字母，数字）
 
   + ASCII中大写字母：65-90，通过chr()获取对应的内容
-  + ASCII中小写字母：65-90
+  + ASCII中小写字母：97-122
 
   ```
   方法1：

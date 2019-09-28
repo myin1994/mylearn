@@ -296,12 +296,69 @@
 
 **分文件管理**
 
-+ bin -- 启动文件
-+ lib -- 公共模块
++ bin -- 启动文件存放位置
+
+  + start.py
+
+    ```
+    import sys
+    import os
+    base_path = os.path.dirname(os.path.dirname(__file__)) #获取当前目录--获取当前目录的父级目录
+    sys.path.append(base_path) #将父级目录添加到sys路径下
+    from core import src
+    src.run()
+    ```
+
++ lib -- 公共组件
+
+  + common.py
+
+    ```
+    from core import src
+    from conf import setting
+    user_dic = src.user_dic  #要使用的对象可重命名以避免大量修改
+    userinfo_PATH = setting.userinfo_PATH
+    userlog_PATH = setting.userlog_PATH
+    userlog2_PATH = setting.userlog2_PATH
+    ```
+
 + core -- 主逻辑
-+ db -- 相关数据
+
+  + src.py
+
+    ```
+    from lib import common
+    from conf import setting
+    login = common.login  #要使用的对象可重命名以避免大量修改
+    
+    userinfo_PATH = setting.userinfo_PATH
+    userlog_PATH = setting.userlog_PATH
+    userlog2_PATH = setting.userlog2_PATH
+    ```
+
++ db -- 用户数据
+
+  + userinfo.txt
+
 + log -- 日志，记录程序运行情况
+
+  + a.log
+
 + conf --配置文件(静态文件)
+
+  + setting.py
+
+    ```
+    import os
+    BASE_PATH = os.path.dirname(os.getcwd()) #获取当前工作目录
+    userinfo_PATH = os.path.join(BASE_PATH,'db','userinfo.txt')  #拼接成有效路径
+    userlog_PATH = os.path.join(BASE_PATH,'log','userlog.txt')
+    userlog2_PATH = os.path.join(BASE_PATH,'log','userlog2.txt')
+    userlog3_PATH = os.path.join(BASE_PATH,'log','userlog3.txt')
+    ```
+
++ README
+
 + 导出文件夹的目录树
   1. cmd下cd到目标文件路径下
   2. tree /f >treefile.txt
