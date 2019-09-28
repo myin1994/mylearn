@@ -1,0 +1,32 @@
+2019-09-28 16:36:57,155 root 05 logging.py 56 警告
+2019-09-28 16:37:13,600 root 05 logging.py 56 警告
+2019-09-28 16:39:20,890 root WARNING 05 logging.py 56 警告
+2019-09-28 16:40:55,194 root DEBUG 05 logging.py 58 调试
+2019-09-28 16:44:07,155 root DEBUG 05 logging.py 58 调试
+2019-09-28 16:44:07,155 root INFO 05 logging.py 59 信息
+2019-09-28 16:44:07,155 root WARNING 05 logging.py 60 警告
+2019-09-28 16:44:07,155 root ERROR 05 logging.py 61 错误
+2019-09-28 16:44:07,156 root CRITICAL 05 logging.py 62 危险
+2019-09-28 19:28:29,492 root WARNING 05 logging.py 60 警告
+2019-09-28 19:28:29,492 root ERROR 05 logging.py 61 错误
+2019-09-28 19:28:29,493 root CRITICAL 05 logging.py 62 危险
+2019-09-28 19:28:51,530 root DEBUG 05 logging.py 60 调试
+2019-09-28 19:28:51,531 root INFO 05 logging.py 61 信息
+2019-09-28 19:28:51,531 root WARNING 05 logging.py 62 警告
+2019-09-28 19:28:51,531 root ERROR 05 logging.py 63 错误
+2019-09-28 19:28:51,531 root CRITICAL 05 logging.py 64 危险
+2019-09-28 19:32:41,307 root DEBUG 05 logging.py 60 调试
+2019-09-28 19:32:41,307 root INFO 05 logging.py 61 信息
+2019-09-28 19:32:41,307 root WARNING 05 logging.py 62 警告
+2019-09-28 19:32:41,307 root ERROR 05 logging.py 63 错误
+2019-09-28 19:32:41,308 root CRITICAL 05 logging.py 64 危险
+2019-09-28 19:38:06,986 root DEBUG my_logger.py 20 调试
+2019-09-28 19:38:06,987 root INFO my_logger.py 21 信息
+2019-09-28 19:38:06,987 root WARNING my_logger.py 22 警告
+2019-09-28 19:38:06,987 root ERROR my_logger.py 23 错误
+2019-09-28 19:38:06,987 root CRITICAL my_logger.py 24 危险
+2019-09-28 19:39:22,000 root DEBUG 05 logging.py 67 调试2
+2019-09-28 19:39:22,000 root INFO 05 logging.py 68 信息2
+2019-09-28 19:39:22,000 root WARNING 05 logging.py 69 警告2
+2019-09-28 19:39:22,000 root ERROR 05 logging.py 70 错误2
+2019-09-28 19:39:22,000 root CRITICAL 05 logging.py 71 危险2

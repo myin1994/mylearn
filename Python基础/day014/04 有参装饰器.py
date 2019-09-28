@@ -98,37 +98,37 @@
 #     email = wrapper(email)
 #     email()
 
-# msg = """
-# 1.微信
-# 2.抖音
-# 3.邮箱
-# 选择：
-# """
-# choice = input(msg)
-#
-# def auth(arg):
-#     def wrapper(func):
-#         def inner(*args,**kwargs):
-#             username = input("请输入用户名：")
-#             pwd = input("请输入密码：")
-#             if arg == "1":
-#                 if username == "alex" and pwd == "alex123":
-#                     func(*args,**kwargs)
-#             elif arg == "2":
-#                 if username == "alex" and pwd == "alex123":
-#                     func(*args,**kwargs)
-#             elif arg == "3":
-#                 if username == "alex" and pwd == "alex123":
-#                     func(*args,**kwargs)
-#         return inner
-#     return wrapper
-# ##看一下@的作用
-# @auth(choice)   #wechat = wrapper = auth(choice)
-# def wechat():
-#     print("微信")
+msg = """
+1.微信
+2.抖音
+3.邮箱
+选择：
+"""
+choice = input(msg)
+
+def auth(arg):
+    def wrapper(func):
+        def inner(*args,**kwargs):
+            username = input("请输入用户名：")
+            pwd = input("请输入密码：")
+            if arg == "1":
+                if username == "alex" and pwd == "alex123":
+                    func(*args,**kwargs)
+            elif arg == "2":
+                if username == "alex" and pwd == "alex123":
+                    func(*args,**kwargs)
+            elif arg == "3":
+                if username == "alex" and pwd == "alex123":
+                    func(*args,**kwargs)
+        return inner
+    return wrapper
+##看一下@的作用
+@auth(choice)   #wechat = wrapper = auth(choice)
+def wechat():
+    print("微信")
 # # wrapper = auth(choice)
 # # wechat = wrapper(wechat)
-# # wechat()
+wechat()
 #
 # @auth(choice)
 # def dy():

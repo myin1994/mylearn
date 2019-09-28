@@ -1,0 +1,16 @@
+2019-09-28 19:23:06 root 05 logging.py 29 这是调试
+2019-09-28 19:23:06 root 05 logging.py 30 这是信息
+2019-09-28 19:23:06 root 05 logging.py 31 这是警告
+2019-09-28 19:23:06 root 05 logging.py 32 这是错误
+2019-09-28 19:23:06 root 05 logging.py 33 这是危险
+2019-09-28 19:23:11 root 05 logging.py 29 这是调试
+2019-09-28 19:23:11 root 05 logging.py 30 这是信息
+2019-09-28 19:23:11 root 05 logging.py 31 这是警告
+2019-09-28 19:23:11 root 05 logging.py 32 这是错误
+2019-09-28 19:23:11 root 05 logging.py 33 这是危险
+2019-09-28 19:24:01 root 05 logging.py 29 这是调试
+2019-09-28 19:24:01 root 05 logging.py 30 这是信息
+2019-09-28 19:24:01 root 05 logging.py 31 这是警告
+2019-09-28 19:24:01 root 05 logging.py 32 这是错误
+2019-09-28 19:24:01 root 05 logging.py 33 这是危险
+2019-09-28 19:24:04 root 05 logging.py 40 字符串不能转换为数字
