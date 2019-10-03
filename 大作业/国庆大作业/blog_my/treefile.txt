@@ -1,0 +1,38 @@
+卷 Windows-SSD 的文件夹 PATH 列表
+卷序列号为 9870-BA9F
+C:.
+│  README.md
+│  treefile.txt
+│  
+├─bin
+│      start.py
+│      
+├─conf
+│  │  setting.py
+│  │  
+│  └─__pycache__
+│          setting.cpython-36.pyc
+│          
+├─core
+│  │  src.py
+│  │  
+│  └─__pycache__
+│          src.cpython-36.pyc
+│          
+├─db
+│  │  usercomment.txt
+│  │  userdiarymayang.txt
+│  │  userinfo.txt
+│  │  
+│  └─userdiary
+│          mayang.txt
+│          李四.txt
+│          马洋.txt
+│          
+├─lib
+│  │  common.py
+│  │  
+│  └─__pycache__
+│          common.cpython-36.pyc
+│          
+└─log
