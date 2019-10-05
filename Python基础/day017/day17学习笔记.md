@@ -432,3 +432,15 @@
   - %(threadName)s 线程名。可能没有
   - %(process)d 进程ID。可能没有
   - %(message)s用户输出的消息
+  
++ 注意点
+
+  当定义一个写log的函数后，用logging多次调用该函数写不同文件的日志时，会出现只往一个文件中写日志。
+
+  因为logger会一直打开一个日志handler，再次调用时，该handler仍是打开的，所以只往该handler写日志，所以要解决该问题，必须在每次写完日志后，将该handler关闭。
+
+  ```
+  logger.removeHandler(fh)　　　　　　　#删除handler
+  ```
+
+  

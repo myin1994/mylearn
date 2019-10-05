@@ -1,5 +1,4 @@
 import os
-import sys
 
 
 basepath = os.path.dirname(os.getcwd())
