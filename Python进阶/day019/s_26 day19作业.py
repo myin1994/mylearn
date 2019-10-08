@@ -136,14 +136,23 @@ list_info = Listinfo([44,222,111,333,454,'sss','333'])
 #         self.lst = lst
 #
 #     def add_key(self,keyname):
-#         self.lst.append(keyname)
+#         if type(keyname) == str or type(keyname) == int:
+#             self.lst.append(keyname)
+#         else:
+#             print("wrong type")
 #
 #     def get_key(self,num):
-#         return self.lst[num]
+#         if type(num) == int and len(self.lst) > num:
+#             return self.lst[num]
+#         else:
+#             return "wrong num"
 #
 #     def update_list(self,lst2):
-#         self.lst += lst2
-#         return self.lst
+#         if type(lst2) == list:
+#             self.lst += lst2
+#             return self.lst
+#         else:
+#             return "wrong tpye"
 #
 #     def del_key(self):
 #         value_last = self.lst[-1]
@@ -154,7 +163,7 @@ list_info = Listinfo([44,222,111,333,454,'sss','333'])
 # lst.add_key(99)
 # print(lst.lst)
 #
-# print(lst.get_key(7))
+# print(lst.get_key(8))
 # print(lst.update_list([11,22,33,44]))
 # print(lst.del_key())
 # print(lst.lst)
