@@ -28,17 +28,17 @@
 #
 #     def get_money(self):
 #         print("给100元")
-
+#
 # xiaoli = GirlFriend()
 #
 # print(xiaoli.sex)
 # xiaoli.chui_tui(20)
-# 引用计数为0时会被垃圾回收机制回收
-
+# # 引用计数为0时会被垃圾回收机制回收
+#
 # xiaoli1 = GirlFriend()
 # print(xiaoli1.sex)
 # xiaoli1.chui_tui(20)
-
+#
 # print(GirlFriend.__dict__) #查看类中内容
 
 # 添加新属性(添加到当前)
@@ -100,27 +100,27 @@
 # mingren.kill_self()
 # print(mingren.blood)
 
-class Dogs:
-    def __init__(self,name,color,breed,age,sex):
-        self.name = name
-        self.color = color
-        self.breed = breed
-        self.age = age
-        self.sex = sex
-
-    def info(self):
-        print(f"我叫{self.name}，{self.color}色，属于{self.breed}，"
-              f"今年{self.age}岁，是{self.sex}狗")
-
-    def shout(self):
-        print("汪汪汪！")
-
-    def look_house(self):
-        print("有人来了！")
-        self.shout()
-
-
-dog1 = Dogs("张飞","红","藏獒","3","公")
-
-dog1.info()
-dog1.look_house()
+# class Dogs:
+#     def __init__(self,name,color,breed,age,sex):
+#         self.name = name
+#         self.color = color
+#         self.breed = breed
+#         self.age = age
+#         self.sex = sex
+#
+#     def info(self):
+#         print(f"我叫{self.name}，{self.color}色，属于{self.breed}，"
+#               f"今年{self.age}岁，是{self.sex}狗")
+#
+#     def shout(self):
+#         print("汪汪汪！")
+#
+#     def look_house(self):
+#         print("有人来了！")
+#         self.shout()
+#
+#
+# dog1 = Dogs("张飞","红","藏獒","3","公")
+#
+# dog1.info()
+# dog1.look_house()
