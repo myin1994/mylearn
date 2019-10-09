@@ -110,8 +110,8 @@ lst = [1,2,3,4,12,23,34,45,111,222,333,1234,2345,34567,456789]
   6:[456789]
 }
 """
-# from collections import defaultdict
-#
+from collections import defaultdict
+
 # lst = [1,2,3,4,12,23,34,45,111,222,333,1234,2345,34567,456789]
 # lst = list(map(str,lst))
 # dic = defaultdict(list)
@@ -119,6 +119,12 @@ lst = [1,2,3,4,12,23,34,45,111,222,333,1234,2345,34567,456789]
 #     dic[len(i)].append(int(i))
 # print(dict(dic))
 
+
+# lst = [1,2,3,4,12,23,34,45,111,222,333,1234,2345,34567,456789]
+# dic = defaultdict(list)
+# for i in lst:
+#     dic[len(str(i))].append(i)
+# print(dict(dic))
 """
 12.把s = "aaaabbbcc"这种形状式中特定的字符串压缩成a4b3c2这种字符串的格式(10分)
 """

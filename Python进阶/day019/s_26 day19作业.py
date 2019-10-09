@@ -103,7 +103,8 @@ get_key()
 #         self.dic = dic
 #
 #     def del_dict(self,key):
-#         del self.dic[key]
+#         if key in self.dic:
+#             del self.dic[key]
 #
 #     def  get_dict(self,key):
 #         if key in self.dic:
@@ -131,7 +132,7 @@ get_key()
 4 删除并且返回最后一个元素：del_key()
 list_info = Listinfo([44,222,111,333,454,'sss','333'])
 """
-# class Listinfo:
+# class ListInfo:
 #     def __init__(self,lst):
 #         self.lst = lst
 #
@@ -142,7 +143,7 @@ list_info = Listinfo([44,222,111,333,454,'sss','333'])
 #             print("wrong type")
 #
 #     def get_key(self,num):
-#         if type(num) == int and len(self.lst) > num:
+#         if type(num) == int and len(self.lst) > num >= 0:
 #             return self.lst[num]
 #         else:
 #             return "wrong num"
@@ -159,7 +160,7 @@ list_info = Listinfo([44,222,111,333,454,'sss','333'])
 #         del self.lst[-1]
 #         return value_last
 #
-# lst = Listinfo([1,2,3,4,5,6,7,8])
+# lst = ListInfo([1,2,3,4,5,6,7,8])
 # lst.add_key(99)
 # print(lst.lst)
 #
