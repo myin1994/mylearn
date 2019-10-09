@@ -51,36 +51,36 @@
 #     print("chi")
 
 
-class GirlFriend:
-    num_eyes = 2  #类属性
-
-    def __init__(self,color,height):  #实例属性
-        self.eye_color = color
-        self.height = height  #一般重名使用
-
-    def chui_tui(self, num):  # 在类里叫方法，self接收的是调用者
-        print(f"捶腿{num}次")
-        self.abc = 50
-
-    def get_money(self):
-        print("给100元")
-
-xiaoli = GirlFriend("白色",180)
-print(xiaoli.eye_color)
-print(xiaoli.height)
-
-xiaoli.weight = 120
-print(xiaoli.weight)
-
-xiaoli.num_eyes = 3  #添加的是实例属性
-print(xiaoli.num_eyes)
-print(xiaoli.__dict__)
-# 访问属性的优先级：实例属性-类属性
-
-print(GirlFriend.num_eyes)  #通过类名来访问类属性
-GirlFriend.num_eyes = 5
-xiaoli2 = GirlFriend("黑色",170)
-print(xiaoli2.num_eyes)
+# class GirlFriend:
+#     num_eyes = 2  #类属性
+#
+#     def __init__(self,color,height):  #实例属性
+#         self.eye_color = color
+#         self.height = height  #一般重名使用
+#
+#     def chui_tui(self, num):  # 在类里叫方法，self接收的是调用者
+#         print(f"捶腿{num}次")
+#         self.abc = 50
+#
+#     def get_money(self):
+#         print("给100元")
+#
+# xiaoli = GirlFriend("白色",180)
+# print(xiaoli.eye_color)
+# print(xiaoli.height)
+#
+# xiaoli.weight = 120
+# print(xiaoli.weight)
+#
+# xiaoli.num_eyes = 3  #添加的是实例属性
+# print(xiaoli.num_eyes)
+# print(xiaoli.__dict__)
+# # 访问属性的优先级：实例属性-类属性
+#
+# print(GirlFriend.num_eyes)  #通过类名来访问类属性
+# GirlFriend.num_eyes = 5
+# xiaoli2 = GirlFriend("黑色",170)
+# print(xiaoli2.num_eyes)
 # 类属性，实例（对象）属性
 
 # 类属性来存放当前类所有对象所共有的特征，一般通过类名访问和修改（所有类的对象都会改变），用对象名也能访问，但不能修改
@@ -128,3 +128,16 @@ print(xiaoli2.num_eyes)
 #
 # dog1.info()
 # dog1.look_house()
+
+
+class Person:
+    a = 1
+    def __init__(self,name = "张三"):
+        self.name = name
+
+    def func(self):
+        print(1111)
+
+p1 = Person()
+del p1.name
+print(p1.name)

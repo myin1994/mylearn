@@ -257,32 +257,87 @@
 
 
 # 一对多
-class Boy:
-    def __init__(self):
-        self.girl_list = []
+# class Boy:
+#     def __init__(self):
+#         self.girl_list = []
+#
+#     def baMei(self,girl):
+#         self.girl_list.append(girl)
+#
+#     def happy(self):
+#         for i in self.girl_list:
+#             i.play()
+#
+# class Girl:
+#     def __init__(self, name):
+#         self.name = name
+#
+#     def play(self):
+#         print(f"{self.name}和你一起玩")
+#
+# bao = Boy()
+# friend1 = Girl("张三")
+# friend2 = Girl("李四")
+# friend3 = Girl("王五")
+# bao.baMei(friend1)
+# bao.baMei(friend2)
+# bao.baMei(friend3)
+# bao.happy()
 
-    def baMei(self,girl):
-        self.girl_list.append(girl)
+"""
+老师和学生模型(老师对学生是一对多,学生对老师是一对一)
+创建教师类和学生类
+教师类有姓名和学生列表两个属性
+教师类有添加学生的方法（添加的学生是具体对象）
+教师类有显示对应学生姓名和学号的方法
+学生类有学号/姓名/教师姓名三个属性 
+创建多个学生，并添加到某位教师的学生列表中
+打印该教师的学生
+"""
+# class Teachers:
+#     def __init__(self, name):
+#         self.name = name
+#         self.student_lst = []
+#
+#     def add_student(self,student):
+#         self.student_lst.append(student)
+#         student.add_teacher(self.name)
+#
+#     def students_info(self):
+#         for i in self.student_lst:
+#             print(f"学生姓名：{i.name} 学号：{i.number}")
+#
+# class Students:
+#     def __init__(self, name, number, teacher = None):
+#         self.name = name
+#         self.number = number
+#         self.teacher = teacher
+#
+#     def add_teacher(self,tearcher_name):
+#         self.teacher = tearcher_name
+#
+#     def teacher_info(self):
+#         print(f"教师名字：{self.teacher}")
+#
+# student1 = Students("张三",1)
+# student2 = Students("李四",2)
+# student3 = Students("王五",3)
+#
+# teacher1 = Teachers("宝元")
+# teacher1.add_student(student1)
+# teacher1.add_student(student2)
+# teacher1.add_student(student3)
+#
+# teacher1.students_info()
+# student1.teacher_info()
+# student2.teacher_info()
+# student3.teacher_info()
 
-    def happy(self):
-        for i in self.girl_list:
-            i.play()
 
-class Girl:
-    def __init__(self, name):
-        self.name = name
 
-    def play(self):
-        print(f"{self.name}和你一起玩")
 
-bao = Boy()
-friend1 = Girl("张三")
-friend2 = Girl("李四")
-friend3 = Girl("王五")
-bao.baMei(friend1)
-bao.baMei(friend2)
-bao.baMei(friend3)
-bao.happy()
+
+
 
 # 3.继承关系（实现）-cv一下
 
