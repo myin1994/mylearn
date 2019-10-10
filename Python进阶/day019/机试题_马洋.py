@@ -13,7 +13,7 @@
 2.l = ['班级4','班级1','班级3','班级5','班级8']，按照数字的顺序从大到小排序，不改变原列表，请以最少代码量实现。（3分）
 """
 # l = ['班级4','班级1','班级3','班级5','班级8']
-# l1 = sorted(l,key=lambda x:x[-1])
+# l1 = sorted(l,key=lambda x:x[-1],reverse = True)
 # print(l1)
 
 """
@@ -125,6 +125,15 @@ from collections import defaultdict
 # for i in lst:
 #     dic[len(str(i))].append(i)
 # print(dict(dic))
+
+# lst = [1, 2, 3, 4, 12, 23, 34, 45, 111, 222, 333, 1234, 2345, 34567, 456789]
+# dic = dict()
+# for el in lst:
+#     if dic.get(len(str(el))):
+#         dic[len(str(el))].append(el)
+#     else:
+#         dic[len(str(el))] = [el]
+# print(dic)
 """
 12.把s = "aaaabbbcc"这种形状式中特定的字符串压缩成a4b3c2这种字符串的格式(10分)
 """

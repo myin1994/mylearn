@@ -313,7 +313,7 @@
 #         self.number = number
 #         self.teacher = teacher
 #
-#     def add_teacher(self,tearcher_name):
+#     def add_teacher(self, tearcher_name):
 #         self.teacher = tearcher_name
 #
 #     def teacher_info(self):
