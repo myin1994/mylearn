@@ -122,6 +122,7 @@ s_26 day21作业
 #
 # my_card = CreditCard(1000,5000)
 # my_card.draw(1999)
+# my_card.draw(1999)
 
 
 """
