@@ -209,6 +209,61 @@
 # except NameError:
 #     print("佐助已经死了")
 
+
+# 老师版
+# class Hero:
+#     def __init__(self, name, hp, mp, atk):
+#         self.name = name
+#         self.hp = hp
+#         self.mp = mp
+#         self.atk = atk
+#         self.weapon = []
+#
+#     def skill(self, tools):
+#         print(f"{self.name}对{tools.name}使出了十万伏特")
+#         tools.hp -= self.atk
+#
+#     def add_we(self,toos):
+#         print(f"{self.name}拿起了武器")
+#         self.weapon.append(toos)
+#         self.atk += toos.atk
+#
+# class Boss:
+#     def __init__(self, name, hp, mp, atk):
+#         self.name = name
+#         self.hp = hp
+#         self.mp = mp
+#         self.atk = atk
+#         self.weapon = []
+#
+#     def skill(self, tools):
+#         print(f"{self.name}对{tools.name}使出了吐口水")
+#         tools.hp -= self.atk
+#
+#     def add_we(self,toos):
+#         print(f"{self.name}拿起了武器")
+#         self.weapon.append(toos)
+#         self.atk += toos.atk
+#
+# class Weap:
+#     def __init__(self, name, atk):
+#         self.name = name
+#         self.atk = atk
+#
+# wea1 = Weap("绣花针",10)
+# wea2 = Weap("大菜刀",11)
+# alex = Hero("alex",100,10,20)
+# bigB = Boss("大宝",100,10,30)
+# alex.add_we(wea1)
+# bigB.add_we(wea2)
+#
+# while True:
+#     if alex.hp > 0 and bigB.hp > 0:
+#         alex.skill(bigB)
+#         bigB.skill(alex)
+#     else:
+#         break
+
 # 继承：将其他类的属性和方法放在自己的类中
 # class Father(object):
 #     def __init__(self, name, sex, money):
