@@ -130,14 +130,25 @@
 # dog1.look_house()
 
 
+# class Person:
+#     a = 1
+#     def __init__(self,name = "张三"):
+#         self.name = name
+#
+#     def func(self):
+#         print(1111)
+#
+# p1 = Person()
+# del p1.name
+# print(p1.name)
+
 class Person:
-    a = 1
-    def __init__(self,name = "张三"):
-        self.name = name
+    a = []
 
-    def func(self):
-        print(1111)
-
-p1 = Person()
-del p1.name
-print(p1.name)
+xiaoMing = Person()
+xiaoMing.a.append(2)
+print(xiaoMing.a)
+print(Person.a)
+print(Person.__dict__)
+xiG = Person()
+print(xiG.a)

@@ -221,3 +221,12 @@ c = [
 #     elif i in b1:
 #         c.append(i + b[b1.index(i)][1:])
 # print(c)
+
+# l1 = [12,23,34,45,[34,45,56,[11,22,33],50,60,70]]
+# def func(l1):
+#     for i in l1:
+#         if type(i) == list:
+#             func(i)
+#         else:
+#             print(i)
+# func(l1)

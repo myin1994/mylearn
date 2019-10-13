@@ -231,4 +231,38 @@
   mother2.food()
   ```
 
-  
+### 工厂模式
+
++ 通过管理者（类），创建对象 
+
+  + 工厂模式是不直接暴露对象创建细节，而是通过一个共用类创建 对象的设计模式，需要4步-创建基类-创建子类---创建工厂类---使用工厂模式创建基类
+
+  ```
+  python中省略了前两步（特性绝对）
+  class Girl1:
+      def xiyinli(self):
+          print("我腿长")
+  class Girl2:
+      def xiyinli(self):
+          print("我美")
+  class Girl3:
+      def xiyinli(self):
+          print("我有钱")
+  class Girl4:
+      def xiyinli(self):
+          print("不存在")
+  class Factory:
+      def get_girl(self,choice):
+          if choice == "腿长":
+              return Girl1()
+          if choice == "美":
+              return Girl2()
+          if choice == "有钱":
+              return Girl3()
+          return Girl4()
+  f1 = Factory()
+  my_girl = f1.get_girl("脱发")
+  my_girl.xiyinli()
+  ```
+
+  + 理解为将要创建的类封装在一个管理者类中（工厂类），通过条件判断使用哪个类来创建对象
