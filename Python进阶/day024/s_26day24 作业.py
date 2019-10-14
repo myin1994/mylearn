@@ -17,10 +17,10 @@ s_26day24 作业
 
 # def subtract(a,b):
 #     if a < b:
-#         raise Exception("被减数不能小于减数")
+#         raise TypeError("被减数不能小于减数")
 #     else:
 #         return a - b
-# print(subtract(5,3))
+# print(subtract(2,3))
 
 """
 2，info = ['http://xxx.com','http:///xxx.com','http://xxxx.cm'....]任意多的网址.
