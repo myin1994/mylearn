@@ -111,10 +111,19 @@
 # print("1")
 # print("1")
 
-class Wodingyideyichang(Exception):
-    value = "你中了我定义的异常"
-try:
-    if 1 < 2:
-        raise Wodingyideyichang()
-except Wodingyideyichang as e:
-    print(e.value)
+# class Wodingyideyichang(Exception):
+#     value = "你中了我定义的异常"
+# try:
+#     raise Wodingyideyichang()
+# except Wodingyideyichang as e:
+#     print(e.value)
+
+# def model_exception(x,y):
+#   try:
+#     b = name
+#     a =x/y
+#   except(ZeroDivisionError,NameError,TypeError):
+#     print('one of ZeroDivisionError or NameError or TypeError happend')
+#
+# #调用函数结果
+# model_exception(2,0)
