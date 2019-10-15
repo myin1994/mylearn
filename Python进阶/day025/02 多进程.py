@@ -140,3 +140,19 @@
 
 
 
+from multiprocessing import Pool
+import time
+def pr1():
+    print("进程1")
+    time.sleep(10)
+
+def pr2():
+    print("进程2")
+    time.sleep(5)
+if __name__ == '__main__':
+    pool = Pool(4)
+    for i in range(10):
+        pool.apply_async(pr1)
+        pool.apply_async(pr2)
+    pool.close()
+    pool.join()
