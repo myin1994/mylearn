@@ -67,9 +67,9 @@
 
 + `if __name__ == “__main__”:`说明
 
-  + 个python的文件有两种使用的方法，第一是直接作为程序执行，第二是import到其他的python程序 中被调用（模块重用）执行
-  + 此`if __name__ == 'main': `的作用就是控制这两种情况执行代码的过程，__name__ 是内置变量，用 于表示当前模块的名字 
-  + 在`if __name__ == 'main': `下的代码只有在文件作为程序直接执行才会被执行，而import到其他程序中 是不会被执行的
+  + python的文件有两种使用的方法，第一是直接作为程序执行，第二是import到其他的python程序 中被调用（模块重用）执行
+  + 此`if __name__ == 'main': `的作用就是控制这两种情况执行代码的过程，`__name__` 是内置变量，用 于表示当前模块的名字 
+  + 在`if __name__ == 'main': `下方代码只有在文件作为程序直接执行才会被执行，而import到其他程序中是不会被执行的
 
   ```python
   直观的理解
@@ -87,12 +87,12 @@
 + Process类常⽤⽅法
 
   + p.start()：启动进程，并调用该子进程中的p.run() 
-  + p.run():进程启动时运行的方法，正是它去调用target指定的函数，我们自定义类 的类中一定要实现该方法 
+  + p.run():进程启动时运行的方法，正是它去调用target指定的函数，我们自定义类的类中一定要实现该方法 
   + p.terminate()（了解）强制终止进程p，不会进行任何清理操作 
   +  p.is_alive():如果p仍然运行，返回True.用来判断进程是否还在运行 
   + p.join([timeout]):主进程等待p终止，timeout是可选的超时时间
 
-  ```
+  ```python
   from multiprocessing import Process
   import time
   import random
@@ -125,10 +125,10 @@
 
 +  Process类常⽤属性
 
-  + name： 当前进程实例别名， 默认为Process-N， N为从1开始递增的整 
+  + name： 当前进程实例别名， 默认为Process-N， N为从1开始递增的整数
   + pid： 当前进程实例的PID值
 
-+ 创建进程的方法
++ 创建子进程的方法
 
   + 方法一：通过Process直接创建
 
@@ -193,7 +193,7 @@
 
   + 方法三：使用进程池创建多个进程
 
-    + 导入到multiprocessing模块提供的Pool
+    + 导入multiprocessing模块提供的Pool
     + 初始化Pool时，可以指定⼀个**最⼤进程数**，当有新的请求提交到Pool中时， 如果池还没有满， 那么就会创建⼀个新的进程⽤来执⾏该请求
     + 但如果池中的进程数已经达到指定的最⼤值，那么该请求就会等待， 直到池中有进程结束， 才会创建新的进程来执⾏
 
@@ -217,7 +217,7 @@
     ```
 
     + multiprocessing.Pool常⽤函数解析
-      +  apply_async(func[, args[, kwds]]) ： 使⽤⾮阻塞⽅式调⽤func（并⾏执 ⾏） ， args为传递给func的参数列表， kwds为传递给func的关键字参数列表（主进程可最先执行）
+      +  apply_async(func[, args[, kwds]]) ： 使⽤⾮阻塞⽅式调⽤func（并⾏执⾏） ， args为传递给func的参数列表， kwds为传递给func的关键字参数列表（主进程可最先执行）
       +  apply(func[, args[, kwds]])使⽤阻塞⽅式调⽤func：必须等待上⼀个进程退出才能执⾏下⼀个进程（主进程最后执行）-类似串行
       +  close()： 关闭Pool， 使其不再接受新的任务
-      +  join()： 主进程阻塞，等待⼦进程的退出，必须在close或terminate之后使⽤；
+      +  join()： 主进程阻塞等待⼦进程的退出，必须在close或terminate之后使⽤；
