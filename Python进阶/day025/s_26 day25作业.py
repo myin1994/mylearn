@@ -9,7 +9,6 @@ s_26 day25作业
 # class R1(Process):
 #
 #     def run(self) -> None:
-#         self.num = 1
 #         print("调用进程")
 #
 # if __name__ == "__main__":
