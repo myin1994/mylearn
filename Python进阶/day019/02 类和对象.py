@@ -142,13 +142,27 @@
 # del p1.name
 # print(p1.name)
 
-class Person:
-    a = []
+# class Person:
+#     a = []
+#
+# xiaoMing = Person()
+# xiaoMing.a.append(2)
+# print(xiaoMing.a)
+# print(Person.a)
+# print(Person.__dict__)
+# xiG = Person()
+# print(xiG.a)
+# import types
+# class Person:
+#     pass
+#
+#
+# def foo(self):
+#     print(333)
+# xiaoming = Person()
+# # xiaoming.foo = foo
+# xiaoming.foo = types.MethodType(foo, xiaoming)
+# xiaoming.foo()
+#
+# print(xiaoming.__dict__)
 
-xiaoMing = Person()
-xiaoMing.a.append(2)
-print(xiaoMing.a)
-print(Person.a)
-print(Person.__dict__)
-xiG = Person()
-print(xiG.a)

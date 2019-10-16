@@ -127,12 +127,15 @@
 # 创建新的进程还能够使⽤类的⽅式， 可以⾃定义⼀个类， 继承Process类， 每次实 例化这个类的时候， 就等同于实例化⼀个进程对象
 # from multiprocessing import Process
 # class Wodejincheng(Process):
+#
+#     def __init__(self,args = ()):
+#
 #     def run(self) -> None:
-#         print("固定执行这些代码")
+#         print(f"{self._args}固定执行这些代码")
 #
 # if __name__ == "__main__":
-#     p1 = Wodejincheng()
-#     p2 = Wodejincheng()
+#     p1 = Wodejincheng((1,))
+#     p2 = Wodejincheng((1,))
 #     p1.start()
 #     p1.join()
 #     p2.start()
@@ -140,19 +143,19 @@
 
 
 
-from multiprocessing import Pool
-import time
-def pr1():
-    print("进程1")
-    time.sleep(10)
-
-def pr2():
-    print("进程2")
-    time.sleep(5)
-if __name__ == '__main__':
-    pool = Pool(4)
-    for i in range(10):
-        pool.apply_async(pr1)
-        pool.apply_async(pr2)
-    pool.close()
-    pool.join()
+# from multiprocessing import Pool
+# import time
+# def pr1():
+#     print("进程1")
+#     time.sleep(10)
+#
+# def pr2():
+#     print("进程2")
+#     time.sleep(5)
+# if __name__ == '__main__':
+#     pool = Pool(4)
+#     for i in range(10):
+#         pool.apply_async(pr1)
+#         pool.apply_async(pr2)
+#     pool.close()
+#     pool.join()

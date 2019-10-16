@@ -19,8 +19,10 @@ s_26 day25作业
 #     print("调用结束")
 
 # from multiprocessing import Process
+# import time
 # def func(i):
 #     print(f"第{i}次进程")
+#     time.sleep(1)
 #
 # if __name__ == "__main__":
 #     for i in range(10):
@@ -28,6 +30,26 @@ s_26 day25作业
 #         r.start()
 #         r.join()
 #     print("调用结束")
+
+from multiprocessing import Process
+import time
+def func(i):
+    time.sleep(1)
+    print(f"第{i}次进程")
+
+if __name__ == "__main__":
+    lst = []
+    for i in range(10):
+        r = Process(target=func,args=(i+1,))
+        lst.append(r)
+    list(map(lambda i:i.start(),lst))
+    list(map(lambda i:i.join(),lst))
+    # for i in lst:
+    #     i.start()
+    # for i in lst:
+    #     i.join()
+    print("调用结束")
+
 """
 2，改写下列程序，分别别实现下述打印效果
 
