@@ -160,36 +160,67 @@
 一个数据写入者
 n个用户同时接收
 """
-from multiprocessing import Process, Queue
-queue1 = Queue()
-def write(num,queue):
-    for i in range(num):
-        a = queue.put(i)
-        print("进程写入：",i)
+# 第一版
+# from multiprocessing import Process, Queue
+# queue1 = Queue()
+# def write(num,queue):
+#     for i in range(num):
+#         queue.put(i)
+#         print("进程写入：",i)
+#
+# def read(name,q1,q2):
+#     while True:
+#         try:
+#             a = q1.get(3)
+#             print(name,"读取:",a)
+#             q2.put(a)
+#         except Exception:
+#             break
+#
+# def receiver(n):
+#     return [Queue() for i in range(n)]
+#
+# if __name__ == "__main__":
+#     def func(person):
+#         receiver_lst = receiver(person)
+#
+#         sender_p = Process(target=write,args=(5,receiver_lst[0]))
+#         sender_p.start()
+#         sender_p.join()
+#
+#         lst = [Process(target=read,args=(f"进程{i}",receiver_lst[i],receiver_lst[i+1])) for i in range(len(receiver_lst)-1)]
+#         for i in lst:
+#             i.start()
+#         for i in lst:
+#             i.join()
+#     func(6)
 
-def read(q1,q2):
-    while True:
-        try:
-            a = q1.get()
-            print("读取:",a)
-            q2.put(a)
-        except Exception:
-            break
 
-def receiver(n):
-    return [Queue() for i in range(n)]
 
-if __name__ == "__main__":
-    def func(person):
-        receiver_lst = receiver(person)
-
-        sender_p = Process(target=write,args=(5,receiver_lst[0]))
-        sender_p.start()
-        sender_p.join()
-
-        lst = [Process(target=read,args=(receiver_lst[i],receiver_lst[i+1])) for i in range(len(receiver_lst) -1)]
-        for i in lst:
-            i.start()
-        for i in lst:
-            i.join()
-    func(6)
+# from multiprocessing import Process, Queue
+# class Sender(Process):
+#     def __init__(self,content:list,num):
+#         super().__init__()
+#         self.content = content
+#         self.num = num
+#
+#     def run(self) -> None:
+#         lst = [Queue() for i in range(self.num)]
+#
+#         for i in self.content:
+#             print("进程写入：",i)
+#             for j in lst:
+#                 j.put(i)
+#         return lst
+#
+#
+# class Receiver(Process):
+#     def __init__(self, lst):
+#         super().__init__()
+#         self.lst = lst
+#
+#
+#
+#     def run(self) -> None:
+#         for i in self.lst:
+#             self.q.put(i)
