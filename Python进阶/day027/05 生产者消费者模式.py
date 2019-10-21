@@ -55,9 +55,85 @@
 
 
 
+from multiprocessing import Pool,Manager
+import time
+def sender(lst,content):
+    for i in content:
+        for j in lst:
+            j.put(i)
+    print("写入成功")
 
 
 
+
+def read(i,q):
+
+    while True:
+        print(i,"读取",q.get())
+        if q.empty():
+            break
+
+
+if __name__ == "__main__":
+
+    lst = [Manager().Queue() for i in range(5)]
+    po1 = Pool(len(lst)+1)
+    # sender(lst,"你好")
+    po1.apply_async(func=sender,args=(lst,"你好"))
+    time.sleep(1)
+    for i in lst:
+        po1.apply_async(func=read,args=(lst.index(i),i))
+    po1.close()
+    po1.join()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from multiprocessing import Pool, Manager
+# import time
+#
+# def write(p):
+#     for i in range(10):
+#         p.put(i)
+#         print("写入",i)
+#
+# def read(p):
+#     time.sleep(3)  #加阻塞以确保数据全部写入队列
+#     for i in range(p.qsize()):
+#         print("读取",p.get())
+#
+# if __name__ == "__main__":
+#     po = Pool()
+#     p = Manager().Queue()
+#     po.apply_async(write,(p,))
+#     po.apply_async(read,(p,))
+#     po.close()
+#     po.join()
+
+
+# from multiprocessing import Queue
+# def func(q):
+#     print(q)
+#
+# lst = [Queue() for i in range(5)]
+# func(lst)
 
 
 
@@ -84,23 +160,23 @@
 # gr2 = greenlet(t2)
 # gr1.switch()
 
-import gevent
-def t1():
-    while True:
-        # sum = 0
-        print(sum([i for i in range(1,101)]))
-        gevent.sleep(1)
-        a = input("输入1:")
-        print(a)
-def t2():
-    while True:
-        # sum = 0
-        print(sum([i for i in range(1,101)]))
-        gevent.sleep(1)
-        a = input("输入2:")
-        print(a)
-
-gr1 = gevent.spawn(t1)
-gr2 = gevent.spawn(t2)
-gr1.join()
-gr2.join()
+# import gevent
+# def t1():
+#     while True:
+#         # sum = 0
+#         print(sum([i for i in range(1,101)]))
+#         gevent.sleep(1)
+#         a = input("输入1:")
+#         print(a)
+# def t2():
+#     while True:
+#         # sum = 0
+#         print(sum([i for i in range(1,101)]))
+#         gevent.sleep(1)
+#         a = input("输入2:")
+#         print(a)
+#
+# gr1 = gevent.spawn(t1)
+# gr2 = gevent.spawn(t2)
+# gr1.join()
+# gr2.join()
