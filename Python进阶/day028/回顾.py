@@ -261,3 +261,56 @@
 # # print(1111)
 # t1.start()
 # t2.start()
+
+# import gevent
+# def t1():
+#     while True:
+#         # sum = 0
+#         print(sum([i for i in range(1,101)]))
+#         gevent.sleep(1)#用来模拟一个耗时操作
+#         #gevent中：当一个协程遇到耗时操作会自动交出控制权给其他协程
+#         a = input("输入1:")
+#         print(a)
+# def t2():
+#     while True:
+#         # sum = 0
+#         print(sum([i for i in range(1,101)]))
+#         gevent.sleep(1)
+#         a = input("输入2:") #每当遇到耗时操作，会自用转到其他协程
+#         print(a)
+#
+# gr1 = gevent.spawn(t1) # 创建一个gevent对象（创建了一个协程），此时就已经开始执行t1
+# gr2 = gevent.spawn(t2)
+# print(1)
+# gr1.join()
+# gr2.join()
+import threading
+import queue
+import time
+import random
+
+class jdThread(threading.Thread):
+    def __init__(self,index,queue):
+        threading.Thread.__init__(self)
+        self.index = index
+        self.queue = queue
+
+    def run(self):
+        while True:
+            time.sleep(1)
+            if self.queue.empty():
+                break
+            item = self.queue.get()
+            print("序号：",self.index,"任务",item,"完成")
+            self.queue.task_done()#task_done方法使得未完成的任务数量-1
+
+q = queue.Queue(0)
+'''
+初始化函数接受一个数字来作为该队列的容量，如果传递的是
+一个小于等于0的数，那么默认会认为该队列的容量是无限的.
+'''
+for i in range(2):
+    jdThread(i,q).start()#两个线程同时完成任务
+
+for i in range(10):
+    q.put(i)#put方法使得未完成的任务数量+1
