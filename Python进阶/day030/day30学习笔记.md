@@ -37,15 +37,16 @@
     ```python
     from socket import *
     s = socket(AF_INET,SOCK_DGRAM)
-    s.setsockopt(SOL_SOCKET,SO_BROADCAST,1)#允许s发送广播数据
-    ```
-
-  + 发送IP需要设置为255
-
+    dest = ("<broadcast>",7788)
+    s.setsockopt(SOL_SOCKET,SO_BROADCAST,1)#设置套接字选项，允许s发送广播数据
+  ```
+  
++ 发送IP需要设置为255
+  
     ```python
     s.sendto("hello".encode("GB2312"),("192.168.137.255",8080))
-    ```
-
+  ```
+  
   + 一般使用while循环接收广播数据
 
 
@@ -74,7 +75,7 @@ TFTP（Trivial File Transfer Protocol,简单⽂件传输协议）是TCP/IP协议
 
   + 读写请求包
 
-    操作码（2Byte）+文件名+0（1B）+传输模式（固定为octet-8位字节）+0（1B）
+    操作码（2Byte，1-下载\|2-上传）+文件名+0（1B）+传输模式（固定为octet-8位字节）+0（1B）
 
     | 操作码                  | 文件名 | 0     | 传输模式            | 0     |
     | ----------------------- | ------ | ----- | ------------------- | ----- |
@@ -82,7 +83,7 @@ TFTP（Trivial File Transfer Protocol,简单⽂件传输协议）是TCP/IP协议
 
   + 数据包
 
-    操作码（2B）+块编号（2B）+数据（512B）
+    操作码（2B，3-DATA）+块编号（2B，顺序0-65535）+数据（512B）
 
     客户端接收到小于516的数据时退出接收（发送时结束发送）
 
@@ -92,7 +93,7 @@ TFTP（Trivial File Transfer Protocol,简单⽂件传输协议）是TCP/IP协议
 
   + 确认包（ACK）
 
-    操作码（2B）+块编号（2B）
+    操作码（2B，4-ACK）+块编号（2B，顺序0-65535）
 
     | 操作码       | 块编号             |
     | ------------ | ------------------ |
@@ -100,7 +101,7 @@ TFTP（Trivial File Transfer Protocol,简单⽂件传输协议）是TCP/IP协议
 
   + ERROR
 
-    操作码（2B）+差错码（2B）+差错信息+0（1B）
+    操作码（2B，5-error）+差错码（2B）+差错信息+0（1B）
 
     | 操作码         | 差错码 | 差错信息 | 0     |
     | -------------- | ------ | -------- | ----- |
@@ -152,12 +153,12 @@ TFTP（Trivial File Transfer Protocol,简单⽂件传输协议）是TCP/IP协议
   + unpack() 将数据包按给定格式解析成元组
 
     ```python
-    opcode, block_number = struct.unpack("!HH",datapack[0][:4])#
+    opcode, block_number = struct.unpack("!HH",datapack[0][:4])#拆包出操作码和块编号
     ```
 
   + calcsize() 计算给定的格式(fmt)占用多少字节的内存
 
-+ TPTP客户端上传下载总结
++ TFTP客户端上传下载总结
 
   + 下载
 
