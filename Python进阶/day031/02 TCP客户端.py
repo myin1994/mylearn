@@ -21,8 +21,9 @@ def receive():
     while True:
         try:
             receive_data = s.recv(1024)
+            print(receive_data)
             if len(receive_data) > 0:
-                print("客户端接收内容：",receive_data.decode())
+                print("\n客户端接收内容：",receive_data.decode())
             else:
                 print("服务器已断开！")
                 break

@@ -30,3 +30,16 @@
 14.vim filename 编辑文件（:wq退出）
 
 15：git remote remove origin/github xxx.git 删除仓库路径
+
+16.问题处理
+
+```
+ahead of 'origin/master' by N commits.怎么处理？
+
+每次都采用 git pull origin master会让本地节点一直指向远端 origin/master (指向不更新），所以当从远端获取到新的commit后，这个commit相对于本地节点的指向（远端的旧commit）就会提示“超前”。
+解决方法：
+
+直接使用git fetch命令修复现在的问题，让本地指向远端最新节点
+后续更新使用 git pull, 不要带 origin master
+```
+
