@@ -1,31 +1,17 @@
-from socket import socket
+from socket import *
 import time
 s = socket()
 s.bind(("192.168.34.170",7879))
+# s.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
 s.connect(("192.168.34.170",7891))
 num = 0
-while True:
-    # try:
-    time.sleep(5)
-    num += 1
-    data = s.recv(1024)
-    print(len(data))
-    print(num)
-        # while True:
-        #     num += 1
-        #     s.send(f"客户端连接中{num}".encode())
-        #     data = s.recv(1024)
-        #     print(data)
-        #     if num == 199:
-        #         s.close()
-        #         # break
 
+num += 1
+# s.send(f"客户端连接中{num}".encode())
+data1 = s.recv(1024).decode()
 
-        # num += 1
-        # # s.send(f"客户端连接中{num}".encode())
-        # data1 = s.recv(1024).decode()
-        # print(data1)
-        # s.close()
+s.close()
+print(data1)
         # # time.sleep(2)
         # print(s.recv(1024))
         # time.sleep(3)
