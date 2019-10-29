@@ -22,25 +22,25 @@
         #多表
 
 
-import pymysql
-
-# 打开数据库连接
-db = pymysql.connect("localhost", "root", "xxxxx", "day35")
-
-# 使用cursor()方法获取操作游标
-cursor = db.cursor()
-
-# SQL 插入语句
-sql = """insert into book values("学python从开始到放弃","alex","人民大学出版社",50,"2018-7-1"),
-                                ("学mysql从开始到放弃","egon","机械工业出版社",60,"2018-6-3"),
-                                ("学html从开始到放弃","alex","机械工业出版社",20,"2018-4-1"),
-                                ("学css从开始到放弃","wusir","机械工业出版社",120,"2018-5-2"),
-                                ("学js从开始到放弃","wusir","机械工业出版社",100,"2018-7-30")"""
-try:
-    cursor.execute(sql)  # 执行sql语句
-    db.commit()  # 提交到数据库执行
-except:
-    db.rollback()  # 如果发生错误则回滚
-
-# 关闭数据库连接
-db.close()
+# import pymysql
+#
+# # 打开数据库连接
+# db = pymysql.connect("localhost", "root", "xxxxx", "day35")
+#
+# # 使用cursor()方法获取操作游标
+# cursor = db.cursor()
+#
+# # SQL 插入语句
+# sql = """insert into book values("学python从开始到放弃","alex","人民大学出版社",50,"2018-7-1"),
+#                                 ("学mysql从开始到放弃","egon","机械工业出版社",60,"2018-6-3"),
+#                                 ("学html从开始到放弃","alex","机械工业出版社",20,"2018-4-1"),
+#                                 ("学css从开始到放弃","wusir","机械工业出版社",120,"2018-5-2"),
+#                                 ("学js从开始到放弃","wusir","机械工业出版社",100,"2018-7-30")"""
+# try:
+#     cursor.execute(sql)  # 执行sql语句
+#     db.commit()  # 提交到数据库执行
+# except:
+#     db.rollback()  # 如果发生错误则回滚
+#
+# # 关闭数据库连接
+# db.close()

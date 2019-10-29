@@ -9,7 +9,7 @@
 
 + 删除delete（慎重-不可恢复-先查后删）
 
-  + delete from 表名：清空表；
+  + delete from 表名;清空表
   + delete from 表名 where 条件；清除符合条件的数据
   + truncate table 表名；清空表并重置自增字段
 
@@ -193,7 +193,7 @@
       +----------+-----+
       ```
 
-    + 逻辑运算符：and  or not(is not  xxx/not in) 
+    + 逻辑运算符：and  or not(is not  null/not in) 
 
       ```mysql
       mysql> select * from employee where post_comment is not null;
@@ -202,6 +202,17 @@
     + 范围
 
       + 多选 in(值1,值2,值3)
+
+        ```mysql
+        mysql> select emp_name,salary from employee where salary in(9000,10000,30000);
+        +------------+----------+
+        | emp_name   | salary   |
+        +------------+----------+
+        | jingliyang |  9000.00 |
+        | jinxin     | 30000.00 |
+        | 成龙       | 10000.00 |
+        +------------+----------+
+        ```
 
       + 区间 between 值1 and 值2
 
@@ -217,7 +228,7 @@
 
     + 模糊查询
 
-      ```
+      ```mysql
       mysql> select emp_name,salary from employee where emp_name like "jin%" or emp_name regexp "^yu";
       +------------+----------+
       | emp_name   | salary   |
@@ -233,4 +244,165 @@
         + `_`--任意一个字符
       + regexp  正则
 
-  + 
+  + 聚合函数--分组中统计用
+
+    **聚合函数聚合的是组的内容，若是没有分组，则默认一组**
+
+    + 计数 count(字段)
+    + 求和 sum()
+    + 均值 avg()
+    + 最大值 max()
+    + 最小值 min()
+
+  + group by 分组
+
+    **多条记录之间的某个字段值相同，该字段通常用来作为分组的依据**
+
+    + 单独使用 `group by 字段`
+
+      单独使用时只能用作查询该组，要获取组内其他信息需要使用函数
+
+      ```mysql
+      mysql> select post from employee group by post;
+      +-----------------------------------------+
+      | post                                    |
+      +-----------------------------------------+
+      | operation                               |
+      | sale                                    |
+      | teacher                                 |
+      | 老男孩驻沙河办事处外交大使                  |
+      +-----------------------------------------+
+      ```
+
+    + group by和group_concat()函数一起使用
+
+      分组后查询组内某字段所有值（聚合）
+
+      ```mysql
+      mysql> select post,group_concat(emp_name) from employee group by post limit 2;
+      +-----------+------------------------------------------------+
+      | post      | group_concat(emp_name)                         |
+      +-----------+------------------------------------------------+
+      | operation | 程咬铁,程咬铜,程咬银,程咬金,张野                    |
+      | sale      | 格格,星星,丁丁,丫丫,歪歪                           |
+      +-----------+------------------------------------------------+
+      ```
+
+    + group by 与聚合函数结合使用
+
+      ```mysql
+      #按照岗位分组，并查看每个组有多少人
+      mysql> select post,count(emp_name) from employee group by post;
+      +-----------------------------------------+-----------------+
+      | post                                    | count(emp_name) |
+      +-----------------------------------------+-----------------+
+      | operation                               |               5 |
+      | sale                                    |               5 |
+      | teacher                                 |               7 |
+      | 老男孩驻沙河办事处外交大使                  |               1 |
+      +-----------------------------------------+-----------------+
+      ```
+
+  + having 过滤
+
+    + having与where的区别
+
+      + 执行优先级从高到低：where > group by > having
+      + Where 发生在分组group by之前，因而Where中可以有任意字段，但是绝对不能使用聚合函数。
+      + Having发生在分组group by之后，因而Having中可以使用分组的字段，无法直接取到其他字段,可以使用聚合函数
+
+    + 举例
+
+      ```mysql
+      mysql> select post,group_concat(emp_name),count(id) as 数量 from employee group by post having 数量>2 limit 2;
+      +-----------+------------------------------------------------+--------+
+      | post      | group_concat(emp_name)                         | 数量   |
+      +-----------+------------------------------------------------+--------+
+      | operation | 程咬铁,程咬铜,程咬银,程咬金,张野                   |      5 |
+      | sale      | 格格,星星,丁丁,丫丫,歪歪                          |      5 |
+      +-----------+------------------------------------------------+--------+
+      ```
+
+      ```mysql
+      mysql> select post,avg(salary) as 平均工资 from employee having 平均工资>10000;
+      +-----------------------------------------+--------------+
+      | post                                    | 平均工资     |
+      +-----------------------------------------+--------------+
+      | 老男孩驻沙河办事处外交大使              | 64844.568889 |
+      +-----------------------------------------+--------------+
+      ```
+
+      ```mysql
+      mysql> select post,avg(salary) as 平均工资 from employee having 平均工资 between 0 and 120000;
+      ```
+
+  + order by 排序查询
+
+    + 按单列排序
+
+      select * from 表 order by 字段;
+
+      + 升序asc（默认）
+
+        ```mysql
+        select * from 表 order by 字段 asc;
+        ```
+
+      + 降序desc
+
+        ```mysql
+        select * from 表 order by 字段 desc;
+        ```
+
+    + 多列排序（按先后）
+
+      ```mysql
+      select * from 表 order by 字段1 desc,字段2 asc;
+      #首先按照字段1从大到小排，字段1相同时按照字段2从小到大排
+      ```
+
+      ```mysql
+      mysql> select id,age,salary from employee order by age,salary desc;
+      +----+-----+------------+
+      | id | age | salary     |
+      +----+-----+------------+
+      |  7 |  18 |   30000.00 |
+      | 15 |  18 |   20000.00 |
+      | 16 |  18 |   19000.00 |
+      | 17 |  18 |   18000.00 |
+      | 18 |  18 |   17000.00 |
+      |  6 |  18 |    9000.00 |
+      |  1 |  18 |    7300.33 |
+      | 12 |  18 |    3000.29 |
+      | 11 |  18 |    1000.37 |
+      | 14 |  28 |   10000.13 |
+      | 13 |  28 |    4000.33 |
+      |  5 |  28 |    2100.00 |
+      | 10 |  38 |    2000.35 |
+      |  8 |  48 |   10000.00 |
+      |  9 |  48 |    3000.13 |
+      |  4 |  73 |    3500.00 |
+      |  2 |  78 | 1000000.31 |
+      |  3 |  81 |    8300.00 |
+      +----+-----+------------+
+      ```
+
+  + limit 限制查询的记录数（用于分页）
+
+    + limit n  从零开始查询n个
+    + limit m,n 从m+1开始取n个
+
+    ```mysql
+    mysql> select id from employee limit 3,5;
+    +----+
+    | id |
+    +----+
+    |  4 |
+    |  5 |
+    |  6 |
+    |  7 |
+    |  8 |
+    +----+
+    ```
+
+    

@@ -120,7 +120,7 @@
 # select * from 表 order by 字段;
 # select * from 表 order by 字段 asc;
 # select * from 表 order by 字段 desc;
-# select * from 表 order by 字段1 desc,字段2 asc;休闲按照字段1从大到小排，字段1相同时按照字段2从小到大排
+# select * from 表 order by 字段1 desc,字段2 asc;首先按照字段1从大到小排，字段1相同时按照字段2从小到大排
 
 # limit x取前x
 # limit x.y 从x+1开始取取y条  用于分页
