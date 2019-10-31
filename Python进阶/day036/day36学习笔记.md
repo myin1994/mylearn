@@ -55,7 +55,7 @@
 
    + 子查询是将一个查询语句嵌套在另一个查询语句中。
    + 内层查询语句的查询结果，可以为外层查询语句提供查询条件。
-   + 子查询中可以包含：IN、NOT IN、ANY、ALL、EXISTS 和 NOT EXISTS等关键字
+   + 子查询中可以包含：IN、NOT IN、AND、ALL、EXISTS 和 NOT EXISTS等关键字
    + 还可以包含比较运算符：= 、 !=、> 、<等
 
    ```
@@ -89,7 +89,7 @@
 
     
 
-+ 恢复
++ 恢复（比单纯写入快-网络传输+优化器优化）
 
   ```
   mysql -uroot -p123 < /backup/all.sql
@@ -232,9 +232,3 @@
   ```
 
   
-
-## sql引擎
-
-+ InnoDB
-+ Memory
-+ MyIsam

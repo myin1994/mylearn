@@ -5,7 +5,12 @@ s.connect(("192.168.34.170",7879))
 while True:
     try:
         s.send(input("输入指令").encode())
-        head_len = struct.unpack("!i",s.recv(4))[0]
+        data1 = s.recv(4)
+        print(data1)
+        head_len1 = struct.unpack("!i",data1)
+        print(head_len1)
+        head_len = struct.unpack("!i",data1)[0]
+        print(head_len)
         rec_data = b""
         while len(rec_data) < head_len:
             gap = head_len - len(rec_data)
