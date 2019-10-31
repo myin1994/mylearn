@@ -19,8 +19,8 @@
 
 + 查询select（单表查询）
 
-  ```
-  select xxx from 表名 where 条件 group by 分组 having 聚合的过滤 order by排序 limit
+  ```mysql
+  select xxx from 表名 where 条件 group by 分组 having 聚合的过滤 order by排序 limit m,n
   ```
 
   ```mysql
@@ -36,8 +36,8 @@
   1.找到表:from
   2.拿着where指定的约束条件，去文件/表中取出一条条记录
   3.将取出的一条条记录进行分组group by，如果没有group by，则整体作为一组
-  4.执行select（去重）
-  5.将分组的结果进行having过滤
+  4.将分组的结果进行having过滤
+  5.执行select（去重）
   6.将结果按条件排序：order by
   7.限制结果的显示条数
   ```
@@ -115,7 +115,7 @@
       +--------+-----------------------------------------+
       | sex    | post                                    |
       +--------+-----------------------------------------+
-      | male   | 老男孩驻沙河办事处外交大使              |
+      | male   | 老男孩驻沙河办事处外交大使                  |
       | male   | teacher                                 |
       | female | teacher                                 |
       | female | sale                                    |
@@ -309,7 +309,7 @@
 
       + 执行优先级从高到低：where > group by > having
       + Where 发生在分组group by之前，因而Where中可以有任意字段，但是绝对不能使用聚合函数。
-      + Having发生在分组group by之后，因而Having中可以使用分组的字段，无法直接取到其他字段,可以使用聚合函数
+      + Having发生在分组group by之后，因而Having中可以使用分组的字段，无法直接取到其他字段,可以使用聚合函数，可以使用select中的重命名结果
 
     + 举例
 
