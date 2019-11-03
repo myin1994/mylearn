@@ -47,6 +47,13 @@ from socketserver import *
 import pymysql
 import json
 import datetime
+import decimal
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            return float(o)
+        super(DecimalEncoder, self).default(o)
 
 # Json 无法解析 datatime 类型的数据，构建 DateEncoder 类解决 datatime 解析问题
 class DateEncoder(json.JSONEncoder):
@@ -87,6 +94,11 @@ class Mysever(BaseRequestHandler):
                 self.request.send("1".encode())
                 self.user = username
                 self.user_id = self.cur.fetchall()[0][0]
+                self.cur.execute(f"select role from user_detail where user_id={self.user_id}")
+                if self.cur.fetchall()[0][0] == "1":
+                    self.request.send("99".encode())
+                else:
+                    self.request.send("0".encode())
                 return
             else:
                 self.request.send("0".encode())
@@ -234,6 +246,8 @@ class Mysever(BaseRequestHandler):
             sql1_1 ="select acc_balance from user_detail where user_id=%s"
             self.cur.execute(sql1_1,(self.user_id,))
             acc_balance = self.cur.fetchall()[0][0]
+            if payment == None:
+                self.request.send("-1".encode())
             if payment <= acc_balance:
                 #更新订单表及用户余额
                 sql2 = "insert into orders(payment,uid) values(%s,%s)"
@@ -272,25 +286,62 @@ class Mysever(BaseRequestHandler):
         orders_message = json.dumps(orders_list, ensure_ascii=False, cls=DateEncoder)
         self.request.send(orders_message.encode())
 
+    def max_price(self):
+        sql = "select goods_id from goods order by price desc limit 1"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False)
+        self.request.send(message.encode())
 
+    def max_orders(self):
+        sql = "select order_id from orders order by payment desc limit 1"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False)
+        self.request.send(message.encode())
 
+    def sum_goods(self):
+        sql = "select gname,sum(buy_num) from goods,goods_orders where goods_id=g_id group by gname"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False, cls=DecimalEncoder)
+        self.request.send(message.encode())
 
+    def more_1000(self):
+        sql = "select user_name from orders,user where uid=user_id group by uid having sum(payment)>1000"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False, cls=DecimalEncoder)
+        self.request.send(message.encode())
 
+    def all_orders_p(self):
+        sql = "select * from orders where uid=%s order by payment desc"
+        self.cur.execute(sql,(self.request.recv(1024).decode()))
+        orders_list = list(self.cur.fetchall())
+        orders_message = json.dumps(orders_list, ensure_ascii=False, cls=DateEncoder)
+        self.request.send(orders_message.encode())
 
+    def max_goods(self):
+        sql = "select gname,sum(buy_num) sb from goods,goods_orders where g_id=goods_id group by gname order by sb desc limit 1"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False, cls=DecimalEncoder)
+        self.request.send(message.encode())
 
+    def avg_monthp(self):
+        sql = "select month(order_time) m,count(*) from orders group by m"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False, cls=DateEncoder)
+        self.request.send(message.encode())
 
+    def total_sales(self):
+        sql = "select gname,avg(price)*sum(buy_num),sum(buy_num) s from orders,goods_orders,goods where order_id=o_id and goods_id=g_id and month(order_time)=month(now()) group by gname order by s"
+        self.cur.execute(sql)
+        slist = list(self.cur.fetchall())
+        message = json.dumps(slist, ensure_ascii=False, cls=DecimalEncoder)
+        self.request.send(message.encode())
 
-
-
-
-
-
-
-
-
-
-
-
-TCPServer.allow_reuse_address = True # 允许地址（端口）重用
+TCPServer.allow_reuse_address = True
 server = ThreadingTCPServer(("",7878),Mysever)
 server.serve_forever()

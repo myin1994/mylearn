@@ -3,6 +3,7 @@ import json
 class Myclient:
     def __init__(self):
         self.status = False
+        self.role = "0"
         self.s = socket()
         self.server_addr = (gethostbyname(gethostname()),7878)
         self.s.connect(self.server_addr)
@@ -33,10 +34,37 @@ class Myclient:
                  "3": "settle_account",
                  "4":"show_orders",
                  "5":"exit"}
-        while self.status:
+        while self.status and self.role == "0":
             choice2 = input(msg2).strip()
             try:
                 func = getattr(self, dict2[choice2])
+                func()
+            except KeyError:
+                print("输入错误请重新输入！")
+        msg3 = """
+                          1.求出价格最贵的商品id 
+                          2.求支付金额最高的订单
+                          3.求各商品的商品名和总销量
+                          4.求个人消费总金额大于 1000 元的用户
+                          5.求“某”用户购买的所有订单，并按照订单总额从高到低排序
+                          6.求出销量最高的商品名
+                          7.求出每个月下单的用户人数
+                          8.求出本月各商品的销售总金额和个数，按照个数排序
+                          9.退出
+                          请选择操作序号（1|2|3|4|5|6|7|8|9）："""
+        dict3 = {"1": "max_price",
+                 "2": "max_orders",
+                 "3": "sum_goods",
+                 "4": "more_1000",
+                 "5":"all_orders_p",
+                 "6":"max_goods",
+                 "7":"avg_monthp",
+                 "8":"total_sales",
+                 "9": "exit"}
+        while self.status and self.role == "1":
+            choice3 = input(msg3).strip()
+            try:
+                func = getattr(self, dict3[choice3])
                 func()
             except KeyError:
                 print("输入错误请重新输入！")
@@ -63,6 +91,8 @@ class Myclient:
                 if result == "1":
                     print("登录成功！")
                     self.status = True
+                    if self.s.recv(1024).decode() == "99":
+                        self.role = "1"
                     return
                 else:
                     print("登录失败！请重新登录！")
@@ -202,14 +232,19 @@ class Myclient:
             result = self.s.recv(1024).decode()
             if result == "0":
                 print("账户余额不足，请从购物车删减商品！")
-            if result == "1":
+            elif result == "1":
                 print("结算成功！")
+            elif result == "-1":
+                print("当前无可结算商品！")
     def show_orders(self):
         print("当前订单")
         self.s.send("show_orders".encode())
         ack = self.s.recv(1).decode()
         if ack == "1":
             recv_message = json.loads(self.s.recv(1024).decode())
+            if len(recv_message) == 0:
+                print("当前无订单！")
+                return
             for i in recv_message:
                 print(f"订单编号：{i[0]} 下单时间：{i[1]} 支付金额：{i[2]}元")
 
@@ -217,5 +252,73 @@ class Myclient:
         print("退出")
         self.s.close()
         exit()
+
+    def max_price(self):
+        print("求出价格最贵的商品id")
+        self.s.send("max_price".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            print(f"最贵的商品id为：{recv_message[0][0]}")
+    def max_orders(self):
+        print("求支付金额最高的订单")
+        self.s.send("max_orders".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            print(f"支付金额最高的订单id为：{recv_message[0][0]}")
+    def sum_goods(self):
+        print("求各商品的商品名和总销量")
+        self.s.send("sum_goods".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            for i in recv_message:
+                print(f"商品名：{i[0]} 总销量：{i[1]}")
+    def more_1000(self):
+        print("求个人消费总金额大于 1000 元的用户")
+        self.s.send("more_1000".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            for i in recv_message:
+                print(f"用户名：{i[0]}")
+    def all_orders_p(self):
+        print("求“某”用户购买的所有订单，并按照订单总额从高到低排序")
+        self.s.send("all_orders_p".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            while True:
+                id = input("请输入用户id:")
+                self.s.send(id.encode())
+                recv_message = json.loads(self.s.recv(1024).decode())
+                if len(recv_message) == 0:
+                    print("当前无订单！")
+                    return
+                for i in recv_message:
+                    print(f"订单编号：{i[0]} 下单时间：{i[1]} 支付金额：{i[2]}元")
+    def max_goods(self):
+        print("求出销量最高的商品名")
+        self.s.send("max_goods".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            print(f"销量最高的商品名为：{recv_message[0][0]}")
+    def avg_monthp(self):
+        print("求出每个月下单的用户人数")
+        self.s.send("avg_monthp".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            for i in recv_message:
+                print(f"月份：{i[0]} 下单总人数：{i[1]}")
+    def total_sales(self):
+        print("求出本月各商品的销售总金额和个数，按照个数排序")
+        self.s.send("total_sales".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            recv_message = json.loads(self.s.recv(1024).decode())
+            for i in recv_message:
+                print(f"商品名：{i[0]} 本月销售总金额{i[1]}元 销售个数：{i[2]}")
 
 myclient = Myclient()
