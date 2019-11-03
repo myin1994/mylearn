@@ -46,6 +46,18 @@ insert into shop_car values (28,"999",1,"商品1",2,18);
 from socketserver import *
 import pymysql
 import json
+import datetime
+
+# Json 无法解析 datatime 类型的数据，构建 DateEncoder 类解决 datatime 解析问题
+class DateEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime("%Y-%m-%d %H:%M:%S")
+
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 class Mysever(BaseRequestHandler):
     def handle(self):
@@ -257,9 +269,7 @@ class Mysever(BaseRequestHandler):
         sql = "select * from orders where uid=%s"
         self.cur.execute(sql,(self.user_id))
         orders_list = list(self.cur.fetchall())
-        print(orders_list)
-        orders_message = json.dumps(orders_list, ensure_ascii=False)
-        self.request.send(orders_message.encode())
+        orders_message = json.dumps(orders_list, ensure_ascii=False, cls=DateEncoder)
         self.request.send(orders_message.encode())
 
 

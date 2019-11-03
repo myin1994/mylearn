@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69bc5662-1689-4a05-ac75-b7f6685b1b0e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_server.py" afterDir="false" />
@@ -47,7 +46,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.my_client">
+  <component name="RunManager" selected="Python.my_server">
     <configuration name="my_client" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="阶段性测试-机试题" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -134,7 +133,7 @@
       <updated>1572589701544</updated>
       <workItem from="1572589704046" duration="19741000" />
       <workItem from="1572739289170" duration="21463000" />
-      <workItem from="1572766960080" duration="8154000" />
+      <workItem from="1572766960080" duration="9311000" />
     </task>
     <servers />
   </component>
@@ -154,7 +153,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/_$my_client2.coverage" NAME="my_client2 Coverage Results" MODIFIED="1572604797607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/_$my_client.coverage" NAME="my_client Coverage Results" MODIFIED="1572775083677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/_$my_server.coverage" NAME="my_server Coverage Results" MODIFIED="1572775081960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/_$my_client.coverage" NAME="my_client Coverage Results" MODIFIED="1572776256446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/_$my_server.coverage" NAME="my_server Coverage Results" MODIFIED="1572776254712" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

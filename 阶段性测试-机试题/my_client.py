@@ -209,13 +209,9 @@ class Myclient:
         self.s.send("show_orders".encode())
         ack = self.s.recv(1).decode()
         if ack == "1":
-            print(111)
-            print(self.s.recv(1024))
-            print(self.s.recv(1024))
-            # recv_message = json.loads(self.s.recv(1024).decode())
-            # print(recv_message)
-            # for i in recv_message:
-            #     print(f"订单编号：{i[0]} 下单时间：{i[1]} 支付金额：{i[2]}")
+            recv_message = json.loads(self.s.recv(1024).decode())
+            for i in recv_message:
+                print(f"订单编号：{i[0]} 下单时间：{i[1]} 支付金额：{i[2]}元")
 
     def exit(self):
         print("退出")
