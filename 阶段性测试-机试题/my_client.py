@@ -115,7 +115,11 @@ class Myclient:
                 def show():
                     self.s.send("1".encode())
                     print("当前购物车".center(10))
-                    recv_message = json.loads(self.s.recv(1024).decode())
+                    recv = self.s.recv(1024).decode()
+                    if len(recv)==2:
+                        print("当前购物车为空！")
+                        return
+                    recv_message = json.loads(recv)
                     goods_sum = 0
                     for i in recv_message:
                         goods_sum += i[4]*i[5]
@@ -188,14 +192,31 @@ class Myclient:
                     return
                 if choice in dic:
                     dic[choice]()
+                else:
+                    print("输入有误，请重新选择！")
     def settle_account(self):
         print("开始结算")
         self.s.send("settle_account".encode())
         ack = self.s.recv(1).decode()
         if ack == "1":
-            print(self.s.recv(1024).decode())
+            result = self.s.recv(1024).decode()
+            if result == "0":
+                print("账户余额不足，请从购物车删减商品！")
+            if result == "1":
+                print("结算成功！")
     def show_orders(self):
-        print("查看订单")
+        print("当前订单")
+        self.s.send("show_orders".encode())
+        ack = self.s.recv(1).decode()
+        if ack == "1":
+            print(111)
+            print(self.s.recv(1024))
+            print(self.s.recv(1024))
+            # recv_message = json.loads(self.s.recv(1024).decode())
+            # print(recv_message)
+            # for i in recv_message:
+            #     print(f"订单编号：{i[0]} 下单时间：{i[1]} 支付金额：{i[2]}")
+
     def exit(self):
         print("退出")
         self.s.close()
