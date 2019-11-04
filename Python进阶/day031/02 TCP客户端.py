@@ -4,7 +4,7 @@ import threading
 import time
 s = socket()
 # s.bind(("",1234))
-addr = ("192.168.34.28",6712)
+addr = ("192.168.34.112",8001)
 s.connect(addr)
 def send():
     while True:

@@ -321,4 +321,7 @@ class Myclient:
             for i in recv_message:
                 print(f"商品名：{i[0]} 本月销售总金额{i[1]}元 销售个数：{i[2]}")
 
+
+
+
 myclient = Myclient()

@@ -4,8 +4,6 @@
     <list default="true" id="69bc5662-1689-4a05-ac75-b7f6685b1b0e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_client2.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_client2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_server.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -135,6 +133,8 @@
       <workItem from="1572589704046" duration="19741000" />
       <workItem from="1572739289170" duration="21463000" />
       <workItem from="1572766960080" duration="18631000" />
+      <workItem from="1572793744949" duration="153000" />
+      <workItem from="1572827348811" duration="118000" />
     </task>
     <servers />
   </component>
@@ -146,7 +146,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
