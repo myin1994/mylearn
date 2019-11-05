@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://s01.mifile.cn/favicon.ico">
+    <title>小米商城</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        .c1{
+            background-color: black;
+            height: 30px;
+            width: 1540px;
+        }
+        .c2{
+            float: left;
+            position: relative;
+            left: 20px;
+            line-height: 30px;
+        }
+        .c3{
+            float: right;
+            position: relative;
+            right: 50px;
+            line-height: 30px;
+        }
+        .clearfix:after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+        a{
+            color: gray;
+            text-decoration: none;
+            text-align: center;
+        }
+        .a1:after{
+            content: ' |';
+            color: white;
+            opacity: 0.5;
+        }
+        a:hover{
+            color: white;
+        }
+        .s3:hover .a3{
+            color: orange;
+            /*background-color: white;*/
+        }
+        .s3:hover{
+            background-color: white;
+        }
+        .s1{
+            position: relative;
+        }
+        .s2{
+            display: none;
+            position: absolute;
+            top: 30px;
+            right: -25px;
+        }
+        .a1:hover .s2{
+            display: inline-block;
+        }
+        .s3:hover .s2{
+            display: inline-block;
+        }
+        .s3{
+            background-color: #232323;
+            display: inline-block;
+            height: 30px;
+        }
+        .i1{
+            width: 120px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="c1 clearfix">
+    <div class="c2">
+        <a href="https://www.mi.com/index.html" class="a1">小米商城</a>
+        <a href="https://www.miui.com" class="a1">MIUI</a>
+        <a href="https://account.xiaomi.com/pass/serviceLogin?callback=https%3A%2F%2Fiot.mi.com%2Fsts%3Fsign%3DfCSIXasbUHiXbFs3j8qOfufIwIw%253D%26followup%3Dhttps%253A%252F%252Fiot.mi.com%252Fcgi-op%252Fapi%252Flogin%253Ffollowup%253Dhttps%25253A%25252F%25252Fiot.mi.com&sid=xiaomiiot&_locale=zh_CN" class="a1">IoT</a>
+        <a href="https://jr.mi.com/index.html?from=micom&t=1572950378740" class="a1">云服务</a>
+        <a href="https://www.xiaomiyoupin.com" class="a1">金融</a>
+        <a href="https://xiaoai.mi.com" class="a1">有品</a>
+        <a href="https://qiye.mi.com" class="a1">小爱开放平台</a>
+        <a href="https://www.mi.com/aptitude/list?id=41" class="a1">企业团购</a>
+        <a href="https://www.mi.com/aptitude/list" class="a1">资质证照</a>
+        <a href="https://www.mi.com/appdownload" class="a1">协议规则</a>
+        <span class="s1"><a href="https://www.mi.com/c/service/help_center/guide/index.html#J_modal-globalSites" class="a1 a2">下载app<span class="s2"><img src="//i1.mifile.cn/f/i/17/appdownload/download.png?1" alt="" class="i1"></span></a></span>
+        <a href="https://www.mi.com/c/service/help_center/guide/index.html" >Select Location</a>
+    </div>
+    <div class="c3 clearfix">
+        <a href="" class="a1">登录</a>
+        <a href="" class="a1">注册</a>
+        <a href="" class="a1">消息通知</a>
+        <span class="s1 s3"><a href="" class="a3">购物车<span class="s2"><img src="购物车.png" alt="" class="i2"></span></a></span>
+    </div>
+</div>
+
+</body>
+</html>

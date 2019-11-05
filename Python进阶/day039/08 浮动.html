@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        .c1{
+            background-color: red;
+            height: 100px;
+            width: 200px;
+            float: left;
+        }
+        .c2{
+            background-color: green;
+            height: 100px;
+            width: 200px;
+            float: right;
+        }
+        .c3{
+            background-color: pink;
+            height: 200px;
+            width: 100%;
+            /*clear: both;*/
+        }
+        /*.cc{*/
+        /*    height: 100px;*/
+        /*}*/
+        .clearfix:after{
+            content: "";
+            display: block;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div class="cc clearfix">
+<!--    666666-->
+    <div class="c1"></div>
+    <div class="c2"></div>
+</div>
+<div class="c3"></div>
+
+
+</body>
+</html>

@@ -297,6 +297,8 @@ class Myclient:
                     return
                 for i in recv_message:
                     print(f"订单编号：{i[0]} 下单时间：{i[1]} 支付金额：{i[2]}元")
+                else:
+                    return
     def max_goods(self):
         print("求出销量最高的商品名")
         self.s.send("max_goods".encode())
