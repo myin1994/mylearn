@@ -11,7 +11,11 @@
         .c1{
             background-color: black;
             height: 30px;
-            width: 1540px;
+            /*width: 1540px;*/
+        }
+        .c1-2{
+            width: 90%;
+            margin-left: 5%;
         }
         .c2{
             float: left;
@@ -34,10 +38,11 @@
             color: gray;
             text-decoration: none;
             text-align: center;
+            font-size: 12px;
         }
         .a1:after{
             content: ' |';
-            color: white;
+            color: #424242;
             opacity: 0.5;
         }
         a:hover{
@@ -57,7 +62,7 @@
             display: none;
             position: absolute;
             top: 30px;
-            right: -25px;
+            right: 0;
         }
         .a1:hover .s2{
             display: inline-block;
@@ -78,6 +83,7 @@
 <body>
 
 <div class="c1 clearfix">
+    <div class="c1-2">
     <div class="c2">
         <a href="https://www.mi.com/index.html" class="a1">小米商城</a>
         <a href="https://www.miui.com" class="a1">MIUI</a>
@@ -95,9 +101,10 @@
     <div class="c3 clearfix">
         <a href="" class="a1">登录</a>
         <a href="" class="a1">注册</a>
-        <a href="" class="a1">消息通知</a>
+        <a href="" class="a3">消息通知 &nbsp</a>
         <span class="s1 s3"><a href="" class="a3">购物车<span class="s2"><img src="购物车.png" alt="" class="i2"></span></a></span>
     </div>
+        </div>
 </div>
 
 </body>
