@@ -301,6 +301,7 @@ css代码:
 按id值查找:  var d1 = document.getElementById('d1');
 			示例: d1.style.height = '600px';
 按类值查找:var a = document.getElementsByClassName('c1');
+获取的是一个数组，通过索引查找
 ```
 
 ### 间接查找选择器
@@ -345,38 +346,6 @@ input标签
 		inp.value;  获取值
 		inp.value = '200块!';  修改值
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="">
+    <span id="succ"></span>
+    <div>
+        <label for="username">用户名：</label>
+        <input type="text" name="username" id="username">
+        <span class="error" style="font-size: 12px;color: red"></span>
+    </div>
+    <div>
+        <label for="password">密码：</label>
+        <input type="text" name="password" id="password">
+        <span class="error" style="font-size: 12px;color: red"></span>
+    </div>
+
+
+    <input type="button" value="提交" id="btn">
+<!--    <button type="button">注册</button>form表单中有提交效果-->
+</form>
+<script>
+    var btnEle = document.getElementById("btn");
+    btnEle.onclick = function () {
+        var nameEle =document.getElementById("username");
+        var name = nameEle.value;
+        var pwdEle =document.getElementById("password");
+        var pwd = pwdEle.value;
+        if(name.trim().length === 0){
+            nameEle.nextElementSibling.innerHTML = "用户名不能为空"
+        }else if (pwd.trim().length === 0){
+            nameEle.nextElementSibling.innerHTML = "";
+            pwdEle.nextElementSibling.innerHTML = "密码不能为空"
+        }else {
+            document.getElementById("succ").innerHTML = "登录成功";
+            nameEle.nextElementSibling.innerHTML = "";
+            pwdEle.nextElementSibling.innerHTML = ""
+        }
+    }
+</script>
+</body>
+</html>
