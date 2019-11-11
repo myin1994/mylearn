@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+    <style>
+        .c1{
+            background-color: red;
+            height: 200px;
+            width: 200px;
+        }
+        .c2{
+            background-color: green;
+        }
+        .c3{
+            background-color: blue;
+        }
+        .c4{
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+<input type="text" id="username">
+
+<div class="c1"></div>
+<select name="" id="">
+    <option value="1">抽烟1</option>
+    <option value="2">抽烟2</option>
+    <option value="3">抽烟3</option>
+</select>
+
+</body>
+<script>
+    $("#username").focus(function () {
+        $(this).css({'backgroundColor':"yellow"});
+        $(".c1").css({'backgroundColor':"blue"});
+    });
+
+    $("#username").blur(function () {
+        $(this).css({'backgroundColor':"white"});
+        $(".c1").css({'backgroundColor':"red"});
+    });
+    $("select").change(function () {
+        // $(".c1").toggleClass("c2")
+        // var a = $(this).val();
+        var a = $('select:selected').text();
+        console.log(a)
+        // if (a === 1){
+        //     $(".c1").toggleClass("c2")
+        // }else if(a === 2){
+        //     $(".c1").toggleClass("c3")
+        // }else{
+        //     $(".c1").toggleClass("c4")
+        // }
+    })
+</script>
+</html>

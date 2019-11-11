@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+</head>
+<body>
+
+<div>
+    <button id="all">全选</button>
+    <button id="reverse">反选</button>
+    <button id="notall">全不选</button>
+</div>
+
+<table border="1" id="table1">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                姓名
+            </th>
+            <th>
+                爱好
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>
+                <input type="checkbox">
+            </td>
+            <td>
+                张三
+            </td>
+            <td>
+                开车
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox">
+            </td>
+            <td>
+                李四
+            </td>
+            <td>
+                开车
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox">
+            </td>
+            <td>
+                王五
+            </td>
+            <td>
+                开车
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+
+<script>
+    $("#all").click(function () {
+        $('#table1 input').prop('checked',true);
+    });
+    $("#notall").click(function () {
+        $('#table1 input').prop('checked',false);
+    });
+    $("#reverse").click(function () {
+        var a=$(':checked');
+        $('input').not(":checked").prop('checked',true);
+        a.prop('checked',false);
+        // var a = $('#table1 input');
+        // for(var i in a){
+        //     if (b.prop("checked")===true){
+        //         b.prop('checked',false);
+        //     }else{
+        //         b.prop('checked',true);
+        //     }
+        // }
+    })
+</script>
+
+</html>

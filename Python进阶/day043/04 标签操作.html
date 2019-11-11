@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+    <style>
+        .shadow{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 90;
+            /*display: none;*/
+        }
+        .add{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            height: 360px;
+            width: 300px;
+            margin-left: -150px;
+            margin-top: -180px;
+            background-color: white;
+            z-index: 100;
+            /*display: none;*/
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<button id="add">新增</button>
+<table border="1" id="all-s">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                姓名
+            </th>
+            <th>
+                爱好
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>
+                <input type="checkbox">
+            </td>
+            <td>
+                张三
+            </td>
+            <td>
+                开车
+            </td>
+            <td>
+                <button class="remove">开除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox">
+            </td>
+            <td>
+                李四
+            </td>
+            <td>
+                开车
+            </td>
+            <td>
+                <button class="remove">开除</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="shadow hide"></div>
+<div class="add hide">
+
+    <div>
+        姓名：<input type="text" id="name">
+    </div>
+    <div>
+        爱好：<input type="text" id="hobby">
+    </div>
+    <div>
+    <button id="save">保存</button>
+    <button id="out">取消</button>
+    </div>
+</div>
+
+</body>
+<script>
+    $(".remove").click(function () {
+        $(this).parentsUntil("tbody").remove();
+    });
+    $("#add,#out").click(function () {
+        $(".add").toggleClass("hide");
+        $(".shadow").toggleClass("hide");
+        $("#name").val("");
+        $("#hobby").val("")
+    });
+    $("#save").click(function () {
+        var tname = $("#name").val();
+        var thobby = $("#hobby").val();
+        var str = '<tr><td><input type="checkbox"></td><td>'+tname+'</td><td>'+thobby+'</td><td><button class="remove">开除</button></td></tr>';
+        $(".add").toggleClass("hide");
+        $(".shadow").toggleClass("hide");
+        $("#all-s tbody").append(str);
+        $(".remove").click(function () {
+            $(this).parentsUntil("tbody").remove();
+    });
+
+    })
+</script>
+</html>

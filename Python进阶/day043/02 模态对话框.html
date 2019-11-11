@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="jquery.js"></script>
+    <title>Title</title>
+    <style>
+        .shadow{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 90;
+            /*display: none;*/
+        }
+        .login{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            height: 360px;
+            width: 300px;
+            margin-left: -150px;
+            margin-top: -180px;
+            background-color: white;
+            z-index: 100;
+            /*display: none;*/
+        }
+        .hide{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+<h1>榜单</h1>
+<div>
+<button id="but-click">登录</button>
+</div>
+<img src="1.png" alt="">
+</div>
+
+
+<div class="shadow hide"></div>
+<div class="login hide">
+    <form action="">
+        <span id="succ"></span>
+    <h3 style="text-align: center">输入用户名密码</h3>
+    <div>
+        <label for="username">用户名：</label>
+        <input type="text" name="username" id="username">
+        <span class="error" style="font-size: 12px;color: red"></span>
+    </div>
+    <div>
+        <label for="password">密码：</label>
+        <input type="password" name="password" id="password">
+        <span class="error" style="font-size: 12px;color: red"></span>
+    </div>
+    <div><button type="button" id="login-btn">登录</button>
+    <button type="reset" id="reset-btn">重置</button>
+    <button type="button" id="cancel">取消</button></div>
+    </form>
+</div>
+
+
+</body>
+<script>
+    // var btn_login = $("#but-click");
+    // btn_login.click(function () {
+    //     $(".login").css('display','block');
+    //     $(".shadow").css('display','block');
+    //
+    // });
+    // var btn_cancel = $("#cancel");
+    // btn_cancel.click(function () {
+    //     $(".login").css('display','none');
+    //     $(".shadow").css('display','none');
+    // });
+    $("#but-click,#cancel").click(function () {
+        $(".login").toggleClass("hide");
+        $(".shadow").toggleClass("hide");
+    });
+
+
+    var btn_error = $("#login-btn");
+    btn_error.click(function () {
+        var name_error = $("#username");
+        var pwd_error = $("#password");
+        var name = name_error.val();
+        var pwd = pwd_error.val();
+        if(name.trim().length === 0){
+            name_error.next().html("用户名不能为空");
+        }else if (pwd.trim().length === 0){
+            name_error.next().html("");
+            pwd_error.next().html("密码不能为空");
+        }else {
+            $("#succ").html("登录成功");
+            name_error.next().html("");
+            pwd_error.next().html("");
+            var t = setTimeout('$("#succ").html("")',2000)
+        }
+
+    })
+</script>
+
+</html>
