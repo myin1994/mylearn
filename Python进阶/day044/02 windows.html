@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+    <style>
+        .c1{
+            height: 100px;
+            width: 100px;
+            background-color: red;
+        }
+        .c2{
+            height: 100px;
+            width: 100px;
+            background-color: yellow;
+        }
+        .c3{
+            height: 100px;
+            width: 100px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<div class="c1"></div>
+<div class="c2"></div>
+
+</body>
+<script src="xxxx.js"></script>
+<script>
+    $(".c2").click(function () {
+        $(this).toggleClass("c3")
+    })
+</script>
+<!--<script>-->
+<!--    $(".c1,.c2").click(function () {-->
+<!--        $(this).toggleClass("c3")-->
+<!--    })-->
+<!--</script>-->
+</html>
