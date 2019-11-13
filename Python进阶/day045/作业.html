@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/js/bootstrap.min.js">
+</head>
+<body>
+<select class="form-control" name="province" id="s1">
+  <option class="default1">选择省份</option>
+
+</select>
+<select class="form-control" name="city" id="s2">
+  <option class="default">选择城市</option>
+
+</select>
+</body>
+<script>
+    var data = {"北京":["丰台","朝阳","海淀"],"河南省":["郑州","信阳","洛阳","三门峡"],"山东省":["菏泽","青岛","淄博","临沂"]};
+    // $("#s1").hover(function () {
+    //     for(var i in data){
+    //         // console.log(i)
+    //         op = `<option>${i}</option>`;
+    //         $(this).append(op);
+    //         $(this).unbind("hover")
+    //     }
+    //
+    // },function () {
+    //     // $(this).unbind("hover")
+    //    // $(".default1").siblings().remove();
+    // });
+    for(var i in data){
+            op = `<option>${i}</option>`;
+            $("#s1").append(op);}
+    $("#s1").change(function () {
+        $(".default").siblings().remove();
+        var option_text = this.options[this.selectedIndex].innerText;
+        // console.log(option_text)
+        if(option_text in data){
+
+            for(var j in data[option_text]){
+            city = data[option_text][j];
+            op = `<option>${city}</option>`;
+            $("#s2").append(op)
+        }
+        }
+    })
+</script>
+</html>

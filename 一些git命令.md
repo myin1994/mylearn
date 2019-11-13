@@ -43,3 +43,4 @@ ahead of 'origin/master' by N commits.怎么处理？
 后续更新使用 git pull, 不要带 origin master
 ```
 
+17.git update-git-for-windows升级git

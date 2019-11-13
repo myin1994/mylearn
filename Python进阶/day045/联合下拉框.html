@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/js/bootstrap.min.js">
+</head>
+<body>
+
+<select class="form-control" id="i1">
+  <option>选择省份</option>
+
+</select>
+
+</body>
+<script src="jquery.js"></script>
+<script>
+    var data = {"北京":["丰台","朝阳","海淀"],"河南省":["郑州","信阳","洛阳","三门峡"],"山东省":["菏泽","青岛","淄博","临沂"]};
+    $('#i1').click(function () {
+        for (var i in data){
+            asd=`<option>${i}<option>`;
+        $('.form-control').append(asd)}
+        $(this).unbind("click")
+    });
+</script>
+</html>
