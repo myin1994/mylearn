@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登录成功</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div>
+    登录成功！
+</div>
+    <script>
+        window.onload=function(){
+            var canvas = document.querySelector("canvas");
+            canvas.width = canvas.height = 500;
+            canvas.style.background = "green";
+            if (canvas.getContext) {
+                var ext = canvas.getContext("2d");
+                var num = 0;
+                var scale=0;
+                var value=0;
+                ext.fillStyle = "#f90";
+                ext.translate(canvas.width / 2, canvas.height / 2);
+                function rotate() {
+                    ext.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+                    num++;
+                     if(scale==100){
+                         value=-1;
+                     }else if(scale==0){
+                         value=1
+                     }
+                     scale+=value;
+                    ext.save();
+                    ext.rotate(num * Math.PI / 180);
+                    ext.scale(scale*1/50,scale*1/50);
+                    console.log(scale);
+                    ext.translate(-50, -50);
+                    ext.fillRect(0, 0, 100, 100);
+                    ext.restore();
+                }
+                var t=setInterval(rotate,30);
+                canvas.onmouseover=function(){
+                    clearInterval(t);
+                }
+                canvas.onmouseout=function(){
+                    t=setInterval(rotate,30);
+                }
+            }
+        }
+    </script>
+    <canvas></canvas>
+</body>
+</html>
