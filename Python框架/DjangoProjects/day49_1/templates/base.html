@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    {% block replace-style %}
+        .nav {
+            background-color: red;
+            height: 40px;
+            width: 100%;
+        }
+        .d1 {
+            background-color: green;
+            height: 100px;
+            width: 100px;
+        }
+        .content {
+            background-color: orange;
+            height: 200px;
+            width: 300px;
+            position: relative;
+            left: 100px;
+            top: -100px
+        }
+    {% endblock %}
+</style>
+{% block add-style %}
+
+{% endblock %}
+<body>
+
+<div class="nav">
+    <a href="">个人中心</a>
+    <a href="">登录|注册</a>
+</div>
+
+<div class="d1">
+    <ul>
+        <li><a href="/menu01/">菜单1</a></li>
+        <li><a href="">菜单2</a></li>
+        <li><a href="">菜单3</a></li>
+    </ul>
+</div>
+<div class="content">
+    {% block content %}
+        <a href="">base页面</a>
+    {% endblock %}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<hevad>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .menus-left{
+            width: 200px;
+            float: left;
+        }
+        .menus-left .item{
+            background-color: green;
+            color: white;
+            height: 40px;
+        }
+        .menus-right{
+            width: 200px;
+            float: right;
+        }
+        .menus-right .item{
+            background-color: yellow;
+            color: white;
+            height: 40px;
+        }
+    </style>
+</hevad>
+<body>
+
+<div class="menus-left">
+    {% for i in data %}
+    <div class="item"><a href="{{ i.0 }}">{{i.1}}</a></div>
+    {% endfor %}
+</div>
+
+<div class="menus-right">
+    {% for j in data1 %}
+    <div class="item"><a href="{{ j.0 }}">{{j.1}}</a></div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% load my_tags %}
+<h1>{{ name|func:'xx' }}</h1>
+
+<h1>{% tag1 name "11" "222" %}</h1>
+</body>
+</html>

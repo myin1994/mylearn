@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<ul>
+    {% for i in l1 reversed %}
+        <li>{{ i }}</li>
+    {% empty %} <p>no data</p>
+    {% endfor %}
+
+</ul>
+
+<ol>
+    {% for k,v in d1.items %}
+        <li>{{ k }}:{{ v }}</li>
+    {% endfor %}
+</ol>
+
+<ol>
+    {% for k,v in d1.items %}
+        <li>{{ forloop.last }}>>>>>>{{ k }}---{{ v }}</li>
+        {% for foo in d1.hobby %}
+            {{ forloop.parentloop.counter0 }}--{{ forloop.revcounter0 }}<a href="">{{ foo }}</a>
+        {% endfor %}
+        {% for i in d1.xx %}
+        {% empty %} <p>xx no data</p>
+        {% endfor %}
+
+
+    {% endfor %}
+</ol>
+
+{% if num|length == 5 %}
+    <a href="">{{ num }} 长度等于5</a>
+{% elif num|length == 6 %}
+    <a href="">{{ num }} 长度等于6</a>
+{% else %}
+    <a href="">{{ num }} 长度不等于5</a>
+{% endif %}
+
+<h1>
+    {% with d1.name as name %}
+        {{ name }}
+    {% endwith %}
+</h1>
+
+</body>
+</html>
