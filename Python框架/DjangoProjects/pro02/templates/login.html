@@ -9,16 +9,16 @@
     <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+{% include 'nav_bar.html' %}
 <!--整个页面范围-->
 <div class="container center-block">
 
 
     <div class="panel panel-default">
-  <div class="panel-heading">登录页面<i class="fa fa-cog fa-spin"></i></div>
+  <div class="panel-heading">登录页面 <i class="fa fa-cog fa-spin"></i></div>
   <div class="panel-body">
         <!--    表单登录-->
-    <form class="form-horizontal row col-xs-10 col-xs-offset-2" action="" METHOD="post">
+    <form class="form-horizontal row col-xs-10 col-xs-offset-2" action="{% url 'app01:login' %}" METHOD="post">
         <div class="form-group row">
             <label for="login_name" class="col-xs-2 control-label">用户名</label>
             <div class="col-xs-4">

@@ -20,15 +20,23 @@
     </style>
 </head>
 <body>
+{% include 'nav_bar.html' %}
+{% load my_tags %}
+{% left_menu menu_lst %}
+
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading">书籍管理</div>
         <div class="panel-body">
             <div>
-                <button type="button" class="btn btn-primary add-book">添加书籍</button>
+                <button type="button" class="btn btn-primary add-book" data-toggle="modal" data-target="#myModal">
+                    添加书籍
+                </button>
             </div>
             <div>
                 <table class="table table-striped bookshift">
+                <form action="{% url 'app01:books' %}" METHOD="post">
+                <input class="hide" type="text" name="del_id">
                     <thead>
                     <tr class="book-th">
                         <th>编号</th>
@@ -40,105 +48,86 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% for ob in obj %}
                     <tr>
-                        <td>1</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
+                        <td class="hide">{{ ob.id }}</td>
+                        <td>{{ forloop.counter}}</td>
+                        <td>{{ob.title}}</td>
+                        <td>{{ob.price}}</td>
+                        <td>{{ob.publish_date|date:"Y-m-d"}}</td>
+                        <td>{{ob.publish}}</td>
                         <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
+                            <button type="button" class="btn btn-warning edit-book" data-toggle="modal" data-target="#myModal">编辑</button>
+                            <button type="submit" class="btn btn-danger del-book">删除</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>python</td>
-                        <td>123.00</td>
-                        <td>2012-12-12</td>
-                        <td>人民出版社</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">编辑</button>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                     </tbody>
+                </form>
                 </table>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加书籍</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'app01:books' %}" METHOD="post">
+                    <input class="hide edit-id" type="text" name="edit-book">
+                    <div class="form-group">
+                        <label for="title">书籍名称</label>
+                        <input type="text" class="form-control" id="title" placeholder="书籍名称" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">价格</label>
+                        <input type="number" class="form-control" id="price" placeholder="价格" name="price">
+                    </div>
+                    <div class="form-group">
+                        <label for="publish_date">出版日期</label>
+                        <input type="date" class="form-control" id="publish_date" name="publish_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="publish">出版社</label>
+                        <input type="text" class="form-control" id="publish" placeholder="出版社" name="publish">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>
 </body>
 
 <script>
+    $(".edit-book").click(function () {
+        $(".edit-id").val($(this).parent().siblings('.hide').text());
+        $("[name = title]").val($(this).parent().siblings().eq(2).text());
+        $("[name = price]").val($(this).parent().siblings().eq(3).text());
+        $("[name = publish_date]").val($(this).parent().siblings().eq(4).text());
+        $("[name = publish]").val($(this).parent().siblings().eq(5).text());
+    });
+    $(".del-book").click(function () {
+        $("[name = del_id]").val($(this).parent().siblings('.hide').text());
+    });
     $(".add-book").click(function () {
-        alert("当前不可添加数据")
-    })
+        $(".edit-id").val("");
+        $("[name = title]").val("");
+        $("[name = price]").val("");
+        $("[name = publish_date]").val("");
+        $("[name = publish]").val("");
+    });
+
 </script>
 </html>

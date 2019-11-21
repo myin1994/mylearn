@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加书籍</title>
+    <script src="../static/jquery.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">添加书籍</div>
+        <div class="panel-body">
+            <form>
+                <div class="form-group">
+                    <label for="title">书籍名称</label>
+                    <input type="text" class="form-control" id="title" placeholder="书籍名称">
+                </div>
+                <div class="form-group">
+                    <label for="price">价格</label>
+                    <input type="number" class="form-control" id="price" placeholder="价格">
+                </div>
+                <div class="form-group">
+                    <label for="publish_date">出版日期</label>
+                    <input type="date" class="form-control" id="publish_date">
+                </div>
+                <div class="form-group">
+                    <label for="publish">出版社</label>
+                    <input type="text" class="form-control" id="publish" placeholder="出版社">
+                </div>
+                <button type="submit" class="btn btn-primary pull-right">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    添加
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加书籍</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="title">书籍名称</label>
+                        <input type="text" class="form-control" id="title" placeholder="书籍名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">价格</label>
+                        <input type="number" class="form-control" id="price" placeholder="价格">
+                    </div>
+                    <div class="form-group">
+                        <label for="publish_date">出版日期</label>
+                        <input type="date" class="form-control" id="publish_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="publish">出版社</label>
+                        <input type="text" class="form-control" id="publish" placeholder="出版社">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/jquery.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <style>
+        .table tbody tr td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table th {
+            text-align: center;
+        }
+        .table tbody tr td a{
+            text-decoration: none;
+        }
+        .left-menu{
+            margin-top: 2%;
+        }
+    </style>
+</head>
+<body>
+<div class="row container pull-left left-menu" style="width: 10%">
+    <table class="table table-hover col-xs-6 col-xs-offset-6">
+        <thead>
+        <tr>
+            <th>菜单栏 <i class="fa fa-cog fa-hand-o-left"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for k,v in data.items %}
+            <tr>
+                <td><a href="{{v}}">{{ k }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
