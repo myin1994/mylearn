@@ -136,7 +136,7 @@
               'NAME':'bms', # 要连接的数据库，连接前需要创建好
               'USER':'root',# 连接数据库的用户名
               'PASSWORD':'', # 连接数据库的密码
-              'HOST':'127.0.0.1',  # 连接主机，默认本级
+              'HOST':'127.0.0.1',  # 连接主机，默认本机
               'PORT':3306 #  端口 默认3306
           }
       }
@@ -272,18 +272,17 @@
 + 方式3：有就更新,没有就创建（只允许一个对象）
 
 ```python
+a,b = models.UserInfo.objects.update_or_create(
+    username='alex',
+    defaults={
+        'id':20,
+        'password':'ooooo',
+        'age':84,
+    }
+)
 
-    a,b = models.UserInfo.objects.update_or_create(
-        username='alex',
-        defaults={
-            'id':20,
-            'password':'ooooo',
-            'age':84,
-        }
-    )
-
-    print(a)  # 当前更新后的model对象,或者是你新增的记录的model对象
-    print(b)  # 新增就是True,查询就False
+print(a)  # 当前更新后的model对象,或者是你新增的记录的model对象
+print(b)  # 新增就是True,查询就False
 ```
 
 ### 删除
@@ -291,36 +290,3 @@
 ```python
  models.UserInfo.objects.filter(id=1).delete()
 ```
-
-### 查询
-
-+ all()
-
-  + 查询所有结果，结果是queryset类型
-
-+ filter(**kwargs)
-
-  + 包含了与所给筛选条件相匹配的对象，结果也是queryset类型 
-
-  + 多个条件用逗号分开，并且这几个条件必须都成立，是and的关系
-
-    ```
-    Book.objects.filter(title='linux',price=100)
-    ```
-
-+ get(**kwargs)
-
-  + 返回与所给筛选条件相匹配的model对象，返回结果有且只有一个
-  + 筛选条件的对象超过一个或者没有都会抛出错误
-    + UserInfo matching query does not exist.
-    + get() returned more than one UserInfo -- it returned 11!
-
-+ exclude(**kwargs)
-
-  + 排除的意思，它包含了与所给筛选条件不匹配的对象，没有不等于的操作昂，用这个exclude，返回值是queryset类型
-
-    ```python
-    Book.objects.exclude(id=6) #返回id不等于6的所有的对象
-    
-    Book.objects.all().exclude(id=6) #或者在queryset基础上调用
-    ```
