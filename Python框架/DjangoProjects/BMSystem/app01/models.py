@@ -15,6 +15,7 @@ class AuthorDetail(models.Model):
     birthday = models.DateField()
     telephone = models.CharField(max_length=16)
     addr = models.CharField(max_length=64)
+    sex = models.CharField(max_length=10,default="男")
     au = models.OneToOneField(to="Author",to_field="id",on_delete=models.CASCADE)
 
 class Publish(models.Model):

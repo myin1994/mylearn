@@ -14,12 +14,14 @@ class Login(View):
     def post(self, request):
         username = request.POST.get("login_name")
         password = request.POST.get("login_password")
+        print(request.POST)
         obj = models.UserInfo.objects.filter(password=password, username=username)
         if obj:
             return redirect(reverse("app01:books"))
         else:
-            status = "密码错误请重新登录！"
-            return render(request, "login.html", {"status": status})
+            # status = "密码错误请重新登录！"
+            return HttpResponse("error")
+            # return render(request, "login.html", {"status": status})
 
 class Books(View):
 
@@ -27,10 +29,12 @@ class Books(View):
         dic = dict()
         obj = models.Book.objects.all()
         for i in obj:
-            s = ""
-            for j in i.authors.all().values("name"):
-                s += " " + (j.get("name"))
-            dic[i]=s
+            # s = ""
+            # for j in i.authors.all().values("name"):
+            #     s += " " + (j.get("name"))
+            # dic[i]=s
+            dic[i]=" ".join([j.name for j in i.authors.all()])
+
         return render(request, "books.html", {"obj": obj,"dic":dic})
 
     def post(self,request):
@@ -47,15 +51,15 @@ class AddBooks(View):
         return render(request, "add_book.html", {"publish": publish,"author":author})
 
     def post(self,request):
-
         with transaction.atomic():
             dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
             # 先添加book表
-            models.Book.objects.create(**dic)
+            new_obj = models.Book.objects.create(**dic)
             # 再添加book——author表
             lst = request.POST.getlist("author")
-            id = models.Book.objects.last().id
-            models.Book.objects.get(id=id).authors.add(*lst)
+            # id = models.Book.objects.last().id
+            # models.Book.objects.get(id=id).authors.add(*lst)
+            new_obj.authors.add(*lst)
         return redirect(reverse("app01:books"))
 
 class EditBooks(View):
@@ -79,9 +83,25 @@ class EditBooks(View):
         with transaction.atomic():
             dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
             # 修改book表
-            models.Book.objects.filter(id=request.POST.get("edit_id")).update(**dic)
+            # new_obj = models.Book.objects.filter(id=request.POST.get("edit_id")).update(**dic)
+            obj = models.Book.objects.filter(id=request.POST.get("edit_id"))
+            obj.update(**dic)
             # 再更新book——author表
             lst = request.POST.getlist("author")
-            id = models.Book.objects.last().id
-            models.Book.objects.get(id=id).authors.set(lst)
+            # id = models.Book.objects.last().id
+            # models.Book.objects.get(id=id).authors.set(lst)
+            obj.first().authors.set(lst)
         return redirect(reverse("app01:books"))
+
+def upload(request):
+    if request.method == "GET":
+        return render(request,"upload.html")
+    else:
+        print(request.POST)
+        print(request.FILES)
+        file_obj = request.FILES.get('file_obj')
+        print(file_obj)
+        with open(file_obj.name,"wb") as f:
+            for i in file_obj.chunks():
+                f.write(i)
+        return HttpResponse("OK")

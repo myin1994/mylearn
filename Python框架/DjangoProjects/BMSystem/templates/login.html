@@ -15,48 +15,70 @@
 
 
     <div class="panel panel-default">
-  <div class="panel-heading">登录页面 <i class="fa fa-cog fa-spin"></i></div>
-  <div class="panel-body">
-        <!--    表单登录-->
-    <form class="form-horizontal row col-xs-10 col-xs-offset-2" action="{% url 'app01:login' %}" METHOD="post">
-        {% csrf_token %}
-        <div class="form-group row">
-            <label for="login_name" class="col-xs-2 control-label">用户名</label>
-            <div class="col-xs-4">
-                <input type="text" class="form-control" id="login_name" placeholder="用户名" name="login_name">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="login_password" class="col-xs-2 control-label">密码</label>
-            <div class="col-xs-4">
-                <input type="password" class="form-control" id="login_password" placeholder="密码" name="login_password">
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-xs-offset-2 col-xs-4">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox"> Remember me
-                    </label>
+        <div class="panel-heading">登录页面 <i class="fa fa-cog fa-spin"></i></div>
+        {#        {% csrf_token %}#}
+        <div class="panel-body">
+            <!--    <ajax登录-->
+            <div class="form-horizontal row col-xs-10 col-xs-offset-2">
+                <div class="form-group row">
+                    <label for="login_name" class="col-xs-2 control-label">用户名</label>
+                    <div class="col-xs-4">
+                        <input type="text" class="form-control" id="login_name" placeholder="用户名" name="login_name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="login_password" class="col-xs-2 control-label">密码</label>
+                    <div class="col-xs-4">
+                        <input type="password" class="form-control" id="login_password" placeholder="密码"
+                               name="login_password">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-offset-2 col-xs-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Remember me
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-offset-2 col-xs-4">
+                        <button id="sub" class="btn btn-default">登录
+                        </button>
+                        <h5 class="error" style="color: red"></h5>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-xs-offset-2 col-xs-4">
-                <button type="submit" class="btn btn-default">登录
-                </button>
-                <h5 class="error" style="color: red">{{ status }}</h5>
-            </div>
-        </div>
-    </form>
-  </div>
-</div>
+    </div>
 </div>
 
 </body>
 <script>
     $("#login_name,#login_password").focus(function () {
         $(".error").text("")
+    });
+    $("#sub").click(function () {
+        var login_name = $("#login_name").val();
+        var login_password = $("#login_password").val();
+        $.ajax({
+            url: "{% url 'app01:login' %}",
+            type: "post",
+            data: {
+                'login_name': login_name,
+                'login_password': login_password,
+                "csrfmiddlewaretoken": "{{ csrf_token }}"
+            },
+            {#"csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()},#}
+            success: function (res) {
+                if (res === "error") {
+                    $(".error").text("密码错误请重新登录")
+                } else {
+                    location.href = "{% url 'app01:books' %}";
+                }
+            }
+        })
     })
 </script>
 </html>
