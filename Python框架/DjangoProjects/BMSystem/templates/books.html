@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>书架</title>
+
+    <script src="/static/jquery.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+    <style>
+        .bookshift tbody tr td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .bookshift th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+{% include 'nav_bar.html' %}
+
+<div class="container" style="width: 80%">
+    <div class="panel panel-default">
+        <div class="panel-heading">书籍管理</div>
+        <div class="panel-body">
+            <div>
+                <a class="btn btn-primary" href="{% url 'app01:add_books' %}" role="button">
+                    添加书籍
+                </a>
+            </div>
+            <div>
+                <table class="table table-striped bookshift table-hover">
+                    <thead>
+                    <tr class="book-th">
+                        <th>编号</th>
+                        <th>书籍名称</th>
+                        <th>价格</th>
+                        <th>出版日期</th>
+                        <th>出版社</th>
+                        <th>作者</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <form action="{% url 'app01:books' %}" METHOD="post">
+                        <input class="hide" type="text" name="del_id">
+                        {% csrf_token %}
+                        <tbody>
+                        {% for ob,name in dic.items %}
+                            <tr>
+                                <td class="hide">{{ ob.id }}</td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ ob.title }}</td>
+                                <td>{{ ob.price }}</td>
+                                <td>{{ ob.publish_date|date:"Y-m-d" }}</td>
+                                <td>{{ ob.publishs.name }}</td>
+                                <td>{{ name }}</td>
+                                <td>
+                                    <a class="btn btn-warning edit-book" href="{% url 'app01:edit_books' %}?book_id={{ ob.id }}"
+                                       role="button">
+                                        编辑
+                                    </a>
+                                    <button type="submit" class="btn btn-danger del-book">删除</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $(".del-book").click(function () {
+        $("[name = del_id]").val($(this).parent().siblings('.hide').text());
+    })
+</script>
+</html>

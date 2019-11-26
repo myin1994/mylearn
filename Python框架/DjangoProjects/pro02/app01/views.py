@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
 from django.urls import reverse
 from app01 import models
-
+from django.db.models import *
 
 # Create your views here.
 class Login(View):
@@ -118,6 +118,34 @@ def query(request):
     # obj = models.AuthorDetail.objects.get(id=1)
     # obj.authors.name = "张三2"
 
-    obj = models.Publishs.objects.filter(name__startswith="南京").first()
-    print(obj.book_set.filter(id=3).delete())
+    # obj = models.Publishs.objects.filter(name__startswith="南京").first()
+    # print(obj.book_set.filter(id=3).delete())
+
+
+    # ret = models.Authors.objects.filter(name="张三").values("au_detail__addr")
+    # print(ret)
+    # ret = models.AuthorDetail.objects.filter(authors__name="张三").values("addr")
+    # print(ret)
+
+
+    # ret = models.Book.objects.filter(title="C++").values("publish__name")
+    # print(ret)
+    # ret = models.Publishs.objects.filter(book__title="C++").values("name")
+    # print(ret)
+
+    # ret = models.Book.objects.filter(title="D++").values("author__name")
+    # print(ret)
+    # ret = models.Authors.objects.filter(book__title="D++").values("name")
+    # print(ret)
+
+    # ret = models.Book.objects.filter(author__age=19).values("title")
+    # print(ret)
+
+    # ret = models.Book.objects.values("publish_id").annotate(m=Max("price"))
+    # ret = models.Publishs.objects.annotate(m=Max("book__price")).values("m","book__title")
+
+    # ret = models.Book.objects.values("publish_id").annotate(m=Max("price"))
+    ret = models.Publishs.objects.order_by("-book__price").values("id","book__title").annotate(m=Max("book__price"))
+    print(ret)
+
     return HttpResponse("ko")

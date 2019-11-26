@@ -428,7 +428,7 @@
 
   + 反向查询
 
-    ```
+    ```python
     jinlong2_obj = models.Author.objects.get(name='金龙2')
     ret = jinlong2_obj.book_set.all().values('title')
     print(ret)
