@@ -4,6 +4,7 @@ from django.urls import reverse
 from app01 import models
 from django.db import transaction
 from mytools import mytools
+from django.http import JsonResponse
 
 # Create your views here.
 class Login(View):
@@ -39,8 +40,14 @@ class Books(View):
 
     def post(self,request):
         del_id = request.POST.get("del_id")
-        models.Book.objects.get(id=del_id).delete()
-        return redirect(reverse("app01:books"))
+        ret_data = {"status": None}
+        try:
+            models.Book.objects.get(id=del_id).delete()
+            ret_data["status"] = 1
+            return JsonResponse(ret_data)
+        except:
+            return JsonResponse(ret_data)
+        # return redirect(reverse("app01:books"))
 
 
 class AddBooks(View):
@@ -54,12 +61,17 @@ class AddBooks(View):
         with transaction.atomic():
             dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
             # 先添加book表
-            new_obj = models.Book.objects.create(**dic)
-            # 再添加book——author表
             lst = request.POST.getlist("author")
-            # id = models.Book.objects.last().id
-            # models.Book.objects.get(id=id).authors.add(*lst)
-            new_obj.authors.add(*lst)
+            if lst:
+                new_obj = models.Book.objects.create(**dic)
+                # 再添加book——author表
+
+                # id = models.Book.objects.last().id
+                # models.Book.objects.get(id=id).authors.add(*lst)
+                new_obj.authors.add(*lst)
+            else:
+                return HttpResponse("error")
+
         return redirect(reverse("app01:books"))
 
 class EditBooks(View):
@@ -105,3 +117,55 @@ def upload(request):
             for i in file_obj.chunks():
                 f.write(i)
         return HttpResponse("OK")
+
+def upload_file_write(file_obj,mode="wb"):
+    with open(file_obj.name,mode=mode) as f:
+        for i in file_obj.chunks():
+            f.write(i)
+
+def ajaxupload(request):
+    if request.method == "GET":
+        return render(request,"ajaxupload.html")
+    else:
+        print(request.POST)
+        print("ajax")
+        print(request.POST.get("name"))
+        print(request.FILES)
+        file_obj = request.FILES.get('file_obj')
+        print(file_obj)
+        upload_file_write(file_obj)
+        return HttpResponse("OK")
+
+import json
+import datetime
+import time
+def data(request):
+    if request.method == "GET":
+        return render(request,'xxx.html')
+    else:
+        # t = time.localtime(time.time())
+        # d1 = {'name':'myname','age':datetime.datetime.now(),"time":t}
+        d1 = {'name':'myname','age':18}
+        print(request.POST)
+        # dic1 = request.POST.get("dic1[name]")
+        # dic2 = request.POST.get("dic1[age]")
+        # dic3 = request.POST.get("age")
+        # dic4 = request.POST.getlist("lst[]")
+        dic = request.POST.get("dic1")
+        print(type(json.loads(dic)),json.loads(dic))
+        print(type(json.loads(dic)["age"]),json.loads(dic)["age"])
+        # print(type(dic1),dic1)
+        # print(type(dic2),dic2)
+        # print(type(dic3),dic3)
+        # print(type(dic4),dic4)
+        # print(datetime.datetime.now())
+        # print(d1)
+        # d1 = [1,2,3,4,"22","你好"]
+        # d1_str = json.dumps(d1,ensure_ascii=False)
+        # print(1)
+        # l1 = ["aa",'bb','cc','你好']
+        # return JsonResponse(d1,safe=False)
+        # return JsonResponse(l1,safe=False)
+        # return HttpResponse(d1_str)
+        return HttpResponse("ok")
+        # return HttpResponse(d1_str,content_type="application/json")

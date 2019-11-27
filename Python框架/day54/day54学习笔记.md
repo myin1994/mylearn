@@ -57,7 +57,7 @@
 
 + html
 
-  ```
+  ```html
   html代码:  
       <form action="" method="post" enctype="multipart/form-data">
           {% csrf_token %}

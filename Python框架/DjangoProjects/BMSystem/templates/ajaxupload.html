@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <script src="/static/jquery.js"></script>
+{#    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">#}
+{#    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">#}
+{#    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>#}
+</head>
+<body>
+
+{% csrf_token %}
+用户名ajax ：<input type="text" id="name">
+头像：<input type="file" id="file_obj">
+<input type="button" value="提交" id="btn">
+
+</body>
+<script>
+    $("#btn").click(function () {
+        var formdata = new FormData();
+        var name = $("#name").val();
+
+        //var file_obj = $("#file_obj").val();//拿到的是文件本地路径
+        var file_obj = $("#file_obj")[0].files[0];//文件对象
+
+        formdata.append("name",name);
+        formdata.append("file_obj",file_obj);
+        formdata.append("csrfmiddlewaretoken",$("[name='csrfmiddlewaretoken']").val());
+        $.ajax({
+            url:"/ajaxupload/",
+            type:"post",
+            data:formdata,
+            processData:false,
+            contentType:false,
+            success:function (res) {
+                    console.log(res)
+                }
+        })
+    })
+</script>
+</html>

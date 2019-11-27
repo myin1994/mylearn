@@ -6,4 +6,6 @@ urlpatterns = [
     url(r'^books/add/', AddBooks.as_view(),name="add_books"),
     url(r'^books/edit/', EditBooks.as_view(),name="edit_books"),
     url(r'^upload/', upload,name="upload"),
+    url(r'^ajaxupload/', ajaxupload,name="ajaxupload"),
+    url(r'^data/', data,name="data"),
 ]

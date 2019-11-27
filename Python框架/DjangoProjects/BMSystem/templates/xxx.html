@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/jquery.js"></script>
+</head>
+<body>
+
+<button id="btn">点一下</button>
+
+<ul id="liebiao">
+
+</ul>
+
+</body>
+<script>
+    $("#btn").click(function () {
+        var dic={'name':'myname','age':18};
+        $.ajax(
+            {
+                url:'/data/',
+                type:"post",
+                //contentType:"application/json",
+                data: {
+                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "dic1":JSON.stringify(dic),
+                    "age":18,
+                    "lst":[1,2,3]
+            },
+                success:function (res) {
+                    //var res_dic = JSON.parse(res);
+                    //console.log(res_dic);
+                    //console.log(typeof res_dic);
+                    console.log(res);
+                    console.log(typeof res);
+                    //for (var i in res){
+                        //$("#liebiao").append(`<li>${i}</li>`)
+                    //}
+                    //console.log(typeof res);
+                    //console.log(res.name);
+                }
+            }
+        )
+    })
+</script>
+</html>
