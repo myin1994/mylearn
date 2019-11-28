@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
+from django.utils.decorators import method_decorator
 from django.urls import reverse
 from app01 import models
 from django.db import transaction
 from mytools import mytools
 from django.http import JsonResponse
 
+from datetime import datetime,timedelta
 # Create your views here.
 class Login(View):
     def get(self, request):
@@ -18,13 +20,49 @@ class Login(View):
         print(request.POST)
         obj = models.UserInfo.objects.filter(password=password, username=username)
         if obj:
-            return redirect(reverse("app01:books"))
+            ret = redirect(reverse("app01:books"))
+            # ret.set_cookie("login_status","success")
+            # ret.set_signed_cookie("login_status","success","xxxooo")
+
+            # request.session['login_status'] = "success"
+            # request.session['login_status1'] = "success1"
+
+
+            return ret
+            # return redirect(reverse("app01:books"))
         else:
             # status = "密码错误请重新登录！"
             return HttpResponse("error")
             # return render(request, "login.html", {"status": status})
 
+def login_sign(f):
+    def inner(request):
+        login_status = request.session.get("login_status")
+        login_status2 = request.session.get("login_status1")
+        # session_key = request.session.session_key
+        # print("session_key",session_key)
+        # login_status2 = request.COOKIES.get("sessionid")
+        # print(request.session.keys())
+        # print(request.session.values())
+        # print(request.session.items())
+        # login_status = request.COOKIES.get("login_status")
+        # login_status = request.get_signed_cookie("login_status",salt="xxxooo")
+        # print(login_status)
+        # print(login_status2)
+        if login_status != "success":
+            return redirect("app01:login")
+        else:
+            ret = f(request)
+            return ret
+    return inner
+
+
+# @method_decorator(login_sign,name='get')
 class Books(View):
+    # @method_decorator(login_sign)
+    def dispatch(self, request, *args, **kwargs):
+        ret = super().dispatch(request, *args, **kwargs)
+        return ret
 
     def get(self, request):
         dic = dict()
@@ -137,8 +175,6 @@ def ajaxupload(request):
         return HttpResponse("OK")
 
 import json
-import datetime
-import time
 def data(request):
     if request.method == "GET":
         return render(request,'xxx.html')
@@ -169,3 +205,14 @@ def data(request):
         # return HttpResponse(d1_str)
         return HttpResponse("ok")
         # return HttpResponse(d1_str,content_type="application/json")
+
+def index(request):
+    print("app01 中的 index视图")
+    # raise ValueError('出错啦1')
+    def render():
+        print("in index/render")
+        raise ValueError('出错啦2') #至于render函数中报错了，那么会先执行process_template_response方法，然后执行process_exception方法，如果是在render方法外面报错了，那么就不会执行这个process_template_response方法了。
+        return HttpResponse("O98K") #返回的将是这个新的对象
+    rep = HttpResponse("OK")
+    rep.render = render
+    return rep
