@@ -1,0 +1,55 @@
+{% extends "shoptemplate.html" %}
+{% block pagename %}
+    订单查询
+{% endblock %}
+
+{% block style %}
+    .ordershift tbody tr td {
+    vertical-align: middle;
+    text-align: center;
+    }
+
+    .ordershift th {
+    text-align: center;
+    }
+{% endblock %}
+
+{% block title %}
+    订单查询 <i class="fa fa-cog fa-spin"></i>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <a class="btn btn-primary" href="{% url 'shops:shopcar' %}">
+            <i class="fa fa-mail-reply"></i>返回上一页
+        </a>
+        <a class="btn btn-primary" href="{% url 'shops:usergoods' %}">
+            <i class="fa fa-home"></i>返回商品页
+        </a>
+    </div>
+    <table class="table table-striped ordershift table-hover">
+        <thead>
+        <tr class="order-th">
+            <th>#</th>
+            <th>订单编号</th>
+            <th>总消费(元)</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td class="number">{{ forloop.counter }}</td>
+                <td>{{ order.id }}</td>
+                <td>{{ order.order_price }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'shops:orderdetails' %}?order_id={{ order.id }}"><i class="fa fa-bookmark-o"></i>查看明细
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+

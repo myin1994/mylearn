@@ -1,0 +1,48 @@
+{% extends "shoptemplate.html" %}
+{% block pagename %}
+    订单详细信息
+{% endblock %}
+
+{% block style %}
+    .goodshift tbody tr td {
+    vertical-align: middle;
+    text-align: center;
+    }
+
+    .goodshift th {
+    text-align: center;
+    }
+{% endblock %}
+
+{% block title %}
+    订单详细信息(订单ID:{{ order_id }}) <i class="fa fa-cog fa-spin"></i>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <a class="btn btn-primary" href="{% url 'shops:orderlist' %}">
+            <i class="fa fa-mail-reply"></i>返回上一页
+        </a>
+    </div>
+    <table class="table table-striped goodshift table-hover">
+        <thead>
+        <tr class="order-th">
+            <th>#</th>
+            <th>已购商品名称</th>
+            <th>单价(元)</th>
+            <th>数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td class="number">{{ forloop.counter }}</td>
+                <td>{{ order.goods1__gname }}</td>
+                <td>{{ order.goods1__price }}</td>
+                <td>{{ order.goods_number }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

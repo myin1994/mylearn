@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block pagename %}
+            登录页面
+        {% endblock pagename %}</title>
+    <script src="/static/jquery.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/dist/sweetalert.css">
+    <script src="/static/dist/sweetalert.min.js"></script>
+    <style>
+        .goodshift tbody tr td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .goodshift th {
+            text-align: center;
+        }
+
+        .alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 200px;
+            margin-left: -100px;
+            z-index: 99999;
+            padding: 15px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+
+        .alert-info {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+
+        .alert-warning {
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border-color: #faebcc;
+        }
+
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+
+        {% block style %}
+
+        {% endblock style %}
+    </style>
+</head>
+<body>
+{#{% include 'nav_bar.html' %}#}
+<!--整个页面范围-->
+<div class="alert"></div>
+<div class="container center-block">
+
+
+    <div class="panel panel-default">
+
+
+        <div class="panel-heading">{% block title %}xx页面 <i class="fa fa-cog fa-spin"></i>{% endblock title %}</div>
+
+        <div class="panel-body">
+            {% block body %}
+                this is body
+
+
+            {% endblock body %}
+        </div>
+    </div>
+</div>
+
+</body>
+{% block script %}
+
+{% endblock script %}
+</html>

@@ -2,166 +2,83 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d9af412-675a-45d0-9609-ae169f85ef3f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../BMSystem/app01/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/js/bootstrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/bootstrap-3.3.7-dist/js/npm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/HELP-US-OUT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/css/font-awesome.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/css/font-awesome.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/fonts/FontAwesome.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/animated.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/bordered-pulled.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/core.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/fixed-width.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/font-awesome.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/icons.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/larger.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/list.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/mixins.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/path.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/rotated-flipped.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/screen-reader.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/stacked.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/less/variables.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_animated.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_bordered-pulled.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_core.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_fixed-width.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_icons.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_larger.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_list.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_mixins.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_path.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_rotated-flipped.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_screen-reader.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_stacked.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/_variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/font-awesome-4.7.0/scss/font-awesome.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/statics/jquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/templates/add_book.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/templates/books.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../BMSystem/templates/nav_bar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../BMSystem/app01/mymiddleware/othermethod.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/.idea/ShopSyetem.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/shops/mymiddleware/MD1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/shops/mymiddleware/MD2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/shops/mymiddleware/login_sign.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/shops/mymiddleware/othermethod.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/shops/shoptools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/shops/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/bootstrap-3.3.7-dist/js/npm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/dist/sweetalert.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/dist/sweetalert.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/dist/sweetalert.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/HELP-US-OUT.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/css/font-awesome.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/css/font-awesome.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/fonts/FontAwesome.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/animated.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/bordered-pulled.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/core.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/fixed-width.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/font-awesome.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/icons.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/larger.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/list.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/mixins.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/path.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/rotated-flipped.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/screen-reader.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/stacked.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/less/variables.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_animated.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_bordered-pulled.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_core.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_fixed-width.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_icons.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_larger.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_list.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_mixins.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_path.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_rotated-flipped.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_screen-reader.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_stacked.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/_variables.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/font-awesome-4.7.0/scss/font-awesome.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/statics/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/templates/goods.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/templates/nav_bar.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/templates/shoptemplate.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ShopSyetem/templates/signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../Python全栈学习.xmind" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Python全栈学习.xmind" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BMSystem/BMSystem/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BMSystem/BMSystem/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BMSystem/BMSystem/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BMSystem/BMSystem/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BMSystem/BMSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BMSystem/BMSystem/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BMSystem/app01/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BMSystem/app01/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BMSystem/app01/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BMSystem/app01/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/pro02.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/migrations/0002_auto_20191122_0956.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/migrations/0003_auto_20191122_1034.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/templatetags/my_tags.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/app01/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/db.sqlite3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/manage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/.idea/pro02.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/pro02/wsgi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/js/bootstrap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/js/bootstrap.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/bootstrap-3.3.7-dist/js/npm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/HELP-US-OUT.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/css/font-awesome.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/css/font-awesome.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/fonts/FontAwesome.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/fonts/fontawesome-webfont.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/animated.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/bordered-pulled.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/core.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/fixed-width.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/font-awesome.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/icons.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/larger.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/list.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/mixins.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/path.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/rotated-flipped.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/screen-reader.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/stacked.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/less/variables.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_animated.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_bordered-pulled.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_core.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_fixed-width.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_icons.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_larger.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_list.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_mixins.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_path.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_rotated-flipped.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_screen-reader.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_stacked.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/_variables.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/font-awesome-4.7.0/scss/font-awesome.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/statics/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/templates/add_book.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/templates/books.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/templates/left_menu.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/templates/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pro02 - 副本/templates/nav_bar.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app01/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app01/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/books.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/books.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../day52/day52学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../day52/day52学习笔记.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -346,6 +263,8 @@
       <workItem from="1574648664578" duration="3827000" />
       <workItem from="1574661664525" duration="153000" />
       <workItem from="1574669848410" duration="2566000" />
+      <workItem from="1575080051091" duration="1265000" />
+      <workItem from="1575095843166" duration="658000" />
     </task>
     <servers />
   </component>

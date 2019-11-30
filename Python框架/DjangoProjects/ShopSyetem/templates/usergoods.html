@@ -1,0 +1,67 @@
+{% extends "shoptemplate.html" %}
+{% block pagename %}
+    MY商城
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block title %}
+    商品列表 <i class="fa fa-cog fa-spin"></i>
+{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped goodshift table-hover">
+        <thead>
+        <tr class="good-th">
+            <th>#</th>
+            <th>商品名称</th>
+            <th>价格(元)</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for good in goods %}
+            <tr>
+                <td class="number">{{ forloop.counter }}</td>
+                <td>{{ good.gname }}</td>
+                <td>{{ good.price }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning add-shopcar"
+                            add_id="{{ good.id }}"><i
+                            class="fa fa-cog fa-cart-arrow-down"></i>添加购物车
+                    </button>
+                    <a type="button" class="btn btn-success del-goods" href="{% url 'shops:shopcar' %}"><i
+                            class="fa fa-search"></i>查看购物车
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(".add-shopcar").click(function () {
+            var add_id = $(this).attr("add_id");
+            $.ajax({
+                url: "{% url 'shops:usergoods' %}",
+                type: "post",
+                data: {
+                    "add_id": add_id,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}"
+                },
+                success: function (res) {
+                    if (res === "OK") {
+                        $('.alert').html('商品添加成功').addClass('alert-success').show().delay(1000).fadeOut();
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock %}

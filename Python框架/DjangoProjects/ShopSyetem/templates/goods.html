@@ -1,0 +1,202 @@
+{% extends "shoptemplate.html" %}
+{% block pagename %}
+    商品管理
+{% endblock %}
+
+{% block style %}
+    .goodshift tbody tr td {
+    vertical-align: middle;
+    text-align: center;
+    }
+
+    .goodshift th {
+    text-align: center;
+    }
+{% endblock %}
+
+{% block title %}
+    商品管理 <i class="fa fa-cog fa-spin"></i>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <button type="button" class="btn btn-primary add-good" data-toggle="modal" data-target="#myModal">
+            添加商品
+        </button>
+    </div>
+    <table class="table table-striped goodshift table-hover">
+        <thead>
+        <tr class="good-th">
+            <th>#</th>
+            <th>商品名称</th>
+            <th>价格(元)</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for good in goods %}
+            <tr>
+                <td class="number">{{ forloop.counter }}</td>
+                <td>{{ good.gname }}</td>
+                <td>{{ good.price }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning edit-goods" data-toggle="modal"
+                            data-target="#myModal" edit_id="{{ good.id }}">编辑
+                    </button>
+                    <button type="button" class="btn btn-danger del-goods" del_id="{{ good.id }}">删除
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">添加商品</h4>
+                </div>
+                <div class="modal-body">
+                    {#                    <form action="{% url 'shops:goods' %}" METHOD="post">#}
+                    {#                        {% csrf_token %}#}
+                    <input class="hide edit-id" type="text" name="edit-goods">
+                    <div class="form-group">
+                        <label for="gname">商品名称</label>
+                        <input type="text" class="form-control" id="gname" placeholder="商品名称" name="gname">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">价格</label>
+                        <input type="number" class="form-control" id="price" placeholder="价格" name="price" min="0.0"
+                               step="0.001">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="sub">提交</button>
+                    </div>
+                    <h5 class="error" style="color: red"></h5>
+                    {#                    </form>#}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $("#gname,#price").focus(function () {
+            $(".error").text("")
+        });
+
+        $(".edit-goods").click(function () {
+            $(".edit-id").val($(this).attr("edit_id"));
+            $("[name = gname]").val($(this).parent().siblings().eq(1).text());
+            $("[name = price]").val($(this).parent().siblings().eq(2).text());
+        });
+
+
+        $("#sub").click(function () {
+            var gname = $("#gname").val();
+            var price = $("#price").val();
+            var edit_id = $(".edit-id").val();
+            $.ajax({
+                url: "{% url 'shops:goods' %}",
+                type: "post",
+                data: {
+                    'gname': gname,
+                    'price': price,
+                    "edit_id":edit_id,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}"
+                },
+                success: function (res) {
+                    if (res === "blank") {
+                        $(".error").text("商品名或价格不能为空，请重新输入！")
+                    } else if (res === "edit-ok"){
+
+                        location.href = "{% url 'shops:goods' %}";
+                        $('.alert').html('修改成功').addClass('alert-success').show().delay(5000).fadeOut();
+                    }
+                    else {
+                        $('.alert').html('商品添加成功').addClass('alert-success').show().delay(1000).fadeOut();
+                        location.href = "{% url 'shops:goods' %}";
+                    }
+                }
+            })
+        });
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+        $(".del-goods").on("click", function () {
+            var delbtn = $(this);
+            swal({
+                    title: "你确定要删除吗？",
+                    text: "删除可就找不回来了哦！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "删除",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false
+                },
+
+                function () {
+                    var deleteId = delbtn.attr("del_id");
+                    $.ajax({
+                        url: "{% url 'shops:goods' %}",
+                        type: "delete",
+                        data: {
+                            "del_id": deleteId,
+                        },
+                        success: function (data) {
+                            if (data.status === 1) {
+                                swal("删除成功!", "你可以准备跑路了！", "success");
+                                //location.reload()
+                                delbtn.parent().parent().remove();
+                                var num_td = $(".number");
+                                for (var i = 0; i < num_td.length; i++) {
+                                    num_td[i].innerText = i + 1
+                                }
+                            } else {
+                                swal("删除失败", "你可以再尝试一下！", "error")
+                            }
+                        }
+                    })
+                });
+        })
+    </script>
+{% endblock %}
