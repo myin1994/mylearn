@@ -8,7 +8,8 @@ def dict_filter(dic, error, *args):
     """
     dic2 = {}
     for k in args:
-        if not dic.get(k):
+        # if not dic.get(k) or dic.get(k).replace(" ",'') == '':
+        if not dic.get(k) or " " in dic.get(k):
             print(type(dic.get(k)))
             print(k)
             raise NameError(error)

@@ -9,7 +9,7 @@
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-{#{% include 'nav_bar.html' %}#}
+{% include 'nav_bar.html' %}
 <!--整个页面范围-->
 <div class="container center-block">
 
@@ -72,7 +72,7 @@
             },
             success: function (res) {
                 if (res === "error") {
-                    $(".error").text("密码错误请重新登录")
+                    $(".error").text("用户名或密码有误请重新输入")
                 } else if (res === "1") {
                     location.href="{% url 'shops:goods' %}"
                 }else{

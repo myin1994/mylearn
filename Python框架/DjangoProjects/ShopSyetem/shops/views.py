@@ -12,6 +12,7 @@ import traceback
 from datetime import datetime,timedelta
 from shops.shoptools import *
 from django.http import QueryDict
+from django.db.utils import *
 
 # Create your views here.
 class Login(View):
@@ -30,6 +31,11 @@ class Login(View):
         else:
             return HttpResponse("error")
 
+class Logout(View):
+    def get(self, request):
+        request.session.flush()
+        return render(request, "login.html")
+
 class SignUp(View):
     def get(self, request):
         return render(request, "signup.html")
@@ -40,11 +46,15 @@ class SignUp(View):
             return HttpResponse("ok")
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()  # 元组
-            print(exc_type, exc_value, exc_traceback)
+            # print(exc_type, exc_value, exc_traceback)
             if type(exc_value) == NameError:
                 return HttpResponse("blank")
+            elif type(exc_value) == DataError:
+                return HttpResponse("tolong")
+            elif type(exc_value) == IntegrityError:
+                return HttpResponse("Duplicate")
             else:
-                return HttpResponse("error")
+                print(exc_type, exc_value, exc_traceback)
 
 class Goods(View):
     def get(self, request):

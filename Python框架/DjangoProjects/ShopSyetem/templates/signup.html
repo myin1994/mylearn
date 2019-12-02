@@ -9,7 +9,7 @@
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-{#{% include 'nav_bar.html' %}#}
+{% include 'nav_bar.html' %}
 <!--整个页面范围-->
 <div class="container center-block">
 
@@ -62,10 +62,12 @@
                 "csrfmiddlewaretoken": "{{ csrf_token }}"
             },
             success: function (res) {
-                if (res === "error") {
+                if (res === "Duplicate") {
                     $(".error").text("用户名重复，请重新输入！")
-                } else if (res === "blank"){
-                    $(".error").text("用户名或密码不能为空，请重新输入！")
+                } else if (res === "tolong"){
+                    $(".error").text("用户名或密码过长(最长为18位)，请重新输入！")
+                }else if (res === "blank"){
+                    $(".error").text("用户名或密码不能含有空值，请重新输入！")
                 }
                 else {
                     alert("注册成功");

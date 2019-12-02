@@ -13,8 +13,8 @@ class Login_sign(MiddlewareMixin):
             return redirect("shops:login")
 
     def process_response(self, request, response):
-        if request.path == reverse("shops:goods") and request.session["role"] != 1:
+        if request.path == reverse("shops:goods") and request.session.get("role") != 1:
             return redirect("shops:login")
-        elif request.path == reverse("shops:usergoods") and request.session["role"] != 0:
+        elif request.path == reverse("shops:usergoods") and request.session.get("role") != 0:
             return redirect("shops:login")
         return response

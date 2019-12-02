@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/dist/sweetalert.css">
     <script src="/static/dist/sweetalert.min.js"></script>
+    <link href="/static/banner-rain-falls-master/css/guyu_index.css" rel="stylesheet"/>
     <style>
         .goodshift tbody tr td {
             vertical-align: middle;
@@ -64,9 +66,20 @@
         {% endblock style %}
     </style>
 </head>
-<body>
-{#{% include 'nav_bar.html' %}#}
+<div class="rain" style="background-position: 0px -100px; opacity: 0.1;"></div>
+<body class="big_banner" style="background: url({% static 'banner-rain-falls-master/img/cover.png' %}) center repeat-y;background-size:cover;">
+{#<body>#}
+
+<div class="posi_absu">
+{% include 'nav_bar.html' %}
+
 <!--整个页面范围-->
+{#<div class="big_banner">#}
+{#    <div class="welcome"#}
+{#         style="background: url({% static 'banner-rain-falls-master/img/cover.png' %}) center no-repeat;background-size:cover;">#}
+
+{#    </div>#}
+{#</div>#}
 <div class="alert"></div>
 <div class="container center-block">
 
@@ -77,17 +90,47 @@
         <div class="panel-heading">{% block title %}xx页面 <i class="fa fa-cog fa-spin"></i>{% endblock title %}</div>
 
         <div class="panel-body">
-            {% block body %}
-                this is body
-
-
-            {% endblock body %}
         </div>
+        {% block body %}
+            this is body
+
+
+        {% endblock body %}
     </div>
 </div>
-
+</div>
 </body>
 {% block script %}
 
 {% endblock script %}
+<script>
+    //谷雨雨滴
+    $(".guyu_logo").fadeIn(3000);
+    var _h = document.documentElement.clientHeight;
+
+    var times = 0;
+    var rainDom = $(".rain");
+    var raining = setInterval(function () {
+        rainingFn();
+    }, 170);
+
+    function rainingFn() {
+        var i = times % 4;
+        switch (i) {
+            case 0:
+                rainDom.css("background-position", "0 0");
+                break;
+            case 1:
+                rainDom.css("background-position", "500px 34px");
+                break;
+            case 2:
+                rainDom.css({"background-position": "-545px -77px", "opacity": "0.7"});
+                break;
+            case 3:
+                rainDom.css("background-position", "0 -100px");
+                break;
+        }
+        times++;
+    }
+</script>
 </html>

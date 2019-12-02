@@ -3,7 +3,7 @@ import datetime
 
 # Create your models here.
 class UserInfo(models.Model):
-    username = models.CharField(max_length=10, blank=False, unique=True)
+    username = models.CharField(max_length=18, blank=False, unique=True)
     password = models.CharField(max_length=32, blank=False)
     role = models.IntegerField(blank=True, default=0)
 
@@ -32,7 +32,7 @@ class Order(models.Model):
     )
     m = models.ManyToManyField(to='Goods',through='OrderGoods', through_fields=('order1', 'goods1'))
     order_price = models.FloatField(blank=False,default=0)
-    order_date = models.DateTimeField(default=datetime.datetime.now())
+    order_date = models.DateTimeField(auto_now=True)
 
 class OrderGoods(models.Model):
     order1 = models.ForeignKey('Order')

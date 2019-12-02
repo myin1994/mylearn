@@ -1,3 +1,4 @@
+
 {% extends "shoptemplate.html" %}
 {% block pagename %}
     商品管理
@@ -89,6 +90,10 @@
 
 {% block script %}
     <script>
+        $(".add-good").focus(function () {
+            $("[name = gname]").val("");
+            $("[name = price]").val("");
+        });
         $("#gname,#price").focus(function () {
             $(".error").text("")
         });
@@ -197,6 +202,6 @@
                         }
                     })
                 });
-        })
+        });
     </script>
 {% endblock %}
