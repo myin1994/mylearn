@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 # Create your models here.
 class UserInfo(models.Model):
@@ -9,7 +9,7 @@ class UserInfo(models.Model):
 
 class Goods(models.Model):
     gname = models.CharField(max_length=20, blank=False)
-    price = models.IntegerField(blank=False)
+    price = models.FloatField(blank=False)
 
 class ShopCar(models.Model):
     user = models.ForeignKey(
@@ -31,7 +31,8 @@ class Order(models.Model):
         on_delete=models.CASCADE
     )
     m = models.ManyToManyField(to='Goods',through='OrderGoods', through_fields=('order1', 'goods1'))
-    order_price = models.IntegerField(blank=False,default=0)
+    order_price = models.FloatField(blank=False,default=0)
+    order_date = models.DateTimeField(default=datetime.datetime.now())
 
 class OrderGoods(models.Model):
     order1 = models.ForeignKey('Order')

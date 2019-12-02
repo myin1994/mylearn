@@ -127,8 +127,13 @@ class ShopCar(View):
             # 添加订单表
             uid = request.session["userid"]
             allgoods = models.Goods.objects.filter(shopcar__user_id=uid).values("shopcar__gnumber", "gname", "price", "id")
-            order_price = allgoods.aggregate(m=Sum(F("shopcar__gnumber")*F("price")))
-            ret = models.Order.objects.create(user_id=uid,order_price=order_price["m"])
+            order_price = 0
+            for i in allgoods:
+                order_price += i["shopcar__gnumber"] * i["price"]
+            if order_price == 0:
+                raise NameError("购物车为空")
+            # order_price = allgoods.aggregate(m=Sum(F("shopcar__gnumber")*F("price")))#只能进行整数运算
+            ret = models.Order.objects.create(user_id=uid,order_price=order_price)
             # 添加订单商品表信息
             for i in allgoods:
                 models.OrderGoods.objects.create(order1_id=ret.id,goods1_id=i["id"],goods_number=i["shopcar__gnumber"])
@@ -136,6 +141,9 @@ class ShopCar(View):
             models.ShopCar.objects.filter(user_id=uid).delete()
             return HttpResponse("OK")
         except:
+            # exc_type, exc_value, exc_traceback = sys.exc_info()  # 元组
+            # print(exc_type, exc_value, exc_traceback)
+            # traceback.print_tb(exc_traceback, limit=1)
             return HttpResponse("not OK")
 
 class OrderList(View):
