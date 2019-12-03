@@ -10,6 +10,8 @@ class UserInfo(models.Model):
 class Author(models.Model):
     name = models.CharField(max_length=32)
     age = models.IntegerField()
+    def __str__(self):
+        return self.name
 
 class AuthorDetail(models.Model):
     birthday = models.DateField()
@@ -21,6 +23,9 @@ class AuthorDetail(models.Model):
 class Publish(models.Model):
     name = models.CharField(max_length=32)
     city = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.name
 
 class Book(models.Model):
     title = models.CharField(max_length=32)

@@ -49,8 +49,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'app01.mymiddleware.login_sign.Login_sign',
-    'app01.mymiddleware.MD1.MD1',
-    'app01.mymiddleware.MD2.MD2',
+    # 'app01.mymiddleware.MD1.MD1',
+    # 'app01.mymiddleware.MD2.MD2',
 ]
 
 ROOT_URLCONF = 'BMSystem.urls'

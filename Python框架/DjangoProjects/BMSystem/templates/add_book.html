@@ -20,41 +20,38 @@
     <div class="panel panel-default">
         <div class="panel-heading">添加书籍</div>
         <div class="panel-body">
-            <form action="{% url 'app01:add_books' %}" method="post">
-            {% csrf_token %}
-                <div class="form-group">
-                    <label for="title">书籍名称</label>
-                    <input type="text" class="form-control" id="title" placeholder="书籍名称" name="title">
-                </div>
-                <div class="form-group">
-                    <label for="price">价格</label>
-                    <input type="number" class="form-control" id="price" placeholder="价格" name="price">
-                </div>
-                <div class="form-group">
-                    <label for="publish_date">出版日期</label>
-                    <input type="date" class="form-control" id="publish_date" name="publish_date">
-                </div>
-                <div class="form-group">
-                    <label for="publish_id">出版社</label>
-                    <select class="form-control" name="publishs_id" id="publishs_id">
-                        {% for i in publish %}
-                            <option value="{{ i.id }}">
-                                {{ i.name }}
-                            </option>
-                        {% endfor %}
+            <form action="{% url 'app01:add_books' %}" method="post" novalidate>
+                {% csrf_token %}
+{#                                {{ obj.as_p }}#}
+{#                                {{ obj.as_table }}#}
+{#                                {{ obj.as_ul }}#}
+                {% for field in obj %}
+                    {{ field.label_tag }}{{ field }}
+                    {{ field.errors }}
+                {% endfor %}
 
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="author">作者</label>
-                    <select class="form-control" name="author" id="author" multiple>
-                        {% for i in author %}
-                            <option value="{{ i.id }}">
-                                {{ i.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+
+
+                {#                <div class="form-group">#}
+                {#                    <label for="{{obj.title.id_for_label}}">{{ obj.title.label}}</label>#}
+                {#                    {{obj.title}}{{ obj.title.errors.0 }}#}
+                {#                </div>#}
+                {#                <div class="form-group">#}
+                {#                    <label for="{{obj.price.id_for_label}}">{{ obj.price.label}}</label>#}
+                {#                    {{obj.price}}{{ obj.price.errors.0 }}#}
+                {#                </div>#}
+                {#                <div class="form-group">#}
+                {#                    <label for="{{obj.publish_date.id_for_label}}">{{ obj.publish_date.label}}</label>#}
+                {#                    {{obj.publish_date}}{{ obj.publish_date.errors.0 }}#}
+                {#                </div>#}
+                {#                <div class="form-group">#}
+                {#                    <label for="{{obj.publishs.id_for_label}}">{{ obj.publishs.label}}</label>#}
+                {#                    {{obj.publishs}}{{ obj.publishs.errors.0 }}#}
+                {#                </div>#}
+                {#                <div class="form-group">#}
+                {#                    <label for="{{obj.authors.id_for_label}}">{{ obj.authors.label}}</label>#}
+                {#                    {{obj.authors}}{{ obj.authors.errors.0 }}#}
+                {#                </div>#}
                 <button type="submit" class="btn btn-default pull-right">提交</button>
             </form>
         </div>

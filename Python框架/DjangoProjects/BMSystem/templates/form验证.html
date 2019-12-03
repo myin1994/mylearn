@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="{% url 'app01:form' %}" method="post">
+    {% csrf_token %}
+    {{ obj.as_table }}
+</form>
+</body>
+</html>

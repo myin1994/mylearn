@@ -7,7 +7,9 @@ from django.db import transaction
 from mytools import mytools
 from django.http import JsonResponse
 
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
+
+
 # Create your views here.
 class Login(View):
     def get(self, request):
@@ -27,13 +29,13 @@ class Login(View):
             # request.session['login_status'] = "success"
             # request.session['login_status1'] = "success1"
 
-
             return ret
             # return redirect(reverse("app01:books"))
         else:
             # status = "密码错误请重新登录！"
             return HttpResponse("error")
             # return render(request, "login.html", {"status": status})
+
 
 def login_sign(f):
     def inner(request):
@@ -54,6 +56,7 @@ def login_sign(f):
         else:
             ret = f(request)
             return ret
+
     return inner
 
 
@@ -72,11 +75,11 @@ class Books(View):
             # for j in i.authors.all().values("name"):
             #     s += " " + (j.get("name"))
             # dic[i]=s
-            dic[i]=" ".join([j.name for j in i.authors.all()])
+            dic[i] = " ".join([j.name for j in i.authors.all()])
 
-        return render(request, "books.html", {"obj": obj,"dic":dic})
+        return render(request, "books.html", {"obj": obj, "dic": dic})
 
-    def post(self,request):
+    def post(self, request):
         del_id = request.POST.get("del_id")
         ret_data = {"status": None}
         try:
@@ -88,29 +91,51 @@ class Books(View):
         # return redirect(reverse("app01:books"))
 
 
+from app01.myforms import *
+
 class AddBooks(View):
 
     def get(self, request):
-        publish = models.Publish.objects.all()
-        author = models.Author.objects.all()
-        return render(request, "add_book.html", {"publish": publish,"author":author})
+        obj = BookForm()
+        return render(request, "add_book.html", {"obj": obj})
 
-    def post(self,request):
+    def post(self, request):
         with transaction.atomic():
-            dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
-            # 先添加book表
-            lst = request.POST.getlist("author")
-            if lst:
-                new_obj = models.Book.objects.create(**dic)
-                # 再添加book——author表
-
-                # id = models.Book.objects.last().id
-                # models.Book.objects.get(id=id).authors.add(*lst)
-                new_obj.authors.add(*lst)
+            print(request.POST)
+            obj = BookForm(data = request.POST)
+            if obj.is_valid():
+                author = obj.cleaned_data.pop("authors")
+                new_obj = models.Book.objects.create(**obj.cleaned_data)
+                new_obj.authors.add(*author)
+                print(obj.cleaned_data)
+                return redirect(reverse("app01:books"))
             else:
-                return HttpResponse("error")
+                return render(request, "add_book.html", {"obj": obj})
 
-        return redirect(reverse("app01:books"))
+
+# class AddBooks(View):
+#
+#     def get(self, request):
+#         publish = models.Publish.objects.all()
+#         author = models.Author.objects.all()
+#         return render(request, "add_book.html", {"publish": publish,"author":author})
+#
+#     def post(self,request):
+#         with transaction.atomic():
+#             dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
+#             # 先添加book表
+#             lst = request.POST.getlist("author")
+#             if lst:
+#                 new_obj = models.Book.objects.create(**dic)
+#                 # 再添加book——author表
+#
+#                 # id = models.Book.objects.last().id
+#                 # models.Book.objects.get(id=id).authors.add(*lst)
+#                 new_obj.authors.add(*lst)
+#             else:
+#                 return HttpResponse("error")
+#
+#         return redirect(reverse("app01:books"))
 
 class EditBooks(View):
 
@@ -125,11 +150,11 @@ class EditBooks(View):
         for i in obj2:
             author_lst.append(i["authors__id"])
 
-        return render(request, "edit_book.html", {"publish": publish,"author":author,"obj":obj,"author_lst":author_lst,
-                                                  "book_id":book_id})
+        return render(request, "edit_book.html",
+                      {"publish": publish, "author": author, "obj": obj, "author_lst": author_lst,
+                       "book_id": book_id})
 
-    def post(self,request):
-
+    def post(self, request):
         with transaction.atomic():
             dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
             # 修改book表
@@ -143,27 +168,30 @@ class EditBooks(View):
             obj.first().authors.set(lst)
         return redirect(reverse("app01:books"))
 
+
 def upload(request):
     if request.method == "GET":
-        return render(request,"upload.html")
+        return render(request, "upload.html")
     else:
         print(request.POST)
         print(request.FILES)
         file_obj = request.FILES.get('file_obj')
         print(file_obj)
-        with open(file_obj.name,"wb") as f:
+        with open(file_obj.name, "wb") as f:
             for i in file_obj.chunks():
                 f.write(i)
         return HttpResponse("OK")
 
-def upload_file_write(file_obj,mode="wb"):
-    with open(file_obj.name,mode=mode) as f:
+
+def upload_file_write(file_obj, mode="wb"):
+    with open(file_obj.name, mode=mode) as f:
         for i in file_obj.chunks():
             f.write(i)
 
+
 def ajaxupload(request):
     if request.method == "GET":
-        return render(request,"ajaxupload.html")
+        return render(request, "ajaxupload.html")
     else:
         print(request.POST)
         print("ajax")
@@ -174,22 +202,25 @@ def ajaxupload(request):
         upload_file_write(file_obj)
         return HttpResponse("OK")
 
+
 import json
+
+
 def data(request):
     if request.method == "GET":
-        return render(request,'xxx.html')
+        return render(request, 'xxx.html')
     else:
         # t = time.localtime(time.time())
         # d1 = {'name':'myname','age':datetime.datetime.now(),"time":t}
-        d1 = {'name':'myname','age':18}
+        d1 = {'name': 'myname', 'age': 18}
         print(request.POST)
         # dic1 = request.POST.get("dic1[name]")
         # dic2 = request.POST.get("dic1[age]")
         # dic3 = request.POST.get("age")
         # dic4 = request.POST.getlist("lst[]")
         dic = request.POST.get("dic1")
-        print(type(json.loads(dic)),json.loads(dic))
-        print(type(json.loads(dic)["age"]),json.loads(dic)["age"])
+        print(type(json.loads(dic)), json.loads(dic))
+        print(type(json.loads(dic)["age"]), json.loads(dic)["age"])
         # print(type(dic1),dic1)
         # print(type(dic2),dic2)
         # print(type(dic3),dic3)
@@ -206,13 +237,47 @@ def data(request):
         return HttpResponse("ok")
         # return HttpResponse(d1_str,content_type="application/json")
 
-def index(request):
-    print("app01 中的 index视图")
-    # raise ValueError('出错啦1')
-    def render():
-        print("in index/render")
-        raise ValueError('出错啦2') #至于render函数中报错了，那么会先执行process_template_response方法，然后执行process_exception方法，如果是在render方法外面报错了，那么就不会执行这个process_template_response方法了。
-        return HttpResponse("O98K") #返回的将是这个新的对象
-    rep = HttpResponse("OK")
-    rep.render = render
-    return rep
+
+# def index(request):
+#     print("app01 中的 index视图")
+#     # raise ValueError('出错啦1')
+#     def render():
+#         print("in index/render")
+#         # raise ValueError('出错啦2') #至于render函数中报错了，那么会先执行process_template_response方法，然后执行process_exception方法，如果是在render方法外面报错了，那么就不会执行这个process_template_response方法了。
+#         # return HttpResponse("O98K") #返回的将是这个新的对象
+#     rep = HttpResponse("OK")
+#     rep.render = render
+#     return rep
+
+
+
+
+# class LoginForm(forms.Form):
+#     username = forms.CharField(
+#         min_length=8,
+#         label="用户名",
+#         initial="张三",
+#         error_messages={
+#             "required": "不能为空",
+#             "invalid": "格式错误",
+#             "min_length": "用户名最短8位"
+#         }
+#     )
+#     password = forms.CharField(min_length=6, label="密码")
+
+
+class LoginForm(forms.Form):
+    ...
+    keep = forms.fields.ChoiceField(
+        label="是否记住密码",
+        initial="checked",
+        widget=forms.widgets.CheckboxInput()
+    )
+
+def form(request):
+    obj = LoginForm()
+    # if request.method == 'POST':
+    #     obj = LoginForm(data=request.POST)
+    #     if obj.is_valid():
+    #         return HttpResponse("注册成功")
+    return render(request, 'form验证.html', locals())

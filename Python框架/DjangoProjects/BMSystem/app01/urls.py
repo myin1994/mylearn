@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^upload/', upload,name="upload"),
     url(r'^ajaxupload/', ajaxupload,name="ajaxupload"),
     url(r'^data/', data,name="data"),
-    url(r'^index/', index,name="index"),
+    # url(r'^index/', index,name="index"),
+    url(r'^form/', form,name="form"),
 ]
