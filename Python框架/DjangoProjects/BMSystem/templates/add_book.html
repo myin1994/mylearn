@@ -26,8 +26,10 @@
 {#                                {{ obj.as_table }}#}
 {#                                {{ obj.as_ul }}#}
                 {% for field in obj %}
-                    {{ field.label_tag }}{{ field }}
-                    {{ field.errors }}
+                    <div class="form-group {% if field.errors.0 %}has-error{% endif %}">
+                        {{ field.label_tag }}{{ field }}
+                    <span class="help-block">{{ field.errors.0 }}</span>
+                    </div>
                 {% endfor %}
 
 

@@ -96,18 +96,16 @@ from app01.myforms import *
 class AddBooks(View):
 
     def get(self, request):
-        obj = BookForm()
+        obj = BookModelForm()
+        print(obj.fields)
         return render(request, "add_book.html", {"obj": obj})
 
     def post(self, request):
         with transaction.atomic():
             print(request.POST)
-            obj = BookForm(data = request.POST)
+            obj = BookModelForm(request.POST)
             if obj.is_valid():
-                author = obj.cleaned_data.pop("authors")
-                new_obj = models.Book.objects.create(**obj.cleaned_data)
-                new_obj.authors.add(*author)
-                print(obj.cleaned_data)
+                obj.save()
                 return redirect(reverse("app01:books"))
             else:
                 return render(request, "add_book.html", {"obj": obj})
@@ -137,36 +135,73 @@ class AddBooks(View):
 #
 #         return redirect(reverse("app01:books"))
 
+
 class EditBooks(View):
 
     def get(self, request):
-        publish = models.Publish.objects.all()
-        author = models.Author.objects.all()
         book_id = request.GET.get("book_id")
-
         obj = models.Book.objects.get(id=book_id)
-        obj2 = models.Book.objects.filter(id=book_id).values("authors__id")
-        author_lst = []
-        for i in obj2:
-            author_lst.append(i["authors__id"])
-
+        obj = BookModelForm(instance=obj)
         return render(request, "edit_book.html",
-                      {"publish": publish, "author": author, "obj": obj, "author_lst": author_lst,
-                       "book_id": book_id})
+                      locals())
 
     def post(self, request):
         with transaction.atomic():
-            dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
-            # 修改book表
-            # new_obj = models.Book.objects.filter(id=request.POST.get("edit_id")).update(**dic)
-            obj = models.Book.objects.filter(id=request.POST.get("edit_id"))
-            obj.update(**dic)
-            # 再更新book——author表
-            lst = request.POST.getlist("author")
-            # id = models.Book.objects.last().id
-            # models.Book.objects.get(id=id).authors.set(lst)
-            obj.first().authors.set(lst)
-        return redirect(reverse("app01:books"))
+            book_id = request.POST.get("edit_id")
+            new_obj = models.Book.objects.get(id=book_id)
+            obj = BookModelForm(request.POST,instance=new_obj)
+            if obj.is_valid():
+                obj.save()
+                return redirect(reverse("app01:books"))
+            else:
+                return render(request, "edit_book.html", {"obj": obj,"book_id":book_id})
+
+
+
+        # with transaction.atomic():
+        #     dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
+        #     # 修改book表
+        #     # new_obj = models.Book.objects.filter(id=request.POST.get("edit_id")).update(**dic)
+        #     obj = models.Book.objects.filter(id=request.POST.get("edit_id"))
+        #     obj.update(**dic)
+        #     # 再更新book——author表
+        #     lst = request.POST.getlist("author")
+        #     # id = models.Book.objects.last().id
+        #     # models.Book.objects.get(id=id).authors.set(lst)
+        #     obj.first().authors.set(lst)
+        # return redirect(reverse("app01:books"))
+
+
+# class EditBooks(View):
+#
+#     def get(self, request):
+#         publish = models.Publish.objects.all()
+#         author = models.Author.objects.all()
+#         book_id = request.GET.get("book_id")
+#
+#         obj = models.Book.objects.get(id=book_id)
+#         obj2 = models.Book.objects.filter(id=book_id).values("authors__id")
+#         author_lst = []
+#         for i in obj2:
+#             author_lst.append(i["authors__id"])
+#
+#         return render(request, "edit_book.html",
+#                       {"publish": publish, "author": author, "obj": obj, "author_lst": author_lst,
+#                        "book_id": book_id})
+#
+#     def post(self, request):
+#         with transaction.atomic():
+#             dic = mytools.dict_filter(request.POST, "title", "price", "publish_date", "publishs_id")
+#             # 修改book表
+#             # new_obj = models.Book.objects.filter(id=request.POST.get("edit_id")).update(**dic)
+#             obj = models.Book.objects.filter(id=request.POST.get("edit_id"))
+#             obj.update(**dic)
+#             # 再更新book——author表
+#             lst = request.POST.getlist("author")
+#             # id = models.Book.objects.last().id
+#             # models.Book.objects.get(id=id).authors.set(lst)
+#             obj.first().authors.set(lst)
+#         return redirect(reverse("app01:books"))
 
 
 def upload(request):

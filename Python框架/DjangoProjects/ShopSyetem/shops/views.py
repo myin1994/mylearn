@@ -5,11 +5,9 @@ from django.urls import reverse
 from shops import models
 from django.db import transaction
 from django.db.models import *
-from mytools import mytools
 from django.http import JsonResponse
 import sys
 import traceback
-from datetime import datetime,timedelta
 from shops.shoptools import *
 from django.http import QueryDict
 from django.db.utils import *
