@@ -20,7 +20,16 @@ class Login(View):
         obj = models.UserInfo.objects.filter(username=username,password=password)
         if obj:
             request.session["status"] = "success"
-            request.session["allowed_url"] = list(obj.values('roles__permissions__url'))
+            per_obj = models.Permission.objects.filter(
+                role__userinfo__username=username)
+
+            request.session["allowed_url"] = list(per_obj.values('url').distinct())
+
+            request.session["menu"] = list(per_obj.filter(
+                is_menu=True).values().distinct())
+            # request.session["allowed_url"] = obj.filter(roles__is_menu=True)
+            # request.session["allowed_url"] = list(obj.values('roles__permissions__url',
+            #                                                  'roles__permissions__access_name'))
             return redirect('web:customer_list')
         else:
             return redirect('web:login')

@@ -18,5 +18,8 @@ class Role(Model):
 class Permission(Model):
     url = CharField(max_length=2083)
     access_name = CharField(max_length=32)
+
+    is_menu = BooleanField(default=False)
+    icon = CharField(max_length=32, null=True, blank=True)
     def __str__(self):
         return self.access_name

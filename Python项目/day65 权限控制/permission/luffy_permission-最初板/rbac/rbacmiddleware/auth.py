@@ -31,9 +31,12 @@ class UrlAuth(MiddlewareMixin):
                 return
         else:
             allowed_url = request.session.get("allowed_url")
-            setattr(request, 'allowed_url', allowed_url)
+            print(">>>>"
+                  "",allowed_url)
             for url in allowed_url:
-                if re.match(f'^{url.get("roles__permissions__url")}$', current_path):
+                # if re.match(f'^{url.get("roles__permissions__url")}$', current_path):
+                print('...',url.get("url"),current_path)
+                if re.match(f'^{url.get("url")}$', current_path):
                     return
             else:
                 return HttpResponse("莫得权限！")
