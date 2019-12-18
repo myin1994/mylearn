@@ -71,3 +71,35 @@
 .multi-menu .item > .body a.active {
     border-left: 2px solid #2F72AB;
 }
+
+
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    float: left;
+    padding: 10px;
+    padding-left: 0;
+    width: 80px;
+}
+
+ul li i {
+    font-size: 18px;
+    margin-left: 5px;
+    color: #6d6565;
+}
+
+
+
+
+.permission-area tr.parent {
+    background-color: #cae7fd;;
+}
+
+.menu-body tr.active {
+    background-color: #f1f7fd;
+    border-left: 3px solid #fdc00f;
+}

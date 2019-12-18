@@ -1,0 +1,103 @@
+{% extends 'layout.html' %}
+{% load mytags %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-book"></i>菜单管理
+                    <div class="pull-right">
+                        <a style="padding: 2px 2px" class="btn btn-success btn-sm"
+                           href="{% url_encode request 'rbac:menu_add' %}">
+                            <i class="fa fa-plus-square" aria-hidden="true"></i> 新建
+                        </a></div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover menu-body">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>图标</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in menu_list %}
+                            <tr {% if row.id == menu_id %}class="active" {% endif %}>
+                                <td><a href="{% url 'rbac:menu_list' %}?menu_id={{ row.id }}">{{ row.title }}</a></td>
+                                <td><i class="fa {{ row.icon }}"></i></td>
+                                <td>
+                                    <a style="color: #333333;" href="{% url_encode request 'rbac:menu_edit' row.id %}"
+                                       auth>
+                                        <i class="fa fa-edit" aria-hidden="true"></i>|</a>
+
+                                    <a style="color: #d9534f;" href="{% url 'rbac:menu_del' %}?delmenuobj={{ row.id }}"
+                                       auth><i class="fa fa-trash-o"></i></a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-book"></i>权限管理
+                    <div class="pull-right">
+                        <a style="padding: 2px 2px" class="btn btn-success btn-sm"
+                           href="{% url_encode request 'rbac:access_add' %}">
+                            <i class="fa fa-plus-square" aria-hidden="true"></i> 新建
+                        </a>
+                        <a style="padding: 2px 2px" class="btn btn-primary btn-sm pull-right"
+                           href="{% url 'rbac:access_list' %}"><i
+                                class="fa fa-scissors"></i> 批量操作</a></div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover permission-area">
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>URL</th>
+                            <th>URL别名</th>
+                            <th>菜单</th>
+                            <th>所属菜单</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in access_list %}
+                            <tr {% if row.menu %}class="parent" {% endif %}>
+                                <td>{% if row.menu %}
+                                    <i class="fa fa-caret-down parent-control"></i> {% endif %}{{ row.access_name }}
+                                </td>
+                                <td>{{ row.url }}</td>
+                                <td>{{ row.url_name }}</td>
+                                <td>{% if row.menu %}
+                                    是
+                                {% endif %} </td>
+                                <td>{% if row.parent %}
+                                    {{ row.parent }}
+                                {% endif %} </td>
+                                <td>
+                                    <a style="color: #333333;" href="{% url_encode request 'rbac:access_edit' row.id %}"
+                                       auth>
+                                        <i class="fa fa-edit" aria-hidden="true"></i>|</a>
+
+                                    <a style="color: #d9534f;"
+                                       href="{% url 'rbac:access_del' %}?delaccessobj={{ row.id }}"
+                                       auth><i class="fa fa-trash-o"></i></a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

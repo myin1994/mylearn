@@ -167,8 +167,7 @@
         <div>
             <ol class="breadcrumb no-radius no-margin" style="border-bottom: 1px solid #ddd;">
 
-                <li><a href="#">首页</a></li>
-                <li class="active">客户管理</li>
+                {% include 'rbac/bread_crumb.html' %}
 
             </ol>
         </div>
@@ -180,16 +179,8 @@
 <script src="{% static 'js/jquery-3.3.1.min.js' %} "></script>
 <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %} "></script>
 
-<script>
-    $('.item .title').click(function () {
-        $(this).next().toggleClass('hidden').parent().siblings().children('.body').addClass('hidden');
-
-    });
-
-    (function () {
-        $('.item .body .active').parent().toggleClass('hidden')
-    })()
-</script>
+<script src="{% static 'rbac/js/menu_control.js' %}"></script>
+<script src="{% static 'rbac/js/table_control.js' %}"></script>
 
 {% block js %}
     {#    <script>#}

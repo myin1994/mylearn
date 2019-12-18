@@ -5,8 +5,8 @@ from rbac import models
 
 
 class PermissionAdmin(admin.ModelAdmin):
-    list_display = ['id','url','access_name','menu','icon','parent']
-    list_editable = ['url','access_name','menu','icon','parent']
+    list_display = ['id','url','url_name','access_name','menu','icon','parent']
+    list_editable = ['url','url_name','access_name','menu','icon','parent']
 
 
 admin.site.register(models.UserInfo)
