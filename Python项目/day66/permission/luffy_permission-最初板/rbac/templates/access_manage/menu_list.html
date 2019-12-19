@@ -68,17 +68,17 @@
                         </thead>
                         <tbody>
                         {% for row in access_list %}
-                            <tr {% if row.menu %}class="parent" {% endif %}>
-                                <td>{% if row.menu %}
+                            <tr {% if row.menu_id %}class="parent" {% endif %}>
+                                <td>{% if row.menu_id %}
                                     <i class="fa fa-caret-down parent-control"></i> {% endif %}{{ row.access_name }}
                                 </td>
                                 <td>{{ row.url }}</td>
                                 <td>{{ row.url_name }}</td>
-                                <td>{% if row.menu %}
+                                <td>{% if row.menu_id %}
                                     是
                                 {% endif %} </td>
-                                <td>{% if row.parent %}
-                                    {{ row.parent }}
+                                <td>{% if row.parent__access_name %}
+                                    {{ row.parent__access_name }}
                                 {% endif %} </td>
                                 <td>
                                     <a style="color: #333333;" href="{% url_encode request 'rbac:access_edit' row.id %}"

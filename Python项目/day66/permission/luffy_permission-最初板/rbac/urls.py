@@ -20,4 +20,9 @@ urlpatterns = [
     #批量编辑权限
     url(r'^access/list/$', AccessList.as_view(),name='access_list'),
 
+    #权限分发
+    url(r'^access/distribute/$', AccessDistribute.as_view(),name='access_distribute'),
+    #测试用
+    url(r'^test/$', test,name='test'),
+
 ]
