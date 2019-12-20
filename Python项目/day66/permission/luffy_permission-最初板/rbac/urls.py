@@ -23,6 +23,6 @@ urlpatterns = [
     #权限分发
     url(r'^access/distribute/$', AccessDistribute.as_view(),name='access_distribute'),
     #测试用
-    url(r'^test/$', test,name='test'),
+    # url(r'^test/$', test,name='test'),
 
 ]

@@ -185,30 +185,30 @@
 <script src="{% static 'rbac/js/menu_control.js' %}"></script>
 <script src="{% static 'rbac/js/table_control.js' %}"></script>
 
+
 {% block js %}
-    {#    <script>#}
-    {#        (function () {#}
-    {#            var a = $('[auth]');#}
-    {#            var allowed = {{ request.allowed_url|safe }};#}
-    {#            for(var i=0;i<a.length;++i){#}
-    {#                var href = a.eq(i).attr('href');#}
-    {#                var target = i;#}
-    {#                var count = 0;#}
-    {#                for(var url of allowed){#}
-    {#                    console.log(url.roles__permissions__url);#}
-    {#                    var patt = url.roles__permissions__url;#}
-    {#                    var pattern=new RegExp(patt);#}
-    {#                    if(pattern.exec(href) === null){#}
-    {#                            count++#}
-    {#                    }#}
-    {#                }#}
-    {#                if(count === allowed.length){#}
-    {#                    a.eq(target).remove()#}
-    {#                }#}
-    {##}
-    {#            }#}
-    {#        })();#}
-    {#    </script>#}
+    <script>
+    (function () {
+    var a = $('[auth]');
+    var allowed = {{ request.button_url|safe }};
+    for(var i=0;i<a.length;++i){
+        var href = a.eq(i).attr('href');
+        var target = i;
+        var count = 0;
+        for(var url of allowed){
+            var patt = url.url;
+            var pattern=new RegExp(patt);
+            if(pattern.exec(href) === null){
+                    count++;
+            }
+        }
+        if(count === allowed.length){
+            a.eq(target).remove();
+        }
+
+    }
+})();
+    </script>
 {% endblock %}
 </body>
 </html>

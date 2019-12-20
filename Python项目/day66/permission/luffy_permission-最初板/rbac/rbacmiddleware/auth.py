@@ -1,5 +1,4 @@
 import re
-import json
 from django.utils.deprecation import MiddlewareMixin
 from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
@@ -7,7 +6,7 @@ from rbac import models
 
 
 class LoginAuth(MiddlewareMixin):
-    white_list = [reverse('web:login'), '/admin/.*']
+    white_list = [reverse('web:login'), '/admin/.*',reverse('web:home')]
 
     def process_request(self, request):
         """
@@ -23,11 +22,8 @@ class LoginAuth(MiddlewareMixin):
             else:
                 return redirect("web:login")
 
-
-
-
 class UrlAuth(MiddlewareMixin):
-    white_list = [reverse('web:login'), '/admin/.*']
+    white_list = [reverse('web:login'), '/admin/.*',reverse('web:home')]
 
     def process_request(self, request):
         """
@@ -39,6 +35,8 @@ class UrlAuth(MiddlewareMixin):
                 return
         else:
             allowed_url = request.session.get("allowed_url")
+
+            setattr(request, 'button_url', request.session.get("button_url"))
             for url in allowed_url:
                 if re.match(f'^{url.get("url")}$', current_path):
                     request.url_id = url.get('parent_id')
@@ -58,6 +56,7 @@ class UrlAuth(MiddlewareMixin):
 
             # 注入权限路径及对应父级路径id
             request.session["allowed_url"] = list(per_obj.values('url', 'parent_id', 'access_name').distinct())
+            request.session["button_url"] = list(per_obj.values('url').distinct())
             # 筛选一级菜单对象并按权重降序排序
             menu_top = list(models.TopMenu.objects.filter(
                 permission__role__userinfo__username=username).values().order_by('-weight').distinct())

@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import *
 from django.views import View
-from django.utils.decorators import method_decorator
 from django.urls import reverse
-from rbac import models
-from django.db import transaction
+
 from django.db.models import *
-from django.db.utils import *
+
 # Create your views here.
 from rbac.rbacforms.myforms import *
 
@@ -198,6 +196,7 @@ class AccessList(View):
 
         # 新增差集（路由有，数据库没有）
         add_name_set = router_name_set - permissions_name_set
+        # 通过initial设置对应字段初始值
         access_list_to_add = AccessSetAdd(initial=[row for name, row in router_dict.items() if name in add_name_set])
 
         # 待删除差集（数据库有，路由没有）
@@ -234,9 +233,9 @@ class AccessList(View):
 
 
 class AccessDistribute(View):
-    def get(self,request,p_uid=None,p_rid=None):
-        uid = request.GET.get('uid') or p_uid
-        rid = request.GET.get('rid') or p_rid
+    def get(self,request,p_uid=0,p_rid=0):
+        uid = request.GET.get('uid') or p_uid or 0
+        rid = request.GET.get('rid') or p_rid or 0
         # 获取所有用户
         user_list = models.UserInfo.objects.all()
 
@@ -246,10 +245,11 @@ class AccessDistribute(View):
         # 获取当前选择用户的角色信息id
         user_has_roles_list = [item.id for item in role_list.filter(userinfo__id=uid)]
 
+
         # 获取当前用户及对应角色所有权限id
+        # if uid
         role_has_access_list = [item.id for item in models.Permission.objects.filter(
             Q(role__userinfo__id=uid)|Q(role__id=rid))]
-
         menu_top = list(models.TopMenu.objects.filter().values().order_by('-weight').distinct())
         for menu_obj in menu_top:
             # 根据一级菜单筛选二级菜单并按权重降序排序
@@ -279,13 +279,6 @@ class AccessDistribute(View):
             role.permissions.set(access_to_update)
 
         return self.get(request,uid,rid)
-
-
-
-
-
-
-
 
 def test(request):
     return HttpResponse("test")
