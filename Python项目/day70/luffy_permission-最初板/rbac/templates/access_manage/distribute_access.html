@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+{% load mytags %}
+{% block css %}
+    <style>
+            .permission-area .node .parent {
+            padding: 5px 0;
+        }
+
+        .permission-area .node label {
+            font-weight: normal;
+            margin-bottom: 0;
+            font-size: 12px;
+        }
+
+        .permission-area .node .children {
+            padding: 0 0 0 20px;
+        }
+
+        .permission-area .node .children .child {
+            display: inline-block;
+            margin: 2px 5px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-book"></i>用户信息
+
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover menu-body">
+                        <tbody>
+
+                        {% for user in user_list %}
+
+                            <tr class= {% if user.id|safe == uid %} "active" {% endif %}>
+                                <td>
+                                    <a href="?uid={{ user.id }}">{{ user.username }}</a>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <form method="post">
+                {% csrf_token %}
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-book"></i>角色
+                        {% if uid %}
+                            <button type="submit" class="right btn btn-success btn-xs"
+                                    style="padding: 2px 8px;margin: -3px;">
+                                <i class="fa fa-save" aria-hidden="true"></i>
+                                保存
+                            </button>
+                        {% endif %}
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body" style="color: #d4d4d4;padding:10px  5px;">
+                            提示：点击用户后才能为其分配角色
+                        </div>
+                        <table class="table table-bordered table-hover menu-body">
+                            <thead>
+                            <tr>
+                                <th>角色</th>
+                                <th>选择</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+{#                            <input type="text" name="uid" value="{{ uid }}" HIDDEN>#}
+                            {% for role in role_list %}
+                                <tr {% if role.id|safe == rid %} class="active"  {% endif %}>
+
+                                    <td>
+                                        <a href="{% url 'rbac:access_distribute' %}?rid={{ role.id }}">{{ role.role_name }}</a>
+                                    </td>
+                                    <td>
+
+                                            <input type="checkbox" name="roles" value="{{ role.id }}" {% if role.id in user_has_roles_list %}checked{% endif %}/>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="postType" value="permission">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">
+                            <i class="fa fa-sitemap" aria-hidden="true"></i> 权限分配
+                            {% if rid %}
+                                <button class="right btn btn-success btn-xs" style="padding: 2px 8px;margin: -3px;">
+                                    <i class="fa fa-save" aria-hidden="true"></i>
+                                    保存
+                                </button>
+                            {% endif %}
+                        </div>
+                        <div class="panel-body" style="color: #d4d4d4;padding: 10px 5px;">
+                            提示：点击角色后，才能为其分配权限。
+                        </div>
+{#                    <input type="text" name="rid" value="{{ rid }}" HIDDEN>#}
+                        <table class="table permission-area">
+                            <tbody>
+                            {% for top_menu in menu_top %}
+                                <tr class="root parent">
+                                    <td><i class="fa fa-caret-down parent-control" aria-hidden="true"></i>{{ top_menu.title }}
+                                    </td>
+                                </tr>
+                                <tr class="node">
+                                    <td>
+                                        {% for secondary_menu in top_menu.secondary_menu %}
+                                            <div class="parent">
+
+                                                <input id="permission_{{ secondary_menu.id }}" name="permissions"
+                                                       value="{{ secondary_menu.id }}" type="checkbox"
+                                                       {% if secondary_menu.id in role_has_access_list %}checked{% endif %}>
+                                                <label for="permission_{{ secondary_menu.id }}">{{ secondary_menu.access_name }}</label>
+
+                                            </div>
+                                            <div class="children">
+                                                {% for third_menu in secondary_menu.third_menu %}
+                                                    <div class="child">
+
+                                                        <input id="permission_{{ third_menu.id }}" name="permissions"
+                                                               type="checkbox" value="{{ third_menu.id }}"
+                                                               {% if third_menu.id in role_has_access_list %}checked{% endif %}>
+                                                        <label for="permission_{{ third_menu.id }}">{{ third_menu.access_name }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
