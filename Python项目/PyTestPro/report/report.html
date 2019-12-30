@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    sort_column(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+
+        if (key_a == key_b) return 0;
+
+        if (reversed) {
+            return (key_a < key_b ? 1 : -1);
+        } else {
+            return (key_a > key_b ? 1 : -1);
+        }
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>report.html</h1>
+    <p>Report generated on 30-Dec-2019 at 12:55:06 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v2.0.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files\Java\jdk1.8.0_201</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{&apos;pytest&apos;: &apos;5.3.2&apos;, &apos;py&apos;: &apos;1.8.0&apos;, &apos;pluggy&apos;: &apos;0.13.1&apos;}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.18362-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{&apos;allure-pytest&apos;: &apos;2.8.6&apos;, &apos;html&apos;: &apos;2.0.1&apos;, &apos;metadata&apos;: &apos;1.8.0&apos;, &apos;shutil&apos;: &apos;1.7.0&apos;}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.6.8</td></tr></table>
+    <h2>Summary</h2>
+    <p>7 tests ran in 57.87 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">6 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data5]</td>
+          <td class="col-duration">0.66</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test001.Test01 object at 0x000001CAB462C860&gt;<br/>data = {&#x27;case_description&#x27;: &#x27;/message/mark_all 标记全部已读&#x27;, &#x27;case_expect&#x27;: &#x27;{&quot;success&quot;: false}&#x27;, &#x27;case_method&#x27;: &#x27;post&#x27;, &#x27;case_params&#x27;: &#x27;&#x27;, ...}<br/><br/>    @pytest.mark.parametrize(&#x27;data&#x27;, test_list)<br/>    def test001(self,data):<br/>        response = requests.get(url=data.get(&#x27;case_url&#x27;))<br/>        test_data = json.loads(data.get(&#x27;case_expect&#x27;))<br/>        allure.dynamic.title(data.get(&quot;case_project&quot;))<br/>        allure.dynamic.description(data.get(&quot;case_description&quot;))<br/>        try:<br/>&gt;           tested_data = response.json()<br/><br/>scripts\test001.py:34: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;Response [404]&gt;, kwargs = {}<br/><br/>    def json(self, **kwargs):<br/>        r&quot;&quot;&quot;Returns the json-encoded content of a response, if any.<br/>    <br/>        :param \*\*kwargs: Optional arguments that ``json.loads`` takes.<br/>        :raises ValueError: If the response body does not contain valid json.<br/>        &quot;&quot;&quot;<br/>    <br/>        if not self.encoding and self.content and len(self.content) &gt; 3:<br/>            # No encoding set. JSON RFC 4627 section 3 states we should expect<br/>            # UTF-8, -16 or -32. Detect which one to use; If the detection or<br/>            # decoding fails, fall back to `self.text` (using chardet to make<br/>            # a best guess).<br/>            encoding = guess_json_utf(self.content)<br/>            if encoding is not None:<br/>                try:<br/>                    return complexjson.loads(<br/>                        self.content.decode(encoding), **kwargs<br/>                    )<br/>                except UnicodeDecodeError:<br/>                    # Wrong UTF codec detected; usually because it&#x27;s not UTF-8<br/>                    # but some other 8-bit codec.  This is an RFC violation,<br/>                    # and the server didn&#x27;t bother to tell us what codec *was*<br/>                    # used.<br/>                    pass<br/>&gt;       return complexjson.loads(self.text, **kwargs)<br/><br/>c:\python36\lib\site-packages\requests\models.py:897: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>s = &#x27;&lt;!DOCTYPE html&gt;\n&lt;html lang=&quot;en&quot;&gt;\n&lt;head&gt;\n&lt;meta charset=&quot;utf-8&quot;&gt;\n&lt;title&gt;Error&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;pre&gt;Cannot GET /api/v1/message/mark_all&lt;/pre&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n&#x27;<br/>encoding = None, cls = None, object_hook = None, parse_float = None<br/>parse_int = None, parse_constant = None, object_pairs_hook = None<br/>use_decimal = False, kw = {}<br/><br/>    def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,<br/>            parse_int=None, parse_constant=None, object_pairs_hook=None,<br/>            use_decimal=False, **kw):<br/>        &quot;&quot;&quot;Deserialize ``s`` (a ``str`` or ``unicode`` instance containing a JSON<br/>        document) to a Python object.<br/>    <br/>        *encoding* determines the encoding used to interpret any<br/>        :class:`str` objects decoded by this instance (``&#x27;utf-8&#x27;`` by<br/>        default).  It has no effect when decoding :class:`unicode` objects.<br/>    <br/>        Note that currently only encodings that are a superset of ASCII work,<br/>        strings of other encodings should be passed in as :class:`unicode`.<br/>    <br/>        *object_hook*, if specified, will be called with the result of every<br/>        JSON object decoded and its return value will be used in place of the<br/>        given :class:`dict`.  This can be used to provide custom<br/>        deserializations (e.g. to support JSON-RPC class hinting).<br/>    <br/>        *object_pairs_hook* is an optional function that will be called with<br/>        the result of any object literal decode with an ordered list of pairs.<br/>        The return value of *object_pairs_hook* will be used instead of the<br/>        :class:`dict`.  This feature can be used to implement custom decoders<br/>        that rely on the order that the key and value pairs are decoded (for<br/>        example, :func:`collections.OrderedDict` will remember the order of<br/>        insertion). If *object_hook* is also defined, the *object_pairs_hook*<br/>        takes priority.<br/>    <br/>        *parse_float*, if specified, will be called with the string of every<br/>        JSON float to be decoded.  By default, this is equivalent to<br/>        ``float(num_str)``. This can be used to use another datatype or parser<br/>        for JSON floats (e.g. :class:`decimal.Decimal`).<br/>    <br/>        *parse_int*, if specified, will be called with the string of every<br/>        JSON int to be decoded.  By default, this is equivalent to<br/>        ``int(num_str)``.  This can be used to use another datatype or parser<br/>        for JSON integers (e.g. :class:`float`).<br/>    <br/>        *parse_constant*, if specified, will be called with one of the<br/>        following strings: ``&#x27;-Infinity&#x27;``, ``&#x27;Infinity&#x27;``, ``&#x27;NaN&#x27;``.  This<br/>        can be used to raise an exception if invalid JSON numbers are<br/>        encountered.<br/>    <br/>        If *use_decimal* is true (default: ``False``) then it implies<br/>        parse_float=decimal.Decimal for parity with ``dump``.<br/>    <br/>        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``<br/>        kwarg. NOTE: You should use *object_hook* or *object_pairs_hook* instead<br/>        of subclassing whenever possible.<br/>    <br/>        &quot;&quot;&quot;<br/>        if (cls is None and encoding is None and object_hook is None and<br/>                parse_int is None and parse_float is None and<br/>                parse_constant is None and object_pairs_hook is None<br/>                and not use_decimal and not kw):<br/>&gt;           return _default_decoder.decode(s)<br/><br/>c:\python36\lib\site-packages\simplejson\__init__.py:518: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;simplejson.decoder.JSONDecoder object at 0x000001CAB430A710&gt;<br/>s = &#x27;&lt;!DOCTYPE html&gt;\n&lt;html lang=&quot;en&quot;&gt;\n&lt;head&gt;\n&lt;meta charset=&quot;utf-8&quot;&gt;\n&lt;title&gt;Error&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;pre&gt;Cannot GET /api/v1/message/mark_all&lt;/pre&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n&#x27;<br/>_w = &lt;built-in method match of _sre.SRE_Pattern object at 0x000001CAB33A4270&gt;<br/>_PY3 = True<br/><br/>    def decode(self, s, _w=WHITESPACE.match, _PY3=PY3):<br/>        &quot;&quot;&quot;Return the Python representation of ``s`` (a ``str`` or ``unicode``<br/>        instance containing a JSON document)<br/>    <br/>        &quot;&quot;&quot;<br/>        if _PY3 and isinstance(s, bytes):<br/>            s = str(s, self.encoding)<br/>&gt;       obj, end = self.raw_decode(s)<br/><br/>c:\python36\lib\site-packages\simplejson\decoder.py:370: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _<br/><br/>self = &lt;simplejson.decoder.JSONDecoder object at 0x000001CAB430A710&gt;<br/>s = &#x27;&lt;!DOCTYPE html&gt;\n&lt;html lang=&quot;en&quot;&gt;\n&lt;head&gt;\n&lt;meta charset=&quot;utf-8&quot;&gt;\n&lt;title&gt;Error&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;pre&gt;Cannot GET /api/v1/message/mark_all&lt;/pre&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n&#x27;<br/>idx = 0<br/>_w = &lt;built-in method match of _sre.SRE_Pattern object at 0x000001CAB33A4270&gt;<br/>_PY3 = True<br/><br/>    def raw_decode(self, s, idx=0, _w=WHITESPACE.match, _PY3=PY3):<br/>        &quot;&quot;&quot;Decode a JSON document from ``s`` (a ``str`` or ``unicode``<br/>        beginning with a JSON document) and return a 2-tuple of the Python<br/>        representation and the index in ``s`` where the document ended.<br/>        Optionally, ``idx`` can be used to specify an offset in ``s`` where<br/>        the JSON document begins.<br/>    <br/>        This can be used to decode a JSON document from a string that may<br/>        have extraneous data at the end.<br/>    <br/>        &quot;&quot;&quot;<br/>        if idx &lt; 0:<br/>            # Ensure that raw_decode bails on negative indexes, the regex<br/>            # would otherwise mask this behavior. #98<br/>            raise JSONDecodeError(&#x27;Expecting value&#x27;, s, idx)<br/>        if _PY3 and not isinstance(s, str):<br/>            raise TypeError(&quot;Input string must be text, not bytes&quot;)<br/>        # strip UTF-8 bom<br/>        if len(s) &gt; idx:<br/>            ord0 = ord(s[idx])<br/>            if ord0 == 0xfeff:<br/>                idx += 1<br/>            elif ord0 == 0xef and s[idx:idx + 3] == &#x27;\xef\xbb\xbf&#x27;:<br/>                idx += 3<br/>&gt;       return self.scan_once(s, idx=_w(s, idx).end())<br/><span class="error">E       simplejson.errors.JSONDecodeError: Expecting value: line 1 column 1 (char 0)</span><br/><br/>c:\python36\lib\site-packages\simplejson\decoder.py:400: JSONDecodeError<br/><br/>During handling of the above exception, another exception occurred:<br/><br/>self = &lt;test001.Test01 object at 0x000001CAB462C860&gt;<br/>data = {&#x27;case_description&#x27;: &#x27;/message/mark_all 标记全部已读&#x27;, &#x27;case_expect&#x27;: &#x27;{&quot;success&quot;: false}&#x27;, &#x27;case_method&#x27;: &#x27;post&#x27;, &#x27;case_params&#x27;: &#x27;&#x27;, ...}<br/><br/>    @pytest.mark.parametrize(&#x27;data&#x27;, test_list)<br/>    def test001(self,data):<br/>        response = requests.get(url=data.get(&#x27;case_url&#x27;))<br/>        test_data = json.loads(data.get(&#x27;case_expect&#x27;))<br/>        allure.dynamic.title(data.get(&quot;case_project&quot;))<br/>        allure.dynamic.description(data.get(&quot;case_description&quot;))<br/>        try:<br/>            tested_data = response.json()<br/>        except:<br/>&gt;           assert 0<br/><span class="error">E           assert 0</span><br/><br/>scripts\test001.py:36: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data0]</td>
+          <td class="col-duration">1.86</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data1]</td>
+          <td class="col-duration">0.67</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data2]</td>
+          <td class="col-duration">0.69</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data3]</td>
+          <td class="col-duration">1.68</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data4]</td>
+          <td class="col-duration">44.81</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">scripts/test001.py::Test01::test001[data6]</td>
+          <td class="col-duration">1.11</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody></table></body></html>

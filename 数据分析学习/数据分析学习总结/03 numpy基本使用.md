@@ -5,7 +5,7 @@
 ```python
 import numpy as np
 print(np.__version__)#查看版本信息
-print(np.show_config)#查看配置说明
+print(np.show_config())#查看配置说明
 ```
 
 ### 数组的创建

@@ -1,0 +1,26 @@
+{
+  "uid" : "4b4757e66a1912dae1a509f688f20b0f",
+  "name" : "categories",
+  "children" : [ {
+    "name" : "Product defects",
+    "children" : [ {
+      "name" : "Failed: [XPASS(strict)] 预期失败， 执行成功",
+      "children" : [ {
+        "name" : "test_case_02",
+        "uid" : "3a8a582ce207c109",
+        "parentUid" : "0ad642116441f4a0b4d13a875cc6b715",
+        "status" : "failed",
+        "time" : {
+          "start" : 1577368152072,
+          "stop" : 1577368152072,
+          "duration" : 0
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "0ad642116441f4a0b4d13a875cc6b715"
+    } ],
+    "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
+  } ]
+}

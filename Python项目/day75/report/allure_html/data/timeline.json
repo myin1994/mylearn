@@ -1,0 +1,39 @@
+{
+  "uid" : "ab17fc5a4eb3bca4b216b548c7f9fcbc",
+  "name" : "timeline",
+  "children" : [ {
+    "name" : "LAPTOP-BJF4Q6NL",
+    "children" : [ {
+      "name" : "21392-MainThread",
+      "children" : [ {
+        "name" : "test_case_01",
+        "uid" : "631f36d38bf2a00e",
+        "parentUid" : "10f602aac062aab7dfc0ccf66918a9a6",
+        "status" : "skipped",
+        "time" : {
+          "start" : 1577368152021,
+          "stop" : 1577368152023,
+          "duration" : 2
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "test_case_02",
+        "uid" : "3a8a582ce207c109",
+        "parentUid" : "10f602aac062aab7dfc0ccf66918a9a6",
+        "status" : "failed",
+        "time" : {
+          "start" : 1577368152072,
+          "stop" : 1577368152072,
+          "duration" : 0
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "10f602aac062aab7dfc0ccf66918a9a6"
+    } ],
+    "uid" : "41eadbc40e0307751ee0cab5bcad6887"
+  } ]
+}

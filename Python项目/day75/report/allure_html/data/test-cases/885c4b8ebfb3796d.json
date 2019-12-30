@@ -1,0 +1,58 @@
+{
+  "uid" : "885c4b8ebfb3796d",
+  "name" : "test_case_01",
+  "fullName" : "scripts.test_01.TestCase#test_case_01",
+  "historyId" : "27133450fa9b52643c78ae08d9eea3d6",
+  "time" : {
+    "start" : 1577368000258,
+    "stop" : 1577368000258,
+    "duration" : 0
+  },
+  "description" : " 预期失败， 执行也是失败的 ",
+  "descriptionHtml" : "<p>预期失败， 执行也是失败的</p>\n",
+  "status" : "skipped",
+  "statusMessage" : "AssertionError: assert 0",
+  "statusTrace" : "self = <test_01.TestCase object at 0x000002055F8B3240>\n\n    @pytest.mark.xfail(1 < 2, reason='预期失败， 执行失败')\n    def test_case_01(self):\n        \"\"\" 预期失败， 执行也是失败的 \"\"\"\n        print('预期失败， 执行失败')\n>       assert 0\nE       assert 0\n\nscripts\\test_01.py:32: AssertionError",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "scripts"
+  }, {
+    "name" : "suite",
+    "value" : "test_01"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestCase"
+  }, {
+    "name" : "host",
+    "value" : "LAPTOP-BJF4Q6NL"
+  }, {
+    "name" : "thread",
+    "value" : "25212-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "scripts.test_01"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : true,
+  "retry" : true,
+  "extra" : {
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "885c4b8ebfb3796d.json",
+  "parameterValues" : [ ]
+}

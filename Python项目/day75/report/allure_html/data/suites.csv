@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"skipped","Thu Dec 26 21:49:12 CST 2019","Thu Dec 26 21:49:12 CST 2019","2","scripts","test_01","TestCase","","","test_case_01"," 预期失败， 执行也是失败的 "
+"failed","Thu Dec 26 21:49:12 CST 2019","Thu Dec 26 21:49:12 CST 2019","0","scripts","test_01","TestCase","","","test_case_02"," 预期失败， 但实际执行结果却成功了 "

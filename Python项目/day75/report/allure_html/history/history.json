@@ -1,0 +1,42 @@
+{
+  "27133450fa9b52643c78ae08d9eea3d6" : {
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 1,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "631f36d38bf2a00e",
+      "status" : "skipped",
+      "statusDetails" : "AssertionError: assert 0",
+      "time" : {
+        "start" : 1577368152021,
+        "stop" : 1577368152023,
+        "duration" : 2
+      }
+    } ]
+  },
+  "2b71779cf2a6036fa06d4649cab68e72" : {
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 1
+    },
+    "items" : [ {
+      "uid" : "3a8a582ce207c109",
+      "status" : "failed",
+      "statusDetails" : "Failed: [XPASS(strict)] 预期失败， 执行成功",
+      "time" : {
+        "start" : 1577368152072,
+        "stop" : 1577368152072,
+        "duration" : 0
+      }
+    } ]
+  }
+}
