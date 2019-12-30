@@ -37,9 +37,7 @@ Series常用的创建（初始化）方式：
   a = pd.Series([1,2,3])
   print(type(a))#<class 'pandas.core.series.Series'>
   print(a[0])#1
-  
   #a = pd.Series(range(10))
-  
   ```
 
 - ndarray数组对象
@@ -53,7 +51,6 @@ Series常用的创建（初始化）方式：
   ```python
   a = pd.Series({'a':10,"b":20,"c":30})
   a
-  
   >>>
   a    10
   b    20
@@ -206,11 +203,6 @@ Series常用的创建（初始化）方式：
     dtype: int64
     ```
 
-- ndarray与Series都可以通过索引来访问元素，但是，二者是有区别的。
-
-  - 对于ndarray，类似于Python中的列表的形式，是基于位置进行的访问。在创建对象后，每个元素的位置就固定了，我们不能自行去改变元素的索引。
-  - 对于Series，类似于Python中的字典的形式，是基于key值访问元素的。我们可以自行去改变（指定）key值。
-
 ### Series相关操作
 
 Series在操作上，与Numpy数据具有如下的相似性：
@@ -294,7 +286,7 @@ Series在操作上，与Numpy数据具有如下的相似性：
       print(np.max(b))#nan
       ```
 
-- 支持索引与切片。（不建议使用）
+- 支持索引与切片，返回原数组数据的视图。（不建议使用）
 
   - a[key]
   - a[0:1]
@@ -323,4 +315,118 @@ Series在操作上，与Numpy数据具有如下的相似性：
     dtype: int64
     ```
 
+- ndarray与Series都可以通过索引来访问元素，但是，二者是有区别的。
+
+  - 对于ndarray，类似于Python中的列表的形式，是基于位置进行的访问。在创建对象后，每个元素的位置就固定了，我们不能自行去改变元素的索引。
+  - 对于Series，类似于Python中的字典的形式，是基于key值访问元素的。我们可以自行去改变（指定）key值。
+
+### 索引
+
+#### 标签索引与位置索引
+
++ 标签索引
+
+  在创建Series时，我们通过index指定的标签（索引），就是标签索引。
+
++ 位置索引
+
+  每个元素在创建时，都有对应的位置，该位置的顺序就是位置索引。(类似与ndarray数组的索引)
+
+  ```python
+  a = pd.Series([1,2,3],index=['a','b','c'])
+  print(a['a'])#通过标签索引1
+  print(a[0])#通过位置索引1
+  ```
+
++ 当Series标签是数值类型时，位置索引会失效。
+
++ 当Series标签不是数值类型时，通过Series对象**索引**访问元素，索引既可以是标签索引，也可以是位置索引。这会造成极大的混淆。因此，不建议使用Series对象[索引]的方式访问元素。我们可以通过：
+
+  + loc 仅通过标签索引访问。（不能通过位置访问元素）
+
+  + iloc 仅通过位置索引访问。（不能通过标签访问元素）
+
+    ```python
+    a = pd.Series([1,2,3],index=['a','b','c'])
+    print(a.loc['a'])#通过标签索引1
+    print(a.iloc[0])#通过位置索引1
+    ```
+
+  + 不建议！老版本中，会使用ix访问元素。我们不要再去使用了。ix的意思是先通过标签索引寻找元素，如果不存在，再通过位置索引寻找元素。
+
+### 切片对比
+
++ 对于Series切片，标签索引与位置索引是存在区别的。
+
+  + 对于位置索引切片，包含起始点，不包含终止点（这点与ndarray的切片方式相同）。
+
+  + 对于标签索引切片，包含起始点，也包含终止点。
+
+    ```python
+    a = pd.Series([1,2,3],index=['a','b','c'])
+    print(a.loc['a':'c'])
+    ------------
+    a    1
+    b    2
+    c    3
+    dtype: int64
+    ```
+
     
+
+### Series的CRUD
+
+Series索引-数值CRUD操作（因为Series内部也是基于Mapping映射的形式，因此，其与字典的特征类似。）：
+
+- 获取值
+
+  ```python
+  a =pd.Series([1,2,3],index=list('abc'))
+  print(a.loc['a'])
+  ```
+
+- 修改值
+
+  ```python
+  a =pd.Series([1,2,3],index=list('abc'))
+  a.loc['a'] = 100
+  ```
+
+- 增加索引-值
+
+  ```python
+  a =pd.Series([1,2,3],index=list('abc'))
+  a.loc['d'] = 100#键不存在就是增加
+  ```
+
+- 删除索引-值
+
+  - 方式一:返回一个新的对象
+
+    ```python
+    a =pd.Series([1,2,3],index=list('abc'))
+    b = a.drop('a')#b = a.drop(['a','b'])
+    print(b)
+    ---------
+    b    2
+    c    3
+    dtype: int64
+    ```
+
+  - 方式二：原地修改
+
+    + 如果需要就地修改对象，而不是创建一个新的对象，可以将inplace参数设置为True。（默认为False）
+
+      ```python
+      a =pd.Series([1,2,3],index=list('abc'))
+      a.drop('a',inplace=True)#返回值为None
+      print(a)
+      ------
+      b    2
+      c    3
+      dtype: int64
+      ```
+
+    + 所有API中，只要含有inplace，该参数的默认值一律为False。
+
+    + 如果方法（函数）含有inplace，并且，我们将inplace参数值指定为True，则该方法（函数）返回值为None。
