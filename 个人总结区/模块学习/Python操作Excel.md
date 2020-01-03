@@ -27,6 +27,8 @@
   
   # 首先拿到book对象
   book = xlrd.open_workbook('./a1.xlsx')
+  
+  #可通过file_contents参数直接传入所有数据进行读取，无需指定路径
   ```
 
 + 取到Excel中的sheet(对象)

@@ -36,6 +36,10 @@ DATABASES = {
         'PORT':3306 #  端口 默认3306
     }
 }
+-----------------
+#项目ini
+import pymysql
+pymysql.install_as_MySQLdb()
 ```
 
 #### 静态文件配置
