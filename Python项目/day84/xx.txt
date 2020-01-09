@@ -1,0 +1,41 @@
+import time
+from getpass import getpass
+from selenium import webdriver
+
+
+
+def worker():
+    driver.get(url)
+    driver.find_element_by_id('switchAccountLogin').click()
+    iframe = driver.find_elements_by_tag_name('iframe')
+    driver.switch_to.frame(iframe[0])
+    driver.find_element_by_class_name('dlemail').send_keys(user)
+    driver.find_element_by_class_name('dlpwd').send_keys(pwd)
+    driver.find_element_by_id('dologin').click()
+    driver.find_element_by_id('_mail_component_19_19').click()
+    driver.find_element_by_class_name('nui-editableAddr-ipt').send_keys(to)
+    driver.find_elements_by_class_name('nui-ipt-input')[2].send_keys(theme)
+    driver.find_element_by_class_name('nui-close').click()
+    content_iframe = driver.find_element_by_class_name('APP-editor-iframe')
+    driver.switch_to.frame(content_iframe)
+    driver.find_element_by_class_name('nui-scroll').send_keys(content)
+    driver.switch_to.default_content()
+    driver.find_element_by_class_name('nui-mainBtn-hasIcon').click()
+
+if __name__ == '__main__':
+
+    url = 'https://mail.163.com/'
+    theme = '测试邮件'
+    to = '1206180814@qq.com'
+    content = '测试邮件内容.................................'
+    user = input('用户名: ').strip()
+    pwd = getpass("密码: ")
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(10)
+    try:
+        worker()
+    except Exception as e:
+        print(e)
+    finally:
+        time.sleep(20)
+        driver.quit()
