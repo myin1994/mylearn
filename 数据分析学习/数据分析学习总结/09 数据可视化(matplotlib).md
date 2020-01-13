@@ -388,8 +388,8 @@ plt.grid(True,color='r',axis='y',linestyle='--',linewidth=2)
 
 #### 子区域2：subplot方法
 
-+ 调用plt的subplot方法创建子绘图区域，该方法返回子绘图对象。
-+ 此处方式下，会隐式创建Figure对象。
++ 指定子绘图区域坐标位置，该方法返回子绘图对象。
++ 此方式下，会隐式创建Figure对象。
 + 这种创建子绘图区域的方式，底层也是通过第一种方式实现的。
 
 ```python
@@ -437,9 +437,353 @@ b.plot([11,21,3],[-13,-14,-15])
 
   ![image-20200109194325146](09 数据可视化(matplotlib).assets/image-20200109194325146.png)
 
+### 绘图区域大小设置
+
+如果绘图子区域较多，可能会有些拥挤。此时，我们可以调整绘图区域的大小。方式如下：
+
+- 在调用`plt.figure()`创建Figure对象时，通过figsize参数指定。单位为英寸`(高度,宽度)`。
+
+  ```python
+  plt.figure(figsize=(3,3))
+  plt.plot([1,2,3],[4,5,6])
+  ```
+
+- 在创建Figure对象后，可以通过Figure对象的set_size_inches方法设置。
+
+  ```python
+  f = plt.figure()
+  f.set_size_inches(3,3)
+  plt.plot([1,2,3],[4,5,6])
+  ```
+
+- 如果没有显式创建Figure对象，可以通过plt的gcf函数(get current figure)获取当前的Figure对象。
+
+  ```python
+  plt.plot([1,2,3],[4,5,6])
+  f = plt.gcf()
+  f.set_size_inches(3,3)
+  ```
+
+### 标签与刻度设置
+
+可以通过plt对象的相关方法来设置（或获取）标签与刻度等信息。
+
++ 设置还是获取，取决于是否传递实际参数。
+
+- plt.xlim 设置或获取x轴刻度范围。
+
+  - 获取--(最小值,最大值)
+
+    ```python
+    plt.plot([1,5,7],[1,5,7])
+    t = plt.xlim()
+    print(t)#(0.7, 7.3)默认根据给定点的范围设置
+    ```
+
+  - 设置--(最小值,最大值)
+
+    ```python
+    plt.plot([1,5,7],[1,5,7])
+    t = plt.xlim(0,10)
+    print(t)#(0, 10)
+    ```
+
+  - 仅设置最大最小值
+
+    ```python
+    plt.plot([1,5,7],[1,5,7])
+    t = plt.xlim(0)#仅设置最小值
+    #t = plt.xlim(xmin=10)#仅设置最小值
+    #t = plt.xlim(xmax=10)#仅设置最大值
+    print(t)
+    ```
+
+- plt.ylim 设置或获取y轴刻度范围。
+
+- plt.xticks 设置或获取x轴显示的刻度与标签。
+
+  - 设置刻度
+
+    ```
+    plt.plot([1,5,7],[1,5,7])
+    x = plt.xticks([1,3,5,7,9])
+    y = plt.yticks(np.arange(10))
+    print(plt.xticks())
+    print(plt.yticks())
+    ------------------
+    (array([1, 3, 5, 7, 9]), <a list of 5 Text xticklabel objects>)
+    (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), <a list of 10 Text yticklabel objects>)
+    ```
+
+    ![image-20200110182350564](09 数据可视化(matplotlib).assets/image-20200110182350564.png)
+
+  - 设置显示标签
+
+    ```python
+    plt.plot([19,25,41],[1,5,7])
+    plt.xticks([20,40,60],['20岁','40岁','60岁'])
+    ```
+
+    ![image-20200110182806451](09 数据可视化(matplotlib).assets/image-20200110182806451.png)
+
+- plt.yticks 设置或获取y轴显示的刻度与标签。
+
+- plt.axis 可以同时设置或获取x与y轴的刻度范围，或者是取消刻度显示。
+  - 无参数：返回一个元组。(xmin, xmax, ymin, ymax)
+  
+    ```python
+    plt.plot([19,25,41],[1,5,7])
+    plt.axis()#(17.9, 42.1, 0.7, 7.3)
+    ```
+  
+  - (xmin, xmax, ymin, ymax) 同时设置x与y轴的刻度范围。
+  
+  - off 取消坐标轴显示。
+  
+    ```python
+    plt.plot([19,25,41],[1,5,7])
+    plt.axis('off')
+    ```
+  
+  - tight：坐标轴紧凑显示。
+  
+    ```python
+    plt.plot([19,25,41],[1,5,7])
+    plt.axis('tight')
+    ```
+  
+  - equal：x与y具有同样的长度。
+  
+    ```python
+    plt.plot([1,2,3],[100,200,300])
+    # plt.axis((0,300,0,300))
+    plt.axis('equal')
+    ```
+  
+    ![image-20200110183609044](09 数据可视化(matplotlib).assets/image-20200110183609044.png)
+
+### 轴标签说明与标题设置
+
+```python
+plt.plot(np.arange(1,13),np.random.randint(100,300,12))
+plt.xlabel('月份')
+plt.ylabel('销量')
+plt.title('2019年个月份销量')
+```
+
+![image-20200110183848405](09 数据可视化(matplotlib).assets/image-20200110183848405.png)
+
+- plt.xlabel 设置x轴的标签说明。
+- plt.ylabel 设置y轴的标签说明。
+- plt.title 设置标题。
 
 
 
+### 通过绘图对象设置刻度、标签与标题
+
+除了通过plt对象外，我们还可以通过子绘图对象来设置与获取标签与刻度。
+
+- ax.set_xlim 设置x轴刻度范围。
+
+  ```python
+  figure, ax = plt.subplots(1,1)
+  x = ax.set_xlim(1,10)
+  print(x)#(1, 10)
+  ```
+
+- ax.get_xlim 获取x轴刻度范围。
+
+  ```python
+  figure, ax = plt.subplots(1,1)
+  x = ax.get_xlim()#x = ax.set_xlim()
+  print(x)#(0.0, 1.0)
+  ```
+
+- ax.set_xticks 设置x轴显示的刻度。
+
+  ```python
+  figure, ax = plt.subplots(1,1)
+  x = ax.set_xticks([1,3,5,7,9])
+  print(ax.get_xticks())#[1 3 5 7 9]
+  ```
+
+- ax.get_xticks 获取x轴显示的刻度。
+
+- ax.set_xticklabels 设置x轴显示的刻度标签。默认显示的是就是刻度值。
+
+  ```python
+  figure, ax = plt.subplots(1,1)
+  x = ax.set_xticks([1,3,5,7,9])
+  x_tick_list = ax.set_xticklabels(['一','二','三','四'])
+  print(x_tick_list)
+  # x_tick_list = ax.get_xticklabels()
+  # for tick in x_tick_list:
+  #     print(tick)
+  ---------------
+  [Text(0, 0, '一'), Text(0, 0, '二'), Text(0, 0, '三'), Text(0, 0, '四')]
+  ```
+
+  - 设置标签旋转角度--rotation参数
+
+    ```python
+    figure, ax = plt.subplots(1,1)
+    x = ax.set_xticks([1,3,5,7,9])
+    x_tick_list = ax.set_xticklabels(['aaaa','bbbbbb','cccccc','ddddddddd'],rotation=30)
+    ```
+
+    ![image-20200110190139951](09 数据可视化(matplotlib).assets/image-20200110190139951.png)
+
+- ax.get_xticklabels 获取x轴显示的刻度标签。
+
+也可以设置标签说明与标题。
+
+- ax.set_xlabel 设置x轴的标签说明。
+
+  ```python
+  figure, ax = plt.subplots(1,1)
+  x = ax.set_xlabel('x轴')
+  y = ax.set_ylabel('y轴')
+  title = ax.set_title('标题')
+  print(x,y,title)
+  print(ax.get_xlabel(),ax.get_ylabel(),ax.get_title())
+  ----------------
+  Text(0.5, 0, 'x轴') Text(0, 0.5, 'y轴') Text(0.5, 1.0, '标题')
+  x轴 y轴 标题
+  ```
+
+  ![image-20200110185700536](09 数据可视化(matplotlib).assets/image-20200110185700536.png)
+
+- ax.get_xlabel 获取x轴的标签说明。
+
+- ax.set_title 设置标题。
+
+- ax.get_title 获取标题。
+
+### 添加注解
+
+我们可以在图形上绘制文本等说明信息（注解）。
+
+#### 普通文本
+
++ plt.text 显示文本（基于坐标）
+
+  ```python
+  x = np.linspace(-10,10,1000)
+  y1 = x ** 2
+  y2 = x * 2
+  plt.plot(x,y1)
+  plt.plot(x,y2)
+  plt.text(0,40,'$y = x^2 $')
+  plt.text(9,0,'$y = x * 2 $')
+  ```
+
+  ![image-20200110190901510](09 数据可视化(matplotlib).assets/image-20200110190901510.png)
+
++ plt.figtext 显示文本（基于图片比例）
+
+  + 原点-左下角
+  + （x轴比例，y轴比例）
+
+  ```python
+  x = np.linspace(-10,10,1000)
+  y1 = x ** 2
+  y2 = x * 2
+  plt.plot(x,y1)
+  plt.plot(x,y2)
+  plt.figtext(0.5,0.5,"$y = x^2$")
+  plt.figtext(0.8,0.3,"$y = x*2$")
+  ```
+
+  ![image-20200110191137306](09 数据可视化(matplotlib).assets/image-20200110191137306.png)
+
+#### 箭头
+
+plt.arrow 根据起点坐标（x，y）与各自轴的长度（x + dx, y + dy）绘制箭头。（dx即为起始点相对于x轴的偏移量）
+
+```python
+x = np.linspace(-10,10,1000)
+y = x ** 2
+plt.plot(x,y)
+plt.text(-5,45,'极值点')
+plt.arrow(-5,40,5,-40,width=0.1,head_width=0.9,head_length=1.9,color='r')
+```
+
+![image-20200110192540937](09 数据可视化(matplotlib).assets/image-20200110192540937.png)
+
+- width 箭头尾部的宽度。
+- head_width 箭头的宽度。
+- head_length 箭头的长度。
+- color箭头颜色
+
+#### 箭头与文本
+
+plt.annotate 显示箭头与文本。
+
+```python
+x = np.linspace(-10,10,1000)
+y = x ** 2
+plt.plot(x,y)
+
+plt.annotate (s='极值点',
+              xy=(0,0),#指向的点
+              xytext=(-5,45),#尾部文本所在坐标
+              arrowprops=dict(
+                  width=2,
+                  facecolor='r',
+                  headwidth=10,
+                  headlength=10,
+                  shrink=0.1))
+```
+
+![image-20200112084545571](09 数据可视化(matplotlib).assets/image-20200112084545571.png)
+
+- xy 箭头指向坐标
+- xytext 文本起点坐标。（箭头尾部坐标）
+- arrowprops 字典类型，可设置箭头的属性。
+  - facecolor 箭头的颜色
+  - headwidth 箭头的宽度
+  - width 箭尾的宽度
+  - shrink 收缩大小
+  - headlength 箭头的长度
+  - arrowstyle 一些预设的箭头样式。当含有该参数时，上述4项参数将不再有效。（具体样式查看文档即可）
+
+### 绘图样式设置
+
++ 可以通过`plt.style.use("样式名")`来设置绘图使用的样式。
+
++ 执行`plt.style.available`来获取所有的绘图样式。
+
+  ```python
+  ['default',#原始样式
+   'bmh',
+   'classic',
+   'dark_background',
+   'fast',
+   'fivethirtyeight',
+   'ggplot',
+   'grayscale',
+   'seaborn-bright',
+   'seaborn-colorblind',
+   'seaborn-dark-palette',
+   'seaborn-dark',
+   'seaborn-darkgrid',
+   'seaborn-deep',
+   'seaborn-muted',
+   'seaborn-notebook',
+   'seaborn-paper',
+   'seaborn-pastel',
+   'seaborn-poster',
+   'seaborn-talk',
+   'seaborn-ticks',
+   'seaborn-white',
+   'seaborn-whitegrid',
+   'seaborn',
+   'Solarize_Light2',
+   'tableau-colorblind10',
+   '_classic_test']
+  ```
+
++ seaborn--基于matplotlib扩展的库
 
 ## 保存与读取图表
 
@@ -508,4 +852,216 @@ bio.getvalue()
   image.show()
   ```
 
-  
+
+## 图形类型
+
+### 折线图
+
++ 使用---plt.plot
++ 适用于显示数据的趋势，增加变化的场景中（如，气温的变化，销售的增加变化等。）
+
+### 柱形图 / 条形图
+
++ 使用plt.bar 柱形图/plt.barh 条形图
+
+  ```python
+  plt.bar(x=[1,2,3,4],height=[10,20,30,40])
+  plt.barh(y=[1,2,3,4],width=[10,20,30,40])
+  ```
+
+  ![image-20200112090709590](09 数据可视化(matplotlib).assets/image-20200112090709590.png)
+
+  ```python
+  plt.barh(y=['第一季度','第二季度','第三季度','第四季度'],width=[10,20,30,40])
+  ```
+
+  ![image-20200112091003640](09 数据可视化(matplotlib).assets/image-20200112091003640.png)
+
++ 适用于显示数据对比的场景之中
+
+### 饼图
+
++ 使用----plt.pie 饼图
+
+  ```python
+  plt.pie([1,2,3,4],
+          labels=['a','b','c','d'],
+          explode=[0.1,0,0,0],
+          colors=['r','g','b','orange'],
+          autopct='%.2f%%',
+          counterclock= False,
+          startangle=90,
+          shadow=True)
+  ```
+
+  ![image-20200112092333609](09 数据可视化(matplotlib).assets/image-20200112092333609.png)
+
+  + labels 每个部分显示的标签。
+  + explode 指定每个部分距离圆心的偏移量（单位为半径的长度）。（一般只突出一块）
+  + colors 指定每个部分的颜色。
+  + autopct 设置每个部分显示的比例值（格式化）。
+  + counterclock 是否逆时针绘图。默认为True。
+  + startangle 初始绘图点位置（逆时针偏移x轴的角度）。默认为偏移0度（x轴）。
+  + shadow 是否含有阴影，默认为False。
+
++ 适用于显示数据的占用比例的场景（数据量不宜过多）
+
+### 散点图 / 气泡图
+
++ 使用---scatter
+  + marker 点的标记。
+
+    ```python
+    x = np.random.randint(0,100,100)
+    y = np.random.randint(0,100,100)
+    plt.scatter(x,y,marker='>')
+    ```
+
+    ![image-20200112093854152](09 数据可视化(matplotlib).assets/image-20200112093854152.png)
+
+  + s 点的大小。
+
+  + color 点的颜色。
+
+    ```python
+    plt.scatter([1,5,2,4],[10,3,6,6],s=[10,20,30,40],color=['r','g','b','y'])
+    ```
+
+  + color与s参数可以统一设置，也可以为每一个点单独设置。
+
+    ```python
+    plt.scatter([1,5,2,4],[10,3,6,6],s=10,color='r')
+    ```
+
+    ```python
+    x = np.random.randint(0,100,100)
+    y = np.random.randint(0,100,100)
+    plt.scatter(x,y,s=np.random.randint(0,100,100),color=np.random.choice(['r','g','b'],100))
+    ```
+
+    ![image-20200112094432129](09 数据可视化(matplotlib).assets/image-20200112094432129.png)
+
++ 散点图适合于用来显示与比较数据的分布状态(数据维度之间的关系)。
+
++ 当散点图的点显示不同大小、颜色时，就称为气泡图，气泡图可以显示2-4个维度。（气泡的大小、颜色）
+
+### 直方图
+
++ 概念
+
+  直方图（histogram）可以看成是一种特殊的柱形图，用来将连续的数据频率（数量）进行离散化显示。在直方图中，数据被分割成若干区间，然后统计每个区间数据出现的频率（数量）。.
+
++ 使用---plt.hist
+
+  + 返回两个数组
+
+    ```python
+    x = np.random.randint(1,80,1000)
+    plt.hist(x,bins=5)
+    ```
+
+    ![image-20200112120500618](09 数据可视化(matplotlib).assets/image-20200112120500618.png)
+
+    + 每个区间数据的数量
+    + 每个区间的范围（包含起始点，不包含终止点--最后一个区间除外）
+
+- bins：设置分割区间的数量。
+
+  - 默认分为10段
+
+  - 指定整数时根据数量等分
+
+  - 指定为数组，设置区间边界
+
+    ```python
+    x = np.random.randint(1,80,100)
+    plt.hist(x,bins=[1,10,30,80])
+    ```
+
+- normed：进行归一化显示。（概率密度-即让y轴的值缩小到一定范围）
+
+### 箱线图
+
++ 概念
+
+  箱线图也称盒须图。通过极值与Q1,Q2,Q3值来描述数据。通过箱线图，我们可以发现数据中的离群（异常）值。 箱线图的离群点定义为：Q3+1.5IQR和Q1－1.5IQR。其中IQR为两个四分位之间的距离。
+
+  ![image-20200112122725708](09 数据可视化(matplotlib).assets/image-20200112122725708.png)
+
++ 使用---plt.boxplot
+
+  ```python
+  plt.boxplot([1,5,8,10,2,6,9,10,19])
+  ```
+
++ 箱线图能够显示离群点，离群点是可疑的异常值（不一定就是异常值）
+
+### Series与DataFrame图形绘制
+
+Series与DataFrame类型的对象也支持图形绘制，使用对象的plot方法即可。
+如果我们需要绘制图形的数据就存在Series或者DataFrame对象中，我们就可以直接绘制，而无需使用plt.plot。
+
+```python
+s = pd.Series([1,2,3,4])
+s.plot()#横坐标默认为0,1,2,3
+```
+
+![image-20200112123415016](09 数据可视化(matplotlib).assets/image-20200112123415016.png)
+
+#### 其他类型图形
+
+plot默认绘制的是线形图，我们可以通过调整其kind参数的值来绘制其他类型的图形。（plot(kind="类型")也可以通过plot."类型"来进行绘制。）
+
+- line：线形图
+
+- bar：柱形图
+
+  ```python
+  s = pd.Series([1,2,3,4],index=['a','b','c','d'])
+  s.plot(kind='bar')
+  ```
+
+  ![image-20200112123515071](09 数据可视化(matplotlib).assets/image-20200112123515071.png)
+
+- barh：条形图
+
+- hist：直方图
+
+  ```python
+  s = pd.Series([1,2,3,4],index=['a','b','c','d'])
+  s.plot(kind='hist',bins=3)
+  ```
+
+- kde / density：核密度图(数据多的地方就高一些)
+
+- pie：饼图
+
+  - DataFrame需要指定subplots=True（或指定y画某一列）
+
+  ```
+  df = pd.DataFrame([[1,3,5],[2,4,6],[9,8,2],[6,5,8]])
+  df.plot(kind='pie',subplots=True)
+  ```
+
+  ![image-20200112130710009](09 数据可视化(matplotlib).assets/image-20200112130710009.png)
+
+- box：箱线图
+
+- area：面积图
+
+参数：
+
+- color
+
+- alpha---透明度（0-1）
+
+- stacked：是否堆叠。
+
+  DataFrame是将每一列作为一条数据展示
+
+  ```python
+  df = pd.DataFrame([[1,3,5],[2,4,6],[9,8,2],[6,5,8]])
+  df.plot(kind='bar',stacked=True)
+  ```
+
+  ![image-20200112124407558](09 数据可视化(matplotlib).assets/image-20200112124407558.png)
