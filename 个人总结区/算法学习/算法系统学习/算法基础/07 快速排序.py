@@ -56,6 +56,6 @@ def quick_sort2(li):
 def run2(li):
     return quick_sort2(li)
 
-li = list(range(10000))
-random.shuffle(li)
-print(run2(li))
+# li = list(range(10000))
+# random.shuffle(li)
+# print(run2(li))

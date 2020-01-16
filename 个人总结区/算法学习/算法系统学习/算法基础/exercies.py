@@ -71,5 +71,18 @@ def insert_sort(li):
             j -= 1
         li[j+1] = tmp
 
-insert_sort(li)
-print(li)
+# insert_sort(li)
+# print(li)
+
+def replace_kuoh(s):
+    while 1:
+        length1 = len(s)
+        s = s.replace('()', "").replace('[]', "").replace('{}', "")
+        length2 = len(s)
+        if length1 == length2:
+            return False if length2 else True
+            # if not length2:
+            #     return True
+            # else:
+            #     return False
+print(replace_kuoh("]{[}"))
