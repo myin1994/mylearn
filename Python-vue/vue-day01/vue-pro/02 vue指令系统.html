@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{msg1}}
+    {{msg2}}
+    <div v-text="msg1"></div>
+    <div v-html="msg2"></div>
+    <a :href="ahref">百度</a>
+    <h1 v-if="num1===11">{{num1}}</h1>
+    <h1 v-else>{{num2}}</h1>
+    <input :type="type"> <button @click="type=(title==='显示密码'?'text':'password'),title=(type==='password'?'显示密码':'隐藏密码')">{{title}}</button>
+</div>
+</body>
+
+<script>
+    let vm1 = new Vue({
+        el:'#app',//指定vue控制范围
+        data(){
+            return {
+            'msg1':'<h1>3333</h1>',
+            'msg2':'<h1>3333</h1>',
+                num1:10,
+                num2:20,
+                ahref:'https://www.baidu.com',
+                type:'password',
+                title:'显示密码'
+        } //数据属性
+        }
+    });
+
+</script>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="num++">+</button>
+    <input type="text" :value="num">
+    <button @click="jian">-</button>
+
+</div>
+</body>
+
+<script>
+    let vm1 = new Vue({
+        el: '#app',//指定vue控制范围
+        data() {
+            return {
+                num: 10
+            } //数据属性
+        },
+        methods: {
+
+            jian() {
+                this.num--
+
+            }
+        }
+
+    });
+
+</script>
+
+</html>
