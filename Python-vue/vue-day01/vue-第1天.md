@@ -980,11 +980,45 @@ v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做
 
 
 
+## 2.6 v-model双向数据绑定
+
+form表单数据与data数据同步变化
+
+```html
+<body>
+<div id="app">
+    <input type="text" v-model="text">
+    <h1>{{text}}</h1>
+</div>
+</body>
+
+<script>
+    let vm1 = new Vue({
+        el:'#app',
+        data(){
+            return {
+            text:99
+        } 
+        }
+    });
+</script>
+```
 
 
-## 2.6 列表渲染指令v-for
+
+## 2.7 列表渲染指令v-for
 
 在vue中，可以通过v-for指令可以将一组数据渲染到页面中，数据可以是数组或者对象。
+
++ 格式
+
+  ```html
+  <ul>
+          <li v-for="value,index in info_list" :key="value.id">{{value.name}}---{{index}}</li>
+  </ul>
+  ```
+
+  
 
 ```html
 数据是数组：        
@@ -1057,10 +1091,6 @@ goods:[
 
 
 
-
-
-
-
 # 3. Vue对象提供的属性功能
 
 ## 3.1 过滤器
@@ -1077,7 +1107,6 @@ Vue.filter("RMB1", function(v){
   	if(v==0){
     		return v
   	}
-
   	return v+"元"
 })
 ```
@@ -1159,10 +1188,6 @@ Vue.filter("RMB",function(value){
 </body>
 </html>
 ```
-
-
-
-
 
 ## 3.2 计算和侦听属性
 
@@ -1349,11 +1374,9 @@ Vue.filter("RMB",function(value){
 </html>
 ```
 
-
-
-
-
 ## 3.3 vue对象的生命周期
+
+![img](https://cn.vuejs.org/images/lifecycle.png)
 
 每个Vue对象在创建时都要经过一系列的初始化过程。在这个过程中Vue.js会自动运行一些叫做生命周期的的钩子函数，我们可以使用这些函数，在对象创建的不同阶段加上我们需要的代码，实现特定的功能。
 
@@ -1403,9 +1426,9 @@ Vue.filter("RMB",function(value){
             updated:function(){
                 console.log( this.$el.innerHTML ); // <p>31</p>
                 console.log("updated,vm对象已经把过呢更新后的data数据显示到页面中,num=" + this.num ); // updated----31
-            },
+            },'
         });
-    }
+    }'
     </script>
 </head>
 <body>
@@ -1427,12 +1450,6 @@ mounted阶段就是在vm对象已经把data数据实现到页面以后。一般�
 
 另一个就是created，这个阶段就是在 vue对象创建以后，把ajax请求后端数据的代码放进 created
 ```
-
-
-
-
-
-
 
 ## 3.4 阻止事件冒泡和刷新页面
 

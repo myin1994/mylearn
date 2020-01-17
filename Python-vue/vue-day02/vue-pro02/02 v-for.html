@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li v-for="value,index in info_list" :key="value.id">{{value.name}}---{{index}}</li>
+    </ul>
+</div>
+</body>
+
+<script>
+    let vm1 = new Vue({
+        el:'#app',
+        data(){
+            return {
+            text:99,
+                info_list:[
+                    {id:1,name:'大蒜',price:10},
+                    {id:2,name:'中蒜',price:9},
+                    {id:3,name:'小蒜',price:8},
+                ]
+        }
+        }
+    });
+
+</script>
+
+</html>

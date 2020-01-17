@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        .table tbody tr td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table th {
+            text-align: center;
+        }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-8 offset-2">
+            <div class="card" id="app">
+                <div class="card-header">
+                    {{title}}
+                </div>
+                <div class="card-body">
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="添加计划"
+                               v-model="plan">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" @click="push">增加</button>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>计划</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="value,index in todo_list" :key="index">
+                            <td>{{value}}</td>
+                            <td>
+                                <button @click="del(index)" class="btn btn-danger">删除</button>
+                                <button @click="up(index)" class="btn btn-secondary"> ↑</button>
+                                <button @click="down(index)" class="btn btn-secondary"> ↓</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                title: 'To do list ',
+                plan: '',
+                todo_list: [
+                    '学习Html',
+                    '学习Css',
+                    '学习Python'
+                ],
+                current_index: '',
+            }
+        },
+        methods: {
+            push() {
+                if (this.plan) {
+                    this.todo_list.push(this.plan);
+                    this.plan = ''
+                }
+
+            },
+            del(index) {
+                this.todo_list.splice(index, 1);
+            },
+            up(index) {
+                if (index > 0) {
+                    var now = this.todo_list[index];
+                    var before = this.todo_list[index - 1];
+                    this.todo_list.splice(index - 1, 2, now, before);
+                }
+            },
+            down(index) {
+                if (index < this.todo_list.length - 1) {
+                    var now = this.todo_list[index];
+                    var after = this.todo_list[index + 1];
+                    this.todo_list.splice(index, 2, after, now);
+                }
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="msg">
+
+</div>
+</body>
+<script>
+    Vue.filter(
+        'rmb',function (val) {
+            return val + 'xx'
+        }
+    );
+
+
+    let vm1 = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg:'hello',
+                price:200
+            }
+        },
+        watch:{
+            msg(){
+                if(this.msg.length > 10){
+                    alert('太长了');
+                    this.msg = this.msg.slice(0,this.msg.length-1)
+                }
+            }
+        }
+    });
+
+</script>
+</html>

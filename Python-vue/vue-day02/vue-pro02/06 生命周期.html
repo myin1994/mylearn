@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{msg}}</h1>
+    <h1>{{price}}</h1>
+    <input type="text" v-model="msg">
+
+</div>
+</body>
+<script>
+    let vm1 = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg:'hello',
+                price:200
+            }
+        },
+
+        // beforeCreate(){
+        //     console.log(this.$el);
+        //     console.log(this.$data);
+        //     this.msg ='xxx'
+        // },
+        // created(){
+        //     // $.ajax({
+        //     //     url:'http://wthrcdn.etouch.cn/weather_mini?city=北京',
+        //     //     method:'get',
+        //     //     success:(data)=> {
+        //     //             let data_new = JSON.parse(data);
+        //     //             console.log(data_new.data);
+        //     //
+        //     //             this.msg = data_new.data.ganmao
+        //     //     }
+        //     // });
+        //     console.log(111111,this.$el);
+        //     console.log(this.$data)
+        // },
+    //     // 挂载之前
+    //     beforeMount(){
+    //         console.log(this.$el);
+    //         this.msg = 'xx';
+    //         console.log(this.$data)
+    //     },
+    //     mounted(){
+    //         this.msg = 'oo';
+    //         console.log(this.$el);
+    //         this.msg = 'xx';
+    //         console.log(this.$data)
+    //     },
+        beforeUpdate(){
+            console.log('>>>>',this.$el);
+            console.log('>>>>',this.$data);
+            this.msg = 'xx';
+        },
+        updated(){
+            console.log('<<<',this.$el);
+            console.log('<<<<',this.$data);
+        }
+    });
+
+</script>
+</html>

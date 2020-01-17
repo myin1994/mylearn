@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{msg.split('').reverse().join('')}}</h1>
+    <h1>{{price|RMB}}</h1>
+    <h1>{{price|rmb}}</h1>
+
+</div>
+</body>
+<script>
+    Vue.filter(
+        'rmb',function (val) {
+            return val + 'xx'
+        }
+    );
+
+
+    let vm1 = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg:'hello',
+                price:200
+            }
+        },
+        filters:{
+            RMB(val){
+                return val.toFixed(2) + '元'
+            },
+        }
+    });
+
+</script>
+</html>
