@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{msg}}</h1>
+    <unit2></unit2>
+
+</div>
+</body>
+<script>
+    let unit1 = {
+        data() {
+            return {
+                msg1: '子组件1',
+            }
+        },
+        template: `
+        <div>
+            <h2>子：{{msg1}}</h2>
+        </div>
+        `,
+        created(){
+            this.$emit('son',this.msg1)
+        }
+    };
+
+    let unit2 = {
+        data() {
+            return {
+                msg2: '组件1的父组件',
+                son_data:''
+            }
+        },
+        template: `
+        <div>
+            <h2>{{msg2}}</h2>
+            <h3>组件2使用组件1
+            <unit1 @son="sonHandler"></unit1>
+            </h3>
+            <h1>子组件1的数据：{{son_data}}</h1>
+        </div>
+        `,
+        components: {
+            unit1,
+        },
+        methods:{
+            sonHandler(val){
+                this.son_data = val
+            }
+        },
+    };
+
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg: '主体html'
+            }
+        },
+        components:{
+            unit2,
+        }
+    });
+
+
+</script>
+</html>

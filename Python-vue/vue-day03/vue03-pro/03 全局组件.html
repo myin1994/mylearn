@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <unit1></unit1>
+
+</div>
+</body>
+<script>
+    let unit1 = {
+        data() {
+            return {
+                msg1: '组件1'
+            }
+        },
+        template: `
+        <div>
+            <h2>{{msg1}}</h2>
+        </div>
+        `
+    };
+
+
+    Vue.component('unit1',{
+        data() {
+            return {
+                msg1: '全局组件1'
+            }
+        },
+        template: `
+        <div>
+            <h2>{{msg1}}</h2>
+        </div>
+        `
+    });
+
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg: '主体html'
+            }
+        },
+        components:{
+            unit1,
+        }
+    });
+
+
+</script>
+</html>

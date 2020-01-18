@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>To do list</title>
     <script src="./js/vue.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -15,6 +15,7 @@
 
         .table th {
             text-align: center;
+
         }
 </style>
 
@@ -33,7 +34,7 @@
 
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="添加计划"
-                               v-model="plan">
+                               v-model="plan" @keyup.enter="push">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" @click="push">增加</button>
                         </div>
@@ -69,16 +70,25 @@
         el: '#app',
         data() {
             return {
-                title: 'To do list ',
+                title: 'To do list',
                 plan: '',
                 todo_list: [
                     '学习Html',
                     '学习Css',
                     '学习Python'
                 ],
-                current_index: '',
             }
         },
+        watch:{
+                plan:function(newval,oldval){
+                    if(newval.length>15){
+                    alert("计划字数超限！最长15个！");
+                    this.plan=oldval;
+                    // this.plan=this.plan.slice(0,this.plan.length-1);
+                    }
+                }
+
+                },
         methods: {
             push() {
                 if (this.plan) {

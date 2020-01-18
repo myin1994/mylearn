@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+
+    <unit1></unit1>
+    <unit2></unit2>
+
+
+</div>
+</body>
+<script>
+    let bus = new Vue();
+
+    Vue.component('unit1',{
+        data() {
+            return {
+                msg1: '全局组件1',
+                data1:'组件1数据',
+                son_data1:''
+            }
+        },
+        template: `
+        <div>
+            <h2>{{msg1}}</h2>
+            <button @click="d1">111</button>
+            <h3>组件1使用组件2数据：{{son_data1}}</h3>
+        </div>
+        `,
+        methods:{
+          d1(){
+              bus.$emit('son1',this.data1);
+          }
+        },
+        created(){
+            bus.$on('son2',(val)=>{
+                this.son_data1 = val
+            });
+            // bus.$emit('son1',this.data1);
+        }
+    });
+
+    Vue.component('unit2',{
+        data() {
+            return {
+                msg2: '全局组件2',
+                data2:'组件2数据',
+                son_data2:''
+            }
+        },
+        template: `
+        <div>
+            <h2>{{msg2}}</h2>
+            <button @click="d2">222</button>
+            <h3>组件2使用组件1数据：{{son_data2}}</h3>
+        </div>
+        `,
+        methods:{
+          d2(){
+              bus.$emit('son2',this.data2);
+          }
+        },
+        created(){
+            bus.$on('son1',(val)=>{
+                this.son_data2 = val
+            });
+            // bus.$emit('son2',this.data2);
+        }
+    });
+
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg: '主体html'
+            }
+        },
+    });
+
+console.log(bus)
+</script>
+</html>

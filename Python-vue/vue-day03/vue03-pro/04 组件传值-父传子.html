@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{msg}}</h1>
+    <unit2 :fa_data2="msg"></unit2>
+
+</div>
+</body>
+<script>
+    let unit1 = {
+        data() {
+            return {
+                msg1: '子组件1'
+            }
+        },
+        template: `
+        <div>
+            <h2>子：{{msg1}}</h2>
+            <h2>子：{{fa_data}}</h2>
+        </div>
+        `,
+        props:['fa_data',]
+    };
+
+    let unit2 = {
+        data() {
+            return {
+                msg2: '组件1的父组件'
+            }
+        },
+        template: `
+        <div>
+            <h2>{{msg2}}</h2>
+            <h3>组件2使用组件1
+            <unit1 :fa_data="msg2"></unit1>
+            </h3>
+            <h1>主体html数据：{{fa_data2}}</h1>
+        </div>
+        `,
+        components: {
+            unit1,
+        },
+        props:['fa_data2',]
+    };
+
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                msg: '主体html'
+            }
+        },
+        components:{
+            unit2,
+        }
+    });
+
+
+</script>
+</html>
