@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <router-link to="/home">首页</router-link>
+    <router-link to="/course">课程列表页</router-link>
+    <router-view></router-view>
+</div>
+
+</body>
+<script>
+    Vue.use(VueRouter);
+
+    let home = {
+        data() {
+            return {};
+        },
+        template:`
+        <div class="home">
+            <h1>home页面</h1>
+        </div>
+        `
+    };
+
+    let course = {
+        data() {
+            return {};
+        },
+        template:`
+        <div class="course">
+            <h1>course页面</h1>
+        </div>
+        `
+    };
+
+    let router = new VueRouter({
+        routes:[
+            {path:'/home',component:home},
+            {path:'/course',component:course},
+        ]
+    });
+
+
+    let vm =new Vue({
+        el:'#app',
+        router,
+        data(){
+            return {
+
+            }
+        }
+    })
+
+</script>
+</html>

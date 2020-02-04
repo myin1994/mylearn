@@ -1397,6 +1397,11 @@ npm run dev           # 运行这个命令就可以启动node提供的测试http
 
 那么访问一下命令执行完成后提示出来的网址就可以看到网站了：http://localhost:8080/
 
+```
+使用pycharm创建后需要执行
+vue init webpack
+```
+
 
 
 ### 7.4.2 项目目录结构
