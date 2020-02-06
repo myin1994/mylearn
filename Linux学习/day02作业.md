@@ -1,7 +1,7 @@
 1. 找到 / 路径下 以.txt结尾的普通文件
 
    ```
-   find / -name "*.txt"
+   find / -type  f -name "*.txt"
    ```
 
 2. 查看进程，并且过滤出有关python的进程
@@ -66,6 +66,14 @@
 
 10. 怎么查看系统发行版？
 
+    ```
+    cat /etc/redhat-release 
+    
+    cat /etc/os-release
+    ```
+
+    
+
   ```
   yum install redhat-lsb -y
   lsb_release -a
@@ -93,6 +101,7 @@
 13. 创建/删除用户？
 
    ```
+   userdel -r 删除用户且删除用户家目录信息
    删除 /etc/passwd 中对应用户信息
    ```
 
@@ -109,19 +118,25 @@
    w write 可以写
    x  可执行
    -   没有权限
+   
+   
+   usermod 修改用户属性
+   chown 修改文件的user
    ```
 
 16. 请说出 755, 740分别是什么权限?
 
    ```
    775 u-可读、写、执行 g-可读执行 o-可读执行
+   rwxr-xr-x 没有权限部分写-
+   
    740 u-可读、写、执行 g-可读 o-无任何权限
    ```
 
 17. 修改文件权限为只有属主可读可写可执行？
 
    ```
-   chmod 700
+   chmod 700 file
    ```
 
 18. 请解压oldboy.tar.gz
@@ -130,7 +145,9 @@
    tar -zxvf   ./oldboy.tar.gz  ./
    ```
 
-19. 压缩/tmp/下所有内容到/opt/oldboy.tar.gz
+![image-20200206092415659](day02作业.assets/image-20200206092415659.png)
+
+1. 压缩/tmp/下所有内容到/opt/oldboy.tar.gz
 
    ```
    tar  -zcvf  /opt/oldboy.tar.gz    /tmp/*

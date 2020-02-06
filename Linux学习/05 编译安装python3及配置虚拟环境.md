@@ -136,3 +136,119 @@
    ```
    iptables -F
    ```
+
+## python虚拟环境配置
+
+### 安装virtualenv虚拟环境工具
+
++ python解释器目录下的一个模块文件夹
+
+  ```
+  [root@s26linux python362]# find /s26linux/python362/  -name  site-packages
+  /s26linux/python362/lib/python3.6/site-packages
+  ```
+
++ 在物理解释器环境下，安装virualenv
+
+  ```
+  pip3 install -i https://pypi.douban.com/simple virtualenv
+  ```
+
+### 使用与实例
+
++ 创建虚拟环境
+
+  ```
+  virtualenv --no-site-packages --python=python3  venv1
+  ```
+
+  + 命令解释
+    + --no-site-packages  这个参数就是创建，干净没有模块的
+    + --python=python3  指定以python3来创建虚拟环境
+
++ 激活虚拟环境（进入）
+
+  ```
+  [root@chaogelinux bin]# source /s26linux/venv1/bin/activate
+  ```
+
++ 检查虚拟环境是否正常
+
+  ```
+  which python3
+  which pip3  
+  检查来自于虚拟环境下就是正当了
+  ```
+
++ 退出虚拟环境
+
+  ```
+  deactivate   #此时系统会自动删除 venv1的环境变量
+  ```
+
++ 实例：安装好python3与虚拟环境，分别启动一个django1和django2
+
+  1. 激活虚拟环境venv1
+
+     ```
+     [root@chaogelinux ~]# source /s26linux/venv1/bin/activate
+     (venv1) [root@chaogelinux ~]#
+     ```
+
+  2. 安装django1.11.9
+
+     ```
+     (venv1) [root@chaogelinux ~]# pip3 install -i https://pypi.douban.com/simple  django==1.11.9
+     ```
+
+  3. 创建django项目，编写hello视图函数
+
+     ```
+     django-admin startproject  dj1
+     修改settings.py
+     编写MTV
+     ```
+
+  4. 访问venv1下的django1.11.9项目
+
+  5. 退出当前虚拟环境进入第二个虚拟环境并重复上述操作
+
+### 确保本地开发环境和线上一致性
+
+1. 导出开发环境的解释器下所有的模块
+
+   ```
+   pip3 freeze > requirements.txt
+   ```
+
+2. 发送这个requirements.txt 文件给linux机器，里面包含项目所有运行需要的模块
+
+   ```
+   scp  requirements.txt root@123.206.16.61:/s26linux/
+   windows用其他的工具，比如lrzsz，或者xftp即可
+   ```
+
+3. 在linux机器上，安装这个文件，即可自动安装所有模块
+
+   ```
+   #pip3会自动读取这个文件每一行数据，自动进行模块安装
+   
+   pip3 install -i https://pypi.douban.com/simple   -r requirements.txt
+   ```
+
+   
+
+## 防火墙关闭
+
+防火墙是为了保护服务器安全，运维人员会编写防火墙语句，控制服务器的流量出入
+
+新手学习直接关闭即可，影响实验
+
+关闭防火墙服务语句
+
+```
+iptables -F  #清空防火墙规则
+systemctl stop firewalld  #关闭防火墙服务
+systemctl disable firewalld  #禁用防火墙开机自启
+```
+
