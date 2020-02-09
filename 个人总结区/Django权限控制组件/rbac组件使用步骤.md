@@ -100,6 +100,8 @@
   角色添加：rbac/role/list/
   
   权限分配：rbac/access/distribute/
+  
+  最后再将认证中间组件添加至settings
   ```
 
 + 使用左侧菜单栏组件（根据模板情况调整样式）

@@ -39,6 +39,7 @@ yum remove nginx -y   #自动解决所有依赖关系，很nice，好用
 1. 找到阿里的开源镜像站
 
    ```
+   提前下载wget yum install wget -y
    https://developer.aliyun.com/mirror/
    ```
 

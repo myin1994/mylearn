@@ -339,7 +339,7 @@
 
   + cat  文件名
 
-  + 追加写入内容自定义停止符EOF---可换
+  + 追加写入内容,自定义停止符EOF---可换
 
     ```
     [root@s26linux tmp]# cat >> second.py<<EOF
@@ -408,7 +408,7 @@
 
 ### alias---别名命令（快捷命令）
 
-给一个命令加上一个昵称
+给一个命令加上一个简写
 
 ```
 #直接输入alias，查看当前机器的别名 
@@ -421,7 +421,7 @@ unalias
 alias rm='rm -i'
 
 
-#当你以后都要输入一个很长的命令的时候，可以创建一个别名，很简单
+#当你以后都要输入一个很长的命令的时候，可以创建一个别名，方便使用
 ```
 
 案例
@@ -432,15 +432,7 @@ alias rm='rm -i'
 alias rm='echo 你这个傻蛋，别瞎用rm了'
 ```
 
-2.例如每次都要ssh登录，命令太长
-
-```
-ssh root@123.206.16.61
-
-alias  ssh1='ssh root@123.206.16.61'
-```
-
-3.设置清屏快捷指令
+2.设置清屏快捷指令
 
 ```
 alias cl='clear'
@@ -491,7 +483,7 @@ tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      
 ps -ef  #列出linux上所有的进程信息，以及进程id号等
 ```
 
-过滤出出vim有关的进程
+过滤出vim有关的进程
 
 ```
 [root@chaogelinux ~]# ps  -ef |   grep  vim
@@ -662,7 +654,7 @@ export LC_ALL=zh_CN.UTF-8
   + -s 显示合计
   + -h显示 kb  MB  GB的单位
 
-### top---linux的任务管理器，资源管理器
+### top---linux的任务管理器
 
 + 按下top进入任务管理器
 + 按下q键退出 top命令
@@ -939,8 +931,6 @@ ln -s  /s26linux/happy.txt  /tmp/hp.txt
 
 ### tar---打包、压缩、解压缩的命令
 
-
-
 + 常用参数
 
   + -z  调用gzip压缩资源，节省磁盘空间
@@ -954,7 +944,7 @@ ln -s  /s26linux/happy.txt  /tmp/hp.txt
   ```
   tar  -zcvf  /opt/alltmp.tgz    ./*  #打包且压缩/tmp下所有内容，生成一个压缩文件，放到opt下
   
-  #演示解压缩，吧/opt下alltmp.tgz解压缩
+  #演示解压缩，把/opt下alltmp.tgz解压缩
   tar -zxvf   /opt/alltmp.tgz  ./
   ```
   
@@ -1027,7 +1017,7 @@ cronie-1.4.11-14.el7.x86_64
 
   + 写计划任务时，命令必须加上绝对路径，否则会出现这种情况：从日志中看，确实触发了计划任务的执行，但是命令却没有执行成功，比如* * * * * reboot就会出现这种情况，需要将reboot写成/usr/sbin/reboot
 
-  + 计划任务执行的命令 是否存在，软件是否安装 
+  + 计划任务执行的命令是否存在，软件是否安装 
 
   + 确保crontab服务运行
 

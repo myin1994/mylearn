@@ -43,48 +43,48 @@ yum install nginx -y
   1. 下载nginx源代码(从官网获取链接)
 
      ```
+     yum install gcc-c++ -y
      wget http://tengine.taobao.org/download/tengine-2.3.2.tar.gz
      ```
-
-  2. 解压缩源代码
-
+2. 解压缩源代码
+  
      ```
      tar  -zxvf  tengine-2.3.2.tar.gz
-     ```
-
-  3. 进入nginx源码目录，指定安装路径
-
+   ```
+  
+3. 进入nginx源码目录，指定安装路径
+  
      ```
      [root@s26linux tengine-2.3.2]# ./configure --prefix=/opt/tngx232/
-     ```
-
-  4. 开始编译且安装
-
+   ```
+  
+4. 开始编译且安装
+  
      ```
      [root@s26linux tengine-2.3.2]# make && make install
-     ```
-
-  5. 配置环境变量
-
-     + 修改/etc/profile，修改PATH的值
-
+   ```
+  
+5. 配置环境变量
+  
+   + 修改/etc/profile，修改PATH的值
+   
        ```
        先查看PATH值，然后追加当前bin目录
        vim /etc/profile
        添加如下PATH变量
        PATH='/s26linux/python362/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/tngx232/sbin'
-       ```
-
-     + 手动读取这个/etc/profile
-
+     ```
+   
+   + 手动读取这个/etc/profile
+   
        ```
        [root@s26linux sbin]# source /etc/profile
-       ```
-
-     + 重新ssh链接
-
-  6. nginx可执行命令的常用方式
-
+     ```
+   
+   + 重新ssh链接
+  
+6. nginx可执行命令的常用方式
+  
      + nginx -s reload  平滑重启，重新读取nginx配置文件，而不重启进程
      + nginx  直接输入nginx，是代表启动，只能首次使用
      + nginx -s stop  杀死nginx进程
@@ -174,7 +174,7 @@ conf  html  logs  sbin
                 index  index.html index.htm;    //服务器返回的默认页面文件
             }
             //指定错误代码, 统一定义错误页面, 错误代码重定向到新的Locaiton
-            error_page   500 502 503 504  /50x.html;
+            error_page   500 502 503 504 =  /50x.html;
         }
         ...
         //第二个虚拟主机配置
@@ -528,6 +528,11 @@ conf  html  logs  sbin
 
 ### nginx支持多虚拟主机站点
 
++ 多虚拟主机配置-其实就是在nginx.conf中定义多个server{}标签而已
+  + 基于域名的多虚拟主机，基于域名区分不同的站点配置，直接修改server_name配置
+  + 基于端口的多虚拟主机配置，直接修改listen 的配置
+  + 基于ip的多虚拟主机配置
+
 + 需求---一个服务器运行2个网站，返回不同的页面
 
   + 当用户访问 www.s26python.com    >   /s26linux/python/index.html
@@ -654,23 +659,241 @@ linux在
 /etc/hosts  
 ```
 
+## nginx的访问日志功能
+
++ 相关状态码
+
+  + 404   40x  客户端请求出错，用户那里出错了，你请求的姿势不对
+  + 500  50x  服务器端出错了，django后台崩溃了，可能是mysql数据库连不上了，python报错了
+  + 200   20x  表示请求正确给与响应
+  + 300  30x  表示请求被重定向转发了，etiantian.org 弃用了 > 跳转到 www.oldboeyedu.com
+
++ 配置日志文件
+
+  1. 打开nginx.conf，找到如下配置，打开注释即可(记录所有server的日志)
+
+     ```
+     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                       '$status $body_bytes_sent "$http_referer" '
+                       '"$http_user_agent" "$http_x_forwarded_for"';
+     
+     access_log  logs/access.log  main;
+     access_log  "pipe:rollback logs/access_log interval=1d baknum=7 maxsize=2G"  main;
+     ```
+
+     **注：每个server单独的日志将后两行写在server标签中即可**
+
+  2. 变量解释
+
+     ```
+     $remote_addr    记录客户端ip
+     $remote_user    远程用户，没有就是 “-”
+     $time_local 　　 对应[14/Aug/2018:18:46:52 +0800]
+     $request　　　 　对应请求信息"GET /favicon.ico HTTP/1.1"
+     $status　　　  　状态码
+     $body_bytes_sent　　571字节 请求体的大小
+     $http_referer　　对应“-”　　由于是直接输入浏览器就是 -
+     $http_user_agent　　客户端身份信息
+     $http_x_forwarded_for　　记录客户端的来源真实ip 97.64.34.118
+     ```
+
+  3. 开注释之后，平滑重启nginx
+
+     ```
+     nginx -s reload
+     ```
+
+  4. 如果想杀死nginx，可以用
+
+     ```
+      kill  pid ,杀死进程id
+      pkill nginx名字  通过名字杀死进程
+     ```
+
+## nginx自定义404、500页面
+
+1. 修改nginx.conf
+
+   ```
+   #直接在对应server标签中加入即可，=号根据实际情况决定是否加入
+   #存放位置，location下root根目录下
+   
+   error_page 404 = /40x.html;
+   ```
+
+2. 平滑重启nginx
+
+   ```
+   nginx -s reload
+   ```
+
+3. 手动创建错误页面40x.html文件
 
 
 
+## nginx的反向代理功能与配置
 
++ 代理功能
 
+  + 正向代理---代理的是客户端（比如vpn连接）
 
+    可将正向代理与客户端整体看做客户端
 
+  + 反向代理--代理的是服务端
 
+    可将反向代理与服务端整体看做服务端
 
++ 反向代理的网站部署中的应用
 
+  ```
+  浏览器 ->  nginx web服务器  ->  django（后端到底有多少的机器，我们无需知道）
+  ```
 
++ nginx的反向代理配置（请求转发）
 
+  1. 环境准备
 
+     ```
+     准备2台linux虚拟机（在vmware里安装2个linux机器）
+     
+     机器1的ip  ：192.168.178.181    （中介代理）（nginx，配置代理功能）
+     
+     机器2的ip：  192.168.178.134     （房东，资源服务器）（nginx，返回一个网站页面）
+     ```
 
+  2. 先配置中介代理，181服务器，先装一个nginx
 
+  3. 修改nginx.conf
 
+     ```
+     #在server标签的location中修改
+     #当请求是192.168.178.181的时候，进入这个location路径匹配
+     #请求通过proxy_pass参数，转发给  另一台机器的地址
+     
+     location / {
+              proxy_pass http://192.168.178.134;
+             }
+     ```
 
+  4. 改完nginx.conf之后，保存退出，启动nginx
 
+     ```
+     nginx -s reload
+     ```
 
+  5. 正常配置资源服务器即可
 
+  6. 访问代理服务器ip即可
+
+## nginx负载均衡配置
+
++ 概述
+
+  ```
+  Web服务器，直接面向用户，往往要承载大量并发请求，单台服务器难以负荷，我使用多台WEB服务器组成集群，前端使用Nginx负载均衡，将请求分散的打到我们的后端服务器集群中，
+  实现负载的分发。那么会大大提升系统的吞吐率、请求性能、高容灾
+  ```
+
+  ![image-20200208143809058](07 nginx学习.assets/image-20200208143809058.png)
+
++ 负载均衡与代理的异同
+
+  + Nginx要实现负载均衡需要用到proxy_pass代理模块配置
+  + Nginx负载均衡与Nginx代理不同地方在于Nginx代理仅代理一台服务器，而Nginx负载均衡则是将客户端请求代理转发至一组upstream虚拟服务池
+  + Nginx可以配置代理多台服务器，当一台服务器宕机之后，仍能保持系统可用。
+
++ 负载均衡配置
+
+  1. 环境准备
+
+     ```
+     应该准备至少3台服务器
+     
+     机器1：代理服务器（nginx提供负载均衡，反向代理的功能）
+     机器2：资源服务器1
+     机器3：资源服务器2  
+     
+     请求发给 代理服务器，然后配置规则，请求是发给机器2，还是机器3
+     -----------------------------------------------------------
+     这里使用两个站点模拟两个资源服务器
+     
+     请求 ->  代理服务器  ->负载均衡转发   -> 第一次发给 server{} 第一个站点
+     								  -> 第二次发给 server{} 第二个站点
+     ```
+
+  2. 配置资源服务器，准备两个页面
+
+     ```
+     实验阶段，为了看到效果，是准备2个不同的资源服务器页面
+     ```
+
+     **注：线上真实的负载均衡部署，后端服务器应该是一样的**
+
+  3. 配置负载均衡服务器
+
+     1. 准备代理服务器 192.168.178.181
+
+     2. 修改nginx如下配置，添加负载均衡参数
+
+        ```
+        # 在server{}标签上面，添加一个负载均衡池  upstream{} 
+        # 服务器地址池 名字是 s26_server
+        
+        upstream s26_server {
+        server 192.168.178.134:80;
+        server 192.168.178.134:81;
+        }
+        ```
+
+        ```
+        #在server标签的location中修改
+        
+        location / {
+                 proxy_pass http://s26_server;
+                }
+        ```
+
+     3. 使用命令，检测nginx.conf是否编写正确
+
+        ```
+        nginx -t
+        ```
+
+     4. 编写正确后，重启nginx
+
+        ```
+        ngins -s reload
+        ```
+
++ nginx负载均衡的分发算法
+
+  + 分发规则，自行决定，根据自己的服务器架构决定
+
+  + 最常用的就是权重，或者大家根本就不管，默认用轮训
+
+  + 分发算法模式
+
+    + 默认是轮训模式，一台服务器一次
+
+    + 权重模式，配置如下
+
+      ```
+      upstream s26_server {
+      server 192.168.178.134:80 weight=1;
+      server 192.168.178.134:81 weight=4;
+      }
+      ```
+
+    + ip哈希模式，根据客户端的ip来源，指定给一台机器
+
+      根据客户端的来源ip进行哈希，得到一个唯一值，永远只发给某一台机器了,就是指定某一个服务器来服务客户端
+
+      ```
+      upstream s26_server {
+      server 192.168.178.134:80 ;
+      server 192.168.178.134:81 ;
+      ip_hash;
+      }
+      ```
+
+      
