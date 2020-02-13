@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+	<script src="./js/jquery.js"></script>
+    <style>
+        #box {
+            width: 660px;
+            margin: 30px auto;
+        }
+
+        #box table {
+            border-collapse: collapse;
+        }
+
+        #box td {
+            padding: 6px;
+        }
+
+        .tips {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .submit {
+            text-align: center;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <p>会员实名申请</p>
+    <form action="/s" method="post">
+        <table border="1" width="660">
+            <tr>
+                <td>帐号：</td>
+                <td>mooluo</td>
+<!--                <td class="tips" :class="hide">请确认您的当前帐号是否正确！</td>-->
+            </tr>
+            <tr>
+                <td>二次密码：</td>
+                <td><input type="password" v-model="password1"></td>
+                <td class="tips" :class="hide1">请填写二次密码!二次密码长度必须为6-16个字符之间</td>
+            </tr>
+            <tr>
+                <td>确认二次密码：</td>
+                <td><input type="password" v-model="password2"></td>
+                <td class="tips" :class="hide2">确认二次密码必须和二次密码一致！</td>
+            </tr>
+            <tr>
+                <td>手机号码：</td>
+                <td><input type="text"  v-model="telephone"></td>
+                <td class="tips" :class="hide3">请确认你的手机号码是否正确！</td>
+            </tr>
+            <tr>
+                <td class="submit" colspan="3"><input type="submit" value="提交申请"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+<script>
+    let vm1 = new Vue({
+        el: '#box',
+        data() {
+            return {
+                hide1: {
+                    hide: true
+                },
+				hide2: {
+                    hide: true
+                },
+				hide3: {
+                    hide: true
+                },
+                password1: "",
+                password2: "",
+                telephone: "",
+            }
+        },
+		watch:{
+        	password1(){
+        		if(this.password1.length<6 || this.password1.length>16){
+        			this.hide1.hide=false
+				}else {
+        			this.hide1.hide=true
+				}
+			},
+			password2(){
+        		if(this.password1 !== this.password2){
+        			this.hide2.hide=false
+				}else {
+        			this.hide2.hide=true
+				}
+			},
+			telephone(){
+        		if(this.telephone.length !== 11){
+        			this.hide3.hide=false
+				}else {
+        			this.hide3.hide=true
+				}
+			}
+		}
+    });
+
+</script>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="./js/vue.js"></script>
+    <title>Title</title>
+    <style>
+        .shadow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 90;
+            /*display: none;*/
+        }
+
+        .add_edit {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            height: 360px;
+            width: 300px;
+            margin-left: -150px;
+            margin-top: -180px;
+            background-color: white;
+            z-index: 100;
+            /*display: none;*/
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .item td {
+            text-align: center;
+        }
+
+        .item input {
+            text-align: right;
+        }
+
+        #app p {
+            text-align: right;
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+<p>要求：使用vue实现加或减商品数量、单品总价、购物车总计也要发生变化
+</p>
+<div id="app">
+    <button @click="togglediv">添加</button>
+    <table border="1" width="800">
+        <tr>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品单价</th>
+            <th>购买数量</th>
+            <th>单品总价</th>
+            <th>操作</th>
+        </tr>
+
+        <tr class="item" v-for="goods,index in goods_list" :key="goods.id">
+            <td>{{goods.id}}</td>
+            <td>{{goods.title}}</td>
+            <td>￥{{goods.price}}</td>
+            <td>
+                <button @click="goods.num++">+</button>
+                <input type="text" size="2" v-model="goods.num">
+                <button @click="sub(index)">-</button>
+<!--                <button @click="if(goods.num>0){goods.num&#45;&#45;}">-</button>-->
+            </td>
+            <td>￥{{goods.num*goods.price}}</td>
+
+            <td>
+                <button @click="edit(index)">编辑</button>
+                <button @click="del(index)">删除</button>
+            </td>
+        </tr>
+
+        <!--       <tr class="item">-->
+        <!--           <td>1</td>-->
+        <!--           <td>oldboy plus 5</td>-->
+        <!--           <td>￥1888.00</td>-->
+        <!--           <td>-->
+        <!--               <button>+</button>-->
+        <!--               <input type="text" value="1" size="2">-->
+        <!--               <button>-</button>-->
+        <!--           </td>-->
+        <!--           <td>￥1888.00</td>-->
+        <!--       </tr>-->
+
+    </table>
+    <p>合计： {{total}} 元</p>
+
+
+    <div :class=[shadow,hide]></div>
+    <div :class=[add_edit,hide]>
+        <div>
+            商品标题:<input type="text" v-model="title">
+        </div>
+        <div>
+            商品数量:<input type="number" v-model="num">
+        </div>
+        <div>
+            商品价格:<input type="number" v-model="price">
+        </div>
+        <div style="color: red">{{error_message}}</div>
+        <button @click="save(currenr_index)">保存</button>
+        <button @click="togglediv">取消</button>
+    </div>
+</div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+
+</script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                goods_list: [
+                    {id: 1, title: "python入门1", num: 5, price: 100},
+                    {id: 2, title: "python入门2", num: 6, price: 101},
+                    {id: 3, title: "python入门3", num: 7, price: 102},
+                    {id: 4, title: "python入门4", num: 8, price: 103},
+                ],
+                hide: {"hide": true},
+                shadow: {"shadow": true},
+                add_edit: {"add_edit": true},
+                title: "",
+                num: "",
+                price: "",
+                error_message: '',
+                currenr_index: 0,
+            }
+        },
+        methods: {
+            sub(index){
+                if(this.goods_list[index].num>0){
+                    this.goods_list[index].num--
+                }
+            },
+            togglediv() {
+                if (this.hide.hide) {
+                    this.hide.hide = false
+                } else {
+                    this.hide.hide = true
+                }
+                ;
+                this.title = this.num = this.price = this.error_message = '';
+
+
+            },
+            check() {
+                if (!this.title || !this.num || !this.price) {
+                    this.error_message = '填写内容不能为空！！！';
+                    return false
+                } else {
+                    return true
+                }
+
+            },
+            save(index) {
+                if (index) {
+                    let current_goods = this.goods_list[index];
+
+                    if (this.check()) {
+                        current_goods.title = this.title;
+                        current_goods.num = this.num;
+                        current_goods.price = this.price;
+                        this.togglediv()
+                    }
+                } else {
+                    let length = this.goods_list.length;
+                    let largest_id = length ? this.goods_list[length - 1].id : 0;
+                    let new_id = largest_id + 1;
+                    let new_goods = {id: new_id, title: this.title, num: this.num, price: this.price};
+                    if (this.check()) {
+                        this.goods_list.push(new_goods);
+                        this.togglediv()
+                    }
+                }
+
+
+            },
+            del(index) {
+                this.goods_list.splice(index, 1);
+            },
+            edit(index) {
+                this.hide.hide = false;
+                let current_goods = this.goods_list[index];
+                this.title = current_goods.title;
+                this.num = current_goods.num;
+                this.price = current_goods.price;
+                this.currenr_index = index
+            }
+        },
+        computed:{
+                total(){
+                    let sum = 0;
+                    for(var goods of this.goods_list){
+                        sum += (goods.num*goods.price)
+                    }
+                    return sum.toFixed(2);
+                }
+            }
+    })
+</script>
+</html>

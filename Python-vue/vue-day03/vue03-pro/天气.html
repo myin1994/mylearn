@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>weather</title>
+     <script src="./js/vue.js"></script>
+    <script src="./js/axios.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="city"> <button @click="get_weather">获取城市未来五天的天气</button> <span style="color: red">{{error_msg}}</span>
+    <div><span style="color: blue">{{tips}}</span></div>
+    <table border="1">
+        <thead>
+            <th>日期</th>
+            <th>风向</th>
+            <th>风力</th>
+            <th>天气类型</th>
+            <th>高温</th>
+            <th>低温</th>
+        </thead>
+        <tbody>
+        <tr v-for="weather in weather_list">
+            <td>{{ weather.date }}</td>
+            <td>{{ weather.fengxiang }}</td>
+            <td>{{ weather.fengli|fengli }}</td>
+            <td>{{ weather.type }}</td>
+            <td>{{ weather.high }}</td>
+            <td>{{ weather.low }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+<script>
+    let vm = new Vue(
+        {
+            el:"#app",
+            data(){
+                return {
+                    city:"北京",
+                    weather_list:"",
+                    tips:"",
+                    error_msg:"",
+                }
+            },
+            methods:{
+                get_weather(){
+                    this.error_msg = "";
+                    let url = "http://wthrcdn.etouch.cn/weather_mini";
+                    // let url = "http://wthrcdn.etouch.cn/weather_mini?city=" + this.city;
+                axios.get(url,{
+                    params:{
+                        city:this.city
+                    }
+                }).then((ret)=> {
+                        if(ret.data.desc==="invilad-citykey"){
+                            this.error_msg = "错误的城市！请重新填写"
+                        }else {
+                            this.weather_list = ret.data.data.forecast;
+                            this.tips = "温馨提示：" + ret.data.data.ganmao;
+                        }
+                }).catch( (ret)=> {
+                       this.error_msg = "错误的城市！请重新填写"
+                })
+                }
+            },
+            filters:{
+                fengli(value){
+                    var patt1=new RegExp("[0-9]级");
+                    ret = patt1.exec(value);
+                    return ret[0]
+                }
+            },
+            created(){
+                this.get_weather()
+            }
+        }
+    )
+</script>
+</html>

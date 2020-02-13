@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+    <style>
+        .c1{
+            border: 1px solid red;
+            height: 100px;
+        }
+        .c2{
+            border: 1px solid green;
+            height: 50px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="c1">
+        <div class="c2"></div>
+    </div>
+
+</body>
+<script>
+    $('.c1').click(function () {
+        alert('父级标签c1');
+    });
+    $('.c2').click(function () {
+        alert('儿子标签c2');
+        return false; // 阻止后续事件发生
+    });
+</script>
+</html>

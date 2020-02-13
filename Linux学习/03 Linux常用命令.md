@@ -953,6 +953,26 @@ ln -s  /s26linux/happy.txt  /tmp/hp.txt
   + *.tgz    ，就是用gzip+tar两个命令，进行了压缩和打包 ，因此用 `tar  -zxvf`  参数解压
   + *.tar.gz  等同于 *.tgz 解压形式，得解开gz后缀，以及解开tar后缀，直接用组合命令  `tar  -zxvf  *.tar.gz`
   + *.tar  就是仅仅用了tar打包，不需要用-z参数解压缩了，直接  `tar  -xf  *.tar `
+  
++ 将指定目录/tmp压缩成test.zip文件
+
+  ```
+  zip -r test.zip tmb/
+  ```
+
++ 将压缩文件text.zip在当前目录下解压缩。
+
+  ```
+  unzip test.zip
+  ```
+
++ 将压缩文件test.zip在指定目录/tmp下解压缩，如果已有相同的文件存在，要求unzip命令覆盖原先的文件。
+
+  ```
+  unzip -o test.zip -d tmp/
+  ```
+
+  
 
 ## 计划任务crond服务
 

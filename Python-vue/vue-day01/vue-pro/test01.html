@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input :type="type" v-model="pwd"> <button @click="type=(title==='显示密码'?'text':'password'),title=(type==='password'?'显示密码':'隐藏密码')">{{title}}</button>
+</div>
+</body>
+
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                url:"https://www.baidu.com",
+                pwd:"",
+                type:'password',
+                title:"显示密码"
+            }
+        },
+        methods:{
+            up(){
+                this.num ++
+            }
+        }
+    })
+</script>
+
+</html>

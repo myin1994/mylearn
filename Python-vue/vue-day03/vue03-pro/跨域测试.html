@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/axios.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="weather">看天气</button>
+    <h1>{{text}}</h1>
+</div>
+</body>
+
+<script>
+    let vm1 = new Vue({
+        el:'#app',
+        data(){
+            return {
+            text:99
+        }
+        },
+        methods:{
+            weather(){
+                axios.get('http://127.0.0.1:8000/kuayuan/',{contentType:'application/json'}).then(
+                    (data)=> {
+                        console.log(111111111111,data);
+                        this.text = data.data
+                    }
+                ).catch(
+                    (error)=>{
+                        console.log(error);
+                    }
+                )
+            }
+        }
+    });
+
+</script>
+
+</html>

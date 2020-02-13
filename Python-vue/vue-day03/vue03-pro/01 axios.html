@@ -8,35 +8,54 @@
 </head>
 <body>
 <div id="app">
-    <button @click="weather">看天气</button>
+    <button @click="weather">查看音乐</button>
     <h1>{{text}}</h1>
 </div>
 </body>
 
 <script>
+
     let vm1 = new Vue({
-        el:'#app',
-        data(){
+        el: '#app',
+        data() {
             return {
-            text:99
-        }
+                text: 99
+            }
         },
-        methods:{
-            weather(){
-                axios.get('http://127.0.0.1:8000/kuayuan/',{contentType:'application/json'}).then(
-                    (data)=> {
-                        console.log(111111111111,data);
-                        this.text = data.data
+        methods: {
+            get_data(url,method) {
+                // 通过js的DOM操作创建一个script标签
+                var script = document.createElement("script");
+                var content = document.getElementById("content");
+                // 给script标签设置src属性为服务端的js脚本
+                script.src = url + "?callback=" + method + "&q=" + content.value;
+                console.log(script);
+                // 把新建的script标签追加到网页给浏览器识别
+                document.head.append(script);
+            },
+            weather() {
+
+                let url = "http://tingapi.ting.baidu.com/v1/restserver/ting";
+                axios.get(url, {
+                    dataType: "jsonp",
+                    params: {
+                        method: "baidu.ting.search.catalogSug",
+                        query: "死了都要爱"
+                    }
+                }).then(
+                    (data) => {
+                        console.log(111111111111, data);
+                        this.text = data
                     }
                 ).catch(
-                    (error)=>{
-                        console.log(error);
+                    (error) => {
+                        console.log(22222, error);
                     }
                 )
             }
         }
     });
 
-</script>
 
+</script>
 </html>

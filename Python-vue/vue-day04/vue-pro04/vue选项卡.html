@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        .title {
+            height: 50px;
+        }
+
+        .title span {
+            width: 100px;
+            height: 100%;
+            background-color: gray;
+            display: inline-block;
+            line-height: 50px; /* 设置行和当前元素的高度相等,就可以让文本内容上下居中 */
+            text-align: center;
+        }
+
+        .title .current {
+            background-color: yellow;
+        }
+
+        .content {
+            padding-top: -5px;
+            height: 100px;
+            width: 400px;
+            background-color: yellow;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <card/>
+
+</div>
+</body>
+<script>
+    Vue.component("card", {
+        data() {
+            return {
+                msg1: '国内新闻',
+                msg2: '国际新闻',
+                msg3: '银河新闻',
+                current_msg: '国内新闻'
+            }
+        },
+        template: `
+            <div>
+                <div class="title">
+                    <span @click="current_msg=msg1" :class="current_msg===msg1?'current':''">{{msg1}}</span>
+                    <span @click="current_msg=msg2" :class="current_msg===msg2?'current':''">{{msg2}}</span>
+                    <span @click="current_msg=msg3" :class="current_msg===msg3?'current':''">{{msg3}}</span>
+                </div>
+
+                <div class="content  color">
+                    {{current_msg+'列表'}}
+                </div>
+
+            </div>
+        `
+    });
+    let vm = new Vue(
+        {
+            el: '#app',
+
+        }
+    )
+</script>
+</html>

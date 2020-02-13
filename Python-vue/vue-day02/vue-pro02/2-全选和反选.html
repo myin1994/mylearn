@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="./js/vue.js"></script>
+	<script src="./js/jquery.js"></script>
+</head>
+<body>
+	<div id="app">
+		<ul>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+			<li><input type="checkbox">1111111</li>
+		</ul>
+		<button @click="full_select">全选</button>
+		<button @click="reverse">反选</button>
+	</div>
+</body>
+<script>
+    let vm1 = new Vue({
+        el:'#app',
+		methods:{
+        	full_select(){
+        		$("input").prop('checked',true);
+			},
+			reverse(){
+        		var a=$(':checked');
+				$('input').not(":checked").prop('checked',true);
+				a.prop('checked',false);
+			}
+		}
+
+    });
+
+</script>
+</html>

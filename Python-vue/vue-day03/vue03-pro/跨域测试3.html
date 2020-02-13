@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" id="content">
+        <button onclick="get_data()">翻译</button>
+        <p id="p1"></p>
+    </div>
+    <script>
+    // jsonp本身并不是ajax
+    // jsonp利用的是script标签的本身特性
+    // 实现json需要客户端和服务端配合
+    function hello(data){
+        // 自定义业务
+        var p1 = document.getElementById("p1");
+        p1.innerHTML = data.data;
+        console.log(data);
+    }
+
+    function get_data(){
+        // 通过js的DOM操作创建一个script标签
+        var script = document.createElement("script");
+        var content = document.getElementById("content");
+        // 给script标签设置src属性为服务端的js脚本
+        script.src = "https://api.asilu.com/fanyi/?callback=hello&q="+content.value;
+        console.log(script);
+        // 把新建的script标签追加到网页给浏览器识别
+        document.head.append(script);
+    }
+
+    </script>
+</body>
+</html>
