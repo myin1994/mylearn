@@ -14,19 +14,25 @@
 
 # 2. api接口
 
+api就是开发提供给第三方或者外界通过方法/url地址进行调用的一个数据功能，可以理解为django里面的一个视图的方法或者一个能够被访问的函数。
+
+
+
 为了在团队内部形成共识、防止个人习惯差异引起的混乱，我们需要找到一种大家都觉得很好的接口实现规范，而且这种规范能够让后端写的接口，用途一目了然，减少双方之间的合作成本。
 
-目前市面上大部分公司开发人员使用的接口服务架构主要有：restful、rpc。
+目前市面上大部分公司开发人员使用的接口服务架构主要有：restful、rpc、soap。
 
 
 
 rpc: 翻译成中文:远程过程调用[远程服务调用].
 
-服务端提供一个同一个地址：http://api.renran.cn/
+服务端提供一个统一的访问地址：http://api.renran.cn/，通过参数声明调用哪一个方法，以及调用方法的参数。
 
-post请求
+rpc基本都会要求，使用http的post请求，
 
 action=get_all_student&params=301&sex=1
+
+
 
 
 
@@ -40,7 +46,7 @@ restful: 翻译成中文: 资源状态转换.
 
 那么接口请求数据,本质上来说就是对资源的操作了.
 
-web项目中操作资源,无非就是增删查改.所以要求在地址栏中声明要操作的资源是什么,然后通过http请求动词来说明对资源进行哪一种操作.
+web项目中操作资源,无非就是增删查改.所以要求在地址栏中声明要操作的资源是什么,然后通过http请求动词来说明对资源进行哪一种操作.资源对应的往往就是数据表的表名。
 
 POST http://www.renran.cn/api/students/   添加学生数据
 
@@ -133,7 +139,7 @@ DRF需要以下依赖：
 - Python (2.7, 3.2以上)
 - Django (1.10, 1.11, 2.0以上)
 
-**DRF是以Django扩展应用的方式提供的，所以我们可以直接利用已有的Django环境而无需从新创建。（若没有Django环境，需要先创建环境安装Django）**
+**DRF是以Django的子应用方式提供的，所以我们可以直接利用已有的Django环境而无需从新创建。（若没有Django环境，需要先创建环境安装Django）**
 
 
 
@@ -179,52 +185,64 @@ INSTALLED_APPS = [
 ]
 ```
 
-接下来就可以使用DRF提供的功能进行api接口开发了。在项目中如果使用rest_framework框架实现API接口，主要有以下三个步骤：
+接下来就可以使用DRF提供的功能进行api接口开发了。在项目中如果使用rest_framework框架实现API接口，开发过程中编写视图为主，视图里面的代码无非有以下三个步骤：
 
-- 将请求的数据（如JSON格式）转换为模型类对象
-- 操作数据库
-- 将模型类对象转换为响应的数据（如JSON格式）
-
-
+- 将请求的数据（如JSON格式）转换为模型类对象【json->字典->模型对象】
+- 通过模型类对象操作数据库【操作数据库】
+- 将模型类对象转换为响应的数据（如JSON格式）【模型对象->字典->json】
 
 
 
-接下来，我们快速体验下四天后我们学习完成drf以后的开发代码。接下来代码不需要理解，看步骤。
 
-## 6.3 体验drf完全简写代码的过程
 
-### 6.3.1. 创建模型操作类
+接下来，我们快速体验下<mark>4天后</mark>我们学习完成drf以后的开发代码。接下来代码大家不需要理解，先看步骤，是不是上面的三个步骤。
+
+## 6.3 体验drf完全简写代码提供api接口的过程
+
+首先我们需要创建一个子应用来开发。所以在终端下面，我们直接创建students子应用。
+
+```
+python manage.py startapp students
+```
+
+把创建好的子应用注册到settings.py，代码：
 
 ```python
-class Student(models.Model):
-    # 模型字段
-    name = models.CharField(max_length=100,verbose_name="姓名")
-    sex = models.BooleanField(default=1,verbose_name="性别")
-    age = models.IntegerField(verbose_name="年龄")
-    class_null = models.CharField(max_length=5,verbose_name="班级编号")
-    description = models.TextField(max_length=1000,verbose_name="个性签名")
+# Application definition
 
-    class Meta:
-        db_table="tb_student"
-        verbose_name = "学生"
-        verbose_name_plural = verbose_name
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'rest_framework', # 把drf框架注册到django项目中
+
+    'students', # 注册子应用
+]
 ```
+
+在开发中，不管是开发一个api接口还是一个普通的业务功能，在django/drf中都会有一个套路：
+
+```
+1. 先考虑考虑好整个功能应用到的外部工具[配置信息，第三方模块，]
+2. 创建相关数据模型[models.py]
+3. 编写序列化器[django不需要这个步骤]
+4. 编写视图代码
+5. 编写路由，绑定视图
+```
+
+
 
 为了方便测试，所以我们可以先创建一个数据库。
 
 ```
-create database students charset=utf8;
+create database students charset=utf8mb4;
 ```
 
-![1557023744365](assets/1557023744365.png)
-
-#### 6.3.1.1 执行数据迁移
-
-把students子应用添加到INSTALL_APPS中
-
-![1557023819604](assets/1557023819604.png)
-
-
+![1557023744365](../../../Python%E5%85%A8%E6%A0%888-26/drf/day07-drf/assets/1557023744365.png)
 
 初始化数据库连接
 
@@ -264,7 +282,28 @@ DATABASES = {
 
 
 
-终端下，执行数据迁移。
+### 6.3.1. 创建模型操作类
+
+students/models.py，代码：
+
+```python
+class Student(models.Model):
+    # 模型字段
+    name = models.CharField(max_length=100,verbose_name="姓名")
+    sex = models.BooleanField(default=1,verbose_name="性别")
+    age = models.IntegerField(verbose_name="年龄")
+    class_number = models.CharField(max_length=5,verbose_name="班级编号")
+    description = models.TextField(max_length=1000,verbose_name="个性签名")
+
+    class Meta:
+        db_table="tb_student"
+        verbose_name = "学生"
+        verbose_name_plural = verbose_name
+```
+
+#### 6.3.1.1 执行数据迁移
+
+终端下，执行。
 
 ```
 python manage.py makemigrations
@@ -299,26 +338,30 @@ python manage.py migrate
 
 解决方法：
 
-backends/mysql/operations.py146行里面新增一个行代码：
+backends/mysql/operations.py146行里面修改这句代码：
 
-![1557026224431](assets/1557026224431.png)
+```python
+        if query is not None:
+        	# query = query.decode(errors='replace') # 原代码
+            query = query.encode(errors='replace')
+```
+
+经过上面错误解决以后，执行数据迁移。效果如下：
+
+![1581993950655](assets/1581993950655.png)
 
 
 
 ### 6.3.2. 创建序列化器
 
-例如，在django项目中创建学生子应用。
-
-```python
-python manage.py startapp students
-```
-
 在syudents应用目录中新建serializers.py用于保存该应用的序列化器。
 
-创建一个StudentModelSerializer用于序列化与反序列化。
+创建一个StudentModelSerializer用于对接收客户端提供的数据时进行反序列化以及在提供数据给客户端时进行序列化。
 
 ```python
 # 创建序列化器类，回头会在试图中被调用
+from rest_framework import serializers
+from .models import Student
 class StudentModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
@@ -364,7 +407,7 @@ router.register('students', views.StudentViewSet)  # 向路由器中注册视图
 urlpatterns += router.urls  # 将路由器中的所以路由信息追到到django的路由列表中
 ```
 
-最后把students子应用中的路由文件加载到总路由文件中.
+最后把students子应用中的路由文件加载到主应用的总路由文件中.
 
 ```python
 from django.contrib import admin
@@ -374,7 +417,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("stu/",include("students.urls")),
 ]
-
 ```
 
 
@@ -441,36 +483,51 @@ python manage.py runserver
 
 作用：
 
-    1. 序列化,序列化器会把模型对象转换成字典,经过response以后变成json字符串
-    2. 反序列化,把客户端发送过来的数据,经过request以后变成字典,序列化器可以把字典转成模型
-    3. 反序列化,完成数据校验功能
+    1. 序列化,序列化器会把模型对象转换成字典,将来提供给视图经过response以后变成json字符串
+    2. 反序列化,把客户端发送过来的数据,经过视图调用序列化器以后变成python字典,序列化器可以把字典转成模型
+    3. 反序列化,完成数据校验功能和操作数据库
 
 
 ## 7.1 定义序列化器
 
 Django REST framework中的Serializer使用类来定义，须继承自rest_framework.serializers.Serializer。
 
-接下来，为了方便演示序列化器的使用，我们先创建一个新的子应用sers
+接下来，为了方便演示序列化器的使用，我们另外创建一个新的子应用sers
 
 ```
 python manage.py startapp sers
 ```
 
-
-
-我们已有了一个数据库模型类students/Student
+先注册子应用到项目中，settings.py，代码：
 
 ```python
-from django.db import models
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 
-# Create your models here.
+    'rest_framework', # 把drf框架注册到django项目中
+
+    'students', # 注册子应用
+    'sers',
+]
+```
+
+
+
+因为我们已有了一个数据库模型类students/Student，我们直接在接下来的演示中使用这个模型。
+
+```python
 class Student(models.Model):
     # 模型字段
-    name = models.CharField(max_length=100,verbose_name="姓名",help_text="提示文本:账号不能为空！")
-    sex = models.BooleanField(default=True,verbose_name="性别")
+    name = models.CharField(max_length=100,verbose_name="姓名")
+    sex = models.BooleanField(default=1,verbose_name="性别")
     age = models.IntegerField(verbose_name="年龄")
-    class_null = models.CharField(max_length=5,verbose_name="班级编号")
-    description = models.TextField(verbose_name="个性签名")
+    class_number = models.CharField(max_length=5,verbose_name="班级编号")
+    description = models.TextField(max_length=1000,verbose_name="个性签名")
 
     class Meta:
         db_table="tb_student"
@@ -478,7 +535,9 @@ class Student(models.Model):
         verbose_name_plural = verbose_name
 ```
 
-我们想为这个模型类提供一个序列化器，可以定义如下：
+
+
+我们想为这个模型类提供一个序列化器，可以命名为`StudentSerializer`，可以定义如下：
 
 ```python
 from rest_framework import serializers
@@ -581,7 +640,7 @@ Serializer(instance=None, data=empty, **kwarg)
 serializer = AccountSerializer(account, context={'request': request})
 ```
 
-**通过context参数附加的数据，可以通过Serializer对象的context属性获取。**
+**通过context参数附加的数据，可以通过Serializer对象的self.context属性获取。**
 
 
 
