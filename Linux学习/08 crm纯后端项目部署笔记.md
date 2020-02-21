@@ -45,7 +45,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
   mysql_secure_installation
   ```
 
-  ![image-20200208160558578](08 crm纯后端项目部署笔记.assets/image-20200208160558578.png)
+  ![image-20200208160558578]($%7Basserts%7D/image-20200208160558578.png)
 
 ## uwsgi+django的后台启动
 

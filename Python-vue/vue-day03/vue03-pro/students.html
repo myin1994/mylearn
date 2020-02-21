@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/axios.js"></script>
+    <!--    <script src="../static/js/vue.js"></script>-->
+    <!--    <script src="../static/js/axios.js"></script>-->
+    <style>
+        .shadow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 90;
+            /*display: none;*/
+        }
+
+        .add_edit {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            height: 360px;
+            width: 300px;
+            margin-left: -150px;
+            margin-top: -180px;
+            background-color: white;
+            z-index: 100;
+            /*display: none;*/
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .item td {
+            text-align: center;
+        }
+
+        .item input {
+            text-align: right;
+        }
+
+        #app p {
+            text-align: right;
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--    {{ students_list }}-->
+    <button @click="togglediv">添加</button>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>学生姓名</th>
+            <th>性别</th>
+            <th>班级</th>
+            <th>年龄</th>
+            <th>个人简介</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="student in students_list.data" :key="student.id">
+            <td>{{student.id}}</td>
+            <td>{{student.name}}</td>
+            <td>{{student.sex}}</td>
+            <td>{{student.class_number}}</td>
+            <td>{{student.age}}</td>
+            <td>{{student.description}}</td>
+            <td>
+                <button @click="edit(student.id)">修改</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div :class=[shadow,hide]></div>
+    <div :class=[add_edit,hide]>
+        <div>
+            学生姓名:<input type="text" v-model="name">
+        </div>
+        <div>
+            性别:<input type="text" v-model="sex">
+        </div>
+        <div>
+            班级:<input type="text" v-model="class_number">
+        </div>
+        <div>
+            年龄:<input type="number" v-model="age">
+        </div>
+        <div>
+            个人简介:<input type="text" v-model="description">
+        </div>
+
+        <div style="color: red">{{error_message}}</div>
+        <button @click="save(c_id)">保存</button>
+        <button @click="togglediv">取消</button>
+    </div>
+</div>
+</body>
+<script>
+    let vm = new Vue(
+        {
+            el: "#app",
+            data() {
+                return {
+                    students_list: '',
+                    hide: {"hide": true},
+                    shadow: {"shadow": true},
+                    add_edit: {"add_edit": true},
+                    c_id: "",
+                    name: "",
+                    sex: "",
+                    class_number: "",
+                    age: "",
+                    description: "",
+                    error_message: ""
+                }
+            },
+            methods: {
+                getalldata(){
+                  axios.get("http://127.0.0.1:8000/students/students_list/", {
+                    contentType: 'application/json'
+                }).then(
+                    (ret) => {
+                        this.students_list = ret
+                    }
+                ).catch(function () {
+                    console.log(222)
+                })
+                },
+                save(id) {
+                    let add_data = {
+                        name: this.name,
+                        sex: this.sex,
+                        class_number: this.class_number,
+                        age: this.age,
+                        description: this.description
+                    };
+                    if (id) {
+                        axios.get("http://127.0.0.1:8000/students/students_list/"+id, {
+                            params: add_data,
+                            contentType: 'application/json',
+                            responseData: "json",
+                        }).then(
+                            (ret) => {
+                                if (ret.data === "OK") {
+                                    console.log(ret);
+                                    this.error_message = "";
+                                    this.getalldata();
+                                    this.togglediv()
+                                } else {
+                                    console.log(ret);
+                                    this.error_message = ret.data;
+                                }
+
+                            }
+                        ).catch(function () {
+                            console.log(222)
+                        });
+                    } else {
+                        axios.get("http://127.0.0.1:8000/students/students_list/", {
+                            params: add_data,
+                            contentType: 'application/json',
+                            responseData: "json",
+                        }).then(
+                            (ret) => {
+                                if (ret.data === "OK") {
+                                    console.log(ret);
+                                    this.error_message = "";
+                                    this.getalldata();
+                                    this.togglediv()
+                                } else {
+                                    console.log(ret);
+                                    this.error_message = ret.data;
+                                }
+
+                            }
+                        ).catch(function () {
+                            console.log(222)
+                        });
+
+                    }
+                },
+                del(index) {
+                    this.goods_list.splice(index, 1);
+                },
+                edit(id) {
+                    this.hide.hide = false;
+                    axios.get("http://127.0.0.1:8000/students/students_list/" + id, {
+                        contentType: 'application/json'
+                    }).then(
+                        (ret) => {
+                            // console.log(ret)
+                            let student = ret.data;
+                            this.c_id = student.id;
+                            this.name = student.name;
+                            this.age = student.age;
+                            this.sex = student.sex;
+                            this.class_number = student.class_number;
+                            this.description = student.description;
+                        }
+                    ).catch(function () {
+                        console.log(222)
+                    });
+                }
+                ,
+                togglediv() {
+                    if (this.hide.hide) {
+                        this.hide.hide = false
+                    } else {
+                        this.hide.hide = true
+                    }
+                    ;
+                    this.c_id = this.name = this.age = this.sex = this.class_number = this.description = '';
+
+                }
+            },
+            created() {
+                this.getalldata()
+
+            }
+        }
+    )
+</script>
+</html>

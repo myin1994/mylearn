@@ -36,7 +36,7 @@ yum install nginx -y
 
 ### 安装淘宝nginx
 
-![image-20200206191221246](07 nginx学习.assets/image-20200206191221246.png)
+![image-20200206191221246]($%7Basserts%7D/image-20200206191221246.png)
 
 + 安装步骤
 
@@ -46,48 +46,49 @@ yum install nginx -y
      yum install gcc-c++ -y
      wget http://tengine.taobao.org/download/tengine-2.3.2.tar.gz
      ```
+
 2. 解压缩源代码
-  
-     ```
-     tar  -zxvf  tengine-2.3.2.tar.gz
+
    ```
-  
+   tar  -zxvf  tengine-2.3.2.tar.gz
+   ```
+
 3. 进入nginx源码目录，指定安装路径
-  
-     ```
-     [root@s26linux tengine-2.3.2]# ./configure --prefix=/opt/tngx232/
+
    ```
-  
+   [root@s26linux tengine-2.3.2]# ./configure --prefix=/opt/tngx232/
+   ```
+
 4. 开始编译且安装
-  
-     ```
-     [root@s26linux tengine-2.3.2]# make && make install
+
    ```
-  
+   [root@s26linux tengine-2.3.2]# make && make install
+   ```
+
 5. 配置环境变量
-  
+
    + 修改/etc/profile，修改PATH的值
-   
-       ```
-       先查看PATH值，然后追加当前bin目录
-       vim /etc/profile
-       添加如下PATH变量
-       PATH='/s26linux/python362/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/tngx232/sbin'
+
      ```
-   
+     先查看PATH值，然后追加当前bin目录
+     vim /etc/profile
+     添加如下PATH变量
+     PATH='/s26linux/python362/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/tngx232/sbin'
+     ```
+
    + 手动读取这个/etc/profile
-   
-       ```
-       [root@s26linux sbin]# source /etc/profile
+
      ```
-   
+     [root@s26linux sbin]# source /etc/profile
+     ```
+
    + 重新ssh链接
-  
+
 6. nginx可执行命令的常用方式
-  
-     + nginx -s reload  平滑重启，重新读取nginx配置文件，而不重启进程
-     + nginx  直接输入nginx，是代表启动，只能首次使用
-     + nginx -s stop  杀死nginx进程
+
+   + nginx -s reload  平滑重启，重新读取nginx配置文件，而不重启进程
+   + nginx  直接输入nginx，是代表启动，只能首次使用
+   + nginx -s stop  杀死nginx进程
 
 ### nginx常用功能
 
@@ -529,6 +530,7 @@ conf  html  logs  sbin
 ### nginx支持多虚拟主机站点
 
 + 多虚拟主机配置-其实就是在nginx.conf中定义多个server{}标签而已
+
   + 基于域名的多虚拟主机，基于域名区分不同的站点配置，直接修改server_name配置
   + 基于端口的多虚拟主机配置，直接修改listen 的配置
   + 基于ip的多虚拟主机配置
@@ -794,7 +796,7 @@ linux在
   实现负载的分发。那么会大大提升系统的吞吐率、请求性能、高容灾
   ```
 
-  ![image-20200208143809058](07 nginx学习.assets/image-20200208143809058.png)
+  ![image-20200208143809058]($%7Basserts%7D/image-20200208143809058.png)
 
 + 负载均衡与代理的异同
 
