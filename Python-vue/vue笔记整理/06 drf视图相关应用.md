@@ -188,7 +188,7 @@ REST framework 提供了众多的通用视图基类与扩展类，以简化视�
 
 ### 2个视图基类
 
-#### APIView
+#### APIView--基本视图类
 
 ```
 rest_framework.views.APIView
@@ -278,5 +278,649 @@ class GoodsApiView(APIView):
             return Response({"message": "already deleted"},status=HTTP_204_NO_CONTENT)
         except:
             return Response({"message": "not exist"},status=HTTP_204_NO_CONTENT)
+```
+
+#### GenericAPIView--通用视图类
+
+通用视图类主要作用就是把视图中的独特的代码抽取出来，让视图方法中的代码更加通用，方便把通用代码进行简写。
+
+```
+rest_framework.generics.GenericAPIView
+```
+
+继承自`APIVIew`，**主要增加了操作序列化器和数据库查询的方法，作用是为下面Mixin扩展类的执行提供方法支持。通常在使用时，可搭配一个或多个Mixin扩展类。**
+
++ 相关属性及方法
+
+  + 关于数据库查询的属性与方法
+
+    + 属性
+
+      + **queryset** 指明使用的数据查询集（即queryset对象/objects对象亦可）
+
+        ```python
+        #源码
+        queryset = None
+        ```
+
+      + **lookup_field & lookup_url_kwarg** 模型对象的查询参数字段
+
+        ```python
+        #源码
+        lookup_field = 'pk'
+        lookup_url_kwarg = None
+        ```
+  
+    + 相关方法
+
+      +  **get_queryset(self)** 获取视图使用的查询集
+
+        主要用来提供给Mixin扩展类使用，是列表视图与详情视图获取数据的基础，默认返回`queryset`属性，可以重写
+
+        ```python
+      #源码
+        def get_queryset(self):
+          assert self.queryset is not None, (
+                "'%s' should either include a `queryset` attribute, "
+              "or override the `get_queryset()` method."
+                % self.__class__.__name__
+          )
+        
+          queryset = self.queryset
+            if isinstance(queryset, QuerySet):
+                # Ensure queryset is re-evaluated on each request.
+                queryset = queryset.all()
+            return queryset
+        ```
+        
+      +  **get_object(self)** --根据查询字段获取模型对象
+  
+         在试图中可以调用该方法获取详情信息的模型类对象。**若详情访问的模型类对象不存在，会返回404。**
+  
+         该方法会默认使用APIView提供的check_object_permissions方法检查当前对象是否有权限被访问。
+  
+         ```python
+         #源码
+         def get_object(self):
+         
+             queryset = self.filter_queryset(self.get_queryset())
+         
+             # Perform the lookup filtering.
+             lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+         
+             assert lookup_url_kwarg in self.kwargs, (
+                 'Expected view %s to be called with a URL keyword argument '
+                 'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                 'attribute on the view correctly.' %
+                 (self.__class__.__name__, lookup_url_kwarg)
+             )
+         
+             filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+             obj = get_object_or_404(queryset, **filter_kwargs)
+         
+             # May raise a permission denied
+             self.check_object_permissions(self.request, obj)
+         
+             return obj
+         ```
+  
+  + 关于序列化器使用的属性与方法
+  
+    + 属性--**serializer_class** 指明视图使用的序列化器
+  
+      ```python
+    #源码
+      serializer_class = None
+      ```
+    
+    + 相关方法
+  
+      +  **get_serializer_class(self)** 获取当前序列化器
+  
+        ```python
+        #源码
+        def get_serializer_class(self):
+            assert self.serializer_class is not None, (
+                "'%s' should either include a `serializer_class` attribute, "
+                "or override the `get_serializer_class()` method."
+                % self.__class__.__name__
+            )
+            return self.serializer_class
+        ```
+  
+        + 当出现一个视图类中调用多个序列化器时,那么可以通过条件判断在get_serializer_class方法中通过返回不同的序列化器类名就可以让视图方法执行不同的序列化器对象了。
+  
+          返回序列化器类，默认返回`serializer_class`，可以重写，例如：
+  
+          ```python
+          def get_serializer_class(self):
+              if self.request.user.is_staff:
+                  return FullAccountSerializer
+              return BasicAccountSerializer
+          ```
+  
+      + **get_serializer(self, *args, \**kwargs)** 获取序列化器对象
+  
+        主要用来提供给Mixin扩展类使用，如果我们在视图中想要获取序列化器对象，也可以直接调用此方法。
+  
+        ```python
+        #源码
+        def get_serializer(self, *args, **kwargs):
+            serializer_class = self.get_serializer_class()
+            kwargs['context'] = self.get_serializer_context()
+            return serializer_class(*args, **kwargs)
+        ```
+  
+      + **get_serializer_context** --在获取序列化器对象时添加补充参数**context**
+  
+        ```python
+        #源码
+        def get_serializer_context(self):
+        
+            return {
+                'request': self.request,
+                'format': self.format_kwarg,
+                'view': self
+            }
+        ```
+  
+        + **request** 当前视图的请求对象
+        + **view** 当前请求的类视图对象
+        + **format** 当前请求期望返回的数据格式
+  
+  + 其他可以设置的属性
+  
+    + **pagination_class** 指明分页控制类
+    + **filter_backends** 指明过滤控制后端
+  
+  + 实例
+  
+    + urls
+  
+      ```python
+      urlpatterns = [
+          #GenericAPIView
+          path('gen/goodsapi/',views.GoodsGenericAPIView.as_view()),
+          re_path('^gen/goodsapi/(?P<pk>\d+)',views.Goods2GenericAPIView.as_view()),
+      ]
+      ```
+  
+    + views
+  
+      ```python
+      #GenericAPIView
+      from rest_framework.generics import GenericAPIView
+      class GoodsGenericAPIView(GenericAPIView):
+          queryset = Goods.objects
+          serializer_class = GoodsSerializer
+      
+          def get(self,request):
+              instance = self.get_queryset()
+              serializer = self.get_serializer(instance=instance,many=True)
+              return Response(serializer.data)
+      
+          def post(self,request):
+              serializer = self.get_serializer(data=request.data)
+              serializer.is_valid(raise_exception=True)
+              serializer.save()
+              return Response(serializer.data, status=HTTP_201_CREATED)
+      
+      class Goods2GenericAPIView(GenericAPIView):
+          queryset = Goods.objects
+          serializer_class = GoodsSerializer
+      
+          def get(self,request,pk):
+              instance = self.get_object()
+              serializer = self.get_serializer(instance=instance)
+              return Response(serializer.data)
+      
+          def put(self,request,pk):
+              instance = self.get_object()
+              serializer = self.get_serializer(instance=instance,data=request.data)
+              serializer.is_valid(raise_exception=True)
+              serializer.save()
+              return Response(serializer.data, status=HTTP_201_CREATED)
+      
+          def delete(self,request,pk):
+              self.get_object().delete()
+              return Response("ok", status=HTTP_204_NO_CONTENT)
+      ```
+  
+      
+
+### 5个视图扩展类Mixin
+
+Mixins是drf框架为了配合GenricAPIView提供出来的视图扩展类,提供了几种后端视图（对数据资源进行曾删改查）处理流程的实现，如果需要编写的视图属于这五种，则视图可以通过继承相应的扩展类来复用代码，减少自己编写的代码量。
+
+这五个扩展类需要搭配GenericAPIView父类，因为五个扩展类的实现需要调用GenericAPIView提供的序列化器与数据库查询的方法。
+
+#### ListModelMixin
+
+**列表视图扩展类**，提供`list(request, *args, **kwargs)`方法快速实现列表视图，返回200状态码。
+
+该Mixin的list方法会对数据进行过滤和分页。
+
+```python
+#源码
+class ListModelMixin:
+    """
+    List a queryset.
+    """
+    def list(self, request, *args, **kwargs):
+        #过滤
+        queryset = self.filter_queryset(self.get_queryset())
+		#分页
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+		#序列化
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+```
+
+#### CreateModelMixin
+
+**创建视图扩展类**，提供`create(request, *args, **kwargs)`方法快速实现创建资源的视图，成功返回201状态码。
+
+如果序列化器对前端发送的数据验证失败，返回400错误。
+
+```python
+#源码
+class CreateModelMixin(object):
+    """
+    Create a model instance.
+    """
+    def create(self, request, *args, **kwargs):
+        # 获取序列化器
+        serializer = self.get_serializer(data=request.data)
+        # 验证
+        serializer.is_valid(raise_exception=True)
+        # 保存
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def get_success_headers(self, data):
+        try:
+            return {'Location': str(data[api_settings.URL_FIELD_NAME])}
+        except (TypeError, KeyError):
+            return {}
+```
+
+#### RetrieveModelMixin
+
+**详情视图扩展类**，提供`retrieve(request, *args, **kwargs)`方法，可以快速实现返回一个存在的数据对象。
+
+如果存在，返回200， 否则返回404。
+
+```python
+#源码
+class RetrieveModelMixin(object):
+    """
+    Retrieve a model instance.
+    """
+    def retrieve(self, request, *args, **kwargs):
+        # 获取对象，会检查对象的权限
+        instance = self.get_object()
+        # 序列化
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+```
+
+#### UpdateModelMixin
+
+更新视图扩展类，提供`update(request, *args, **kwargs)`方法，可以快速实现更新一个存在的数据对象。
+
+同时也提供`partial_update(request, *args, **kwargs)`方法，可以实现局部更新。
+
+成功返回200，序列化器校验数据失败时，返回400错误。
+
+```python
+#源码
+class UpdateModelMixin(object):
+    """
+    Update a model instance.
+    """
+    def update(self, request, *args, **kwargs):
+        #获取partial参数状态值用于设置是否局部更新
+        partial = kwargs.pop('partial', False)
+        #获取对象
+        instance = self.get_object()
+        #获取序列化器对象
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        #验证
+        serializer.is_valid(raise_exception=True)
+        #保存
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def partial_update(self, request, *args, **kwargs):
+        #调用时增加参数partial=True
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+```
+
+#### DestroyModelMixin
+
+删除视图扩展类，提供`destroy(request, *args, **kwargs)`方法，可以快速实现删除一个存在的数据对象。
+
+成功返回204，不存在返回404。
+
+```python
+#源码
+class DestroyModelMixin(object):
+    """
+    Destroy a model instance.
+    """
+    def destroy(self, request, *args, **kwargs):
+        #获取对象
+        instance = self.get_object()
+        #调用方法删除
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+```
+
+#### 实例
+
++ urls
+
+  ```python
+  urlpatterns = [
+      #Mixins
+      path('mix/goodsapi/',views.GoodsMinxinAPIView.as_view()),
+      re_path('^mix/goodsapi/(?P<pk>\d+)',views.Goods2MinxinAPIView.as_view()),
+  ]
+  ```
+
++ views
+
+  ```python
+  #Mixins是drf框架为了配合GenricAPIView提供出来的视图扩展类
+  from rest_framework.mixins import CreateModelMixin,\
+      UpdateModelMixin,\
+      DestroyModelMixin,\
+      ListModelMixin,\
+      RetrieveModelMixin
+  
+  class GoodsMinxinAPIView(GenericAPIView, ListModelMixin,CreateModelMixin):
+      queryset = Goods.objects
+      serializer_class = GoodsSerializer
+  
+      def get(self,request):
+          return self.list(request)
+  
+      def post(self,request):
+          return self.create(request)
+  
+  class Goods2MinxinAPIView(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+      queryset = Goods.objects
+      serializer_class = GoodsSerializer
+  
+      def get(self,request,pk):
+          return self.retrieve(request,pk=pk)
+  
+      def put(self,request,pk):
+          return self.update(request,pk=pk)
+  
+      def delete(self, request, pk):
+          return self.destroy(request,pk=pk)
+  ```
+
+### GenericAPIView的视图子类
+
++ CreateAPIView
+
+  + 提供 post 方法
+  + 继承自： GenericAPIView、CreateModelMixin
+
++ ListAPIView
+
+  + 提供 get 方法
+  + 继承自：GenericAPIView、ListModelMixin
+
++ RetrieveAPIView
+
+  + 提供 get 方法
+  + 继承自: GenericAPIView、RetrieveModelMixin
+
++ DestoryAPIView
+
+  + 提供 delete 方法
+  + 继承自：GenericAPIView、DestoryModelMixin
+
++ UpdateAPIView
+
+  + 提供 put 和 patch 方法
+  + 继承自：GenericAPIView、UpdateModelMixin
+
++ RetrieveUpdateAPIView
+
+  + 提供 get、put、patch方法
+  + 继承自： GenericAPIView、RetrieveModelMixin、UpdateModelMixin
+
++ RetrieveUpdateDestoryAPIView
+
+  + 提供 get、put、patch、delete方法
+  + 继承自：GenericAPIView、RetrieveModelMixin、UpdateModelMixin、DestoryModelMixin
+
++ 实例
+
+  + urls
+
+    ```python
+    urlpatterns = [
+        #GenericAPIView视图子类
+        path('genmix/goodsapi/',views.GoodsSonAPIView.as_view()),
+        re_path('^genmix/goodsapi/(?P<pk>\d+)',views.Goods2SonAPIView.as_view()),
+    ]
+    ```
+
+  + views
+
+    ```python
+    #GenericAPIView视图子类
+    from rest_framework.generics import \
+        ListAPIView,\
+        CreateAPIView,\
+        RetrieveAPIView,\
+        UpdateAPIView,\
+        DestroyAPIView
+    
+    class GoodsSonAPIView(ListAPIView,CreateAPIView):
+        queryset = Goods.objects
+        serializer_class = GoodsSerializer
+    
+    class Goods2SonAPIView(RetrieveAPIView,UpdateAPIView,DestroyAPIView):
+        queryset = Goods.objects
+        serializer_class = GoodsSerializer
+    ```
+
+### ViewSet--视图集
+
+使用视图集，可以将一系列逻辑相关的动作放到一个类中：
+
+- list() 提供一组数据
+- retrieve() 提供单个数据
+- create() 创建数据
+- update() 保存数据
+- destory() 删除数据
+
+ViewSet视图集类不再实现get()、post()等方法，而是实现动作 **action** 如 list() 、create() 等。
+
+视图集只在使用as_view()方法的时候，才会将**action**动作与具体请求方式对应上。如：
+
+```python
+class BookInfoViewSet(viewsets.ViewSet):
+
+    def list(self, request):
+        books = BookInfo.objects.all()
+        serializer = BookInfoSerializer(books, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        try:
+            books = BookInfo.objects.get(id=pk)
+        except BookInfo.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = BookInfoSerializer(books)
+        return Response(serializer.data)
+
+```
+
+在设置路由时，我们可以如下操作
+
+```python
+urlpatterns = [
+    url(r'^books/$', BookInfoViewSet.as_view({'get':'list'}),
+    url(r'^books/(?P<pk>\d+)/$', BookInfoViewSet.as_view({'get': 'retrieve'})
+]
+```
+
+#### ViewSetMixin中as_view()源码解读
+
+源码很长，这里只关注重点
+
+1. 首先，确定as_view的函数中action的值就是我们的urls中as_view方法中的字典
+
+   ![image-20200223174044860]($%7Basserts%7D/image-20200223174044860.png)
+
+   ![image-20200223174110905]($%7Basserts%7D/image-20200223174110905.png)
+
+2. 然后看下as_view这个方法的返回值
+
+   ![image-20200223174414346]($%7Basserts%7D/image-20200223174414346.png)
+
+3.  然后我再看下as_view中的view方法
+
+   1. 利用反射替换对应的请求方法
+
+      ```python
+      for method, action in actions.items():
+          #这里的handler就是self.create、update等方法
+      	handler = getattr(self, action)
+          #给对象绑定属性结果为self.get = self.list ,self.retrieve
+          setattr(self, method, handler)
+      ```
+
+   2. view方法的返回值,可以看到这个函数的返回值是self.dispatch
+
+      ```python
+      self.request = request
+      self.args = args
+      self.kwargs = kwargs
+      
+      # And continue as usual
+      return self.dispatch(request, *args, **kwargs)
+      ```
+
+   3. 我们注意到self.dispatch这个方法，在as_view和view均找不到，这个self是什么呢？这个self就是视图函数的类，所以我们来我们的视图函数的类中找下,最终在**APIView**中找到了这个方法
+
+4. 看下dispatch方法干了什么
+
+   ![image-20200223180521984]($%7Basserts%7D/image-20200223180521984.png)
+
+   可以发现，这里分发请求时对应的就是上面绑定的对应的方法了，所以执行self.get等方法就会调用我们前面已经对应的self.list。self.retrieve等方法。
+
+#### 常用视图集父类
+
+#####  ViewSet
+
+继承自`APIView`与`ViewSetMixin`，作用也与APIView基本类似，提供了身份认证、权限校验、流量管理等。
+
+**ViewSet主要通过继承ViewSetMixin来实现在调用as_view()时传入字典（如{'get':'list'}）的映射处理工作。**
+
+在ViewSet中，没有提供任何动作action方法，需要我们自己实现action方法。
+
+##### GenericViewSet
+
+使用ViewSet通常并不方便，因为list、retrieve、create、update、destory等方法都需要自己编写，而这些方法与前面讲过的Mixin扩展类提供的方法同名，所以我们可以通过继承Mixin扩展类来复用这些方法而无需自己编写。但是Mixin扩展类依赖与`GenericAPIView`，所以还需要继承`GenericAPIView`。
+
+**GenericViewSet**就帮助我们完成了这样的继承工作，继承自`GenericAPIView`与`ViewSetMixin`，在实现了调用as_view()时传入字典（如`{'get':'list'}`）的映射处理工作的同时，还提供了`GenericAPIView`提供的基础方法，可以直接搭配Mixin扩展类使用。
+
++ 实例
+
+  + urls
+
+    ```python
+    urlpatterns = [
+        path("students7/", views.Student4ViewSet.as_view({"get": "list", "post": "create"})),
+        re_path("students7/(?P<pk>\d+)/", views.Student4ViewSet.as_view({"get": "retrieve","put":"update","delete":"destroy"})),
+    
+    ]
+    ```
+
+  + views
+
+    ```python
+    from rest_framework.viewsets import GenericViewSet
+    from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
+    class Student4ViewSet(GenericViewSet,ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+        queryset = Student.objects.all()
+        serializer_class = StudentModelSerializer
+    ```
+
+##### ModelViewSet
+
+继承自`GenericViewSet`，同时包括了ListModelMixin、RetrieveModelMixin、CreateModelMixin、UpdateModelMixin、DestoryModelMixin。
+
++ 实例
+
+  + urls
+
+    ```python
+    urlpatterns = [
+        #ModelViewSet
+        path('model/goodsapi/',views.GoodsModelViewSet.as_view({"get": "list", "post": "create"})),
+        re_path('^model/goodsapi/(?P<pk>\d+)',views.GoodsModelViewSet.as_view({"get": "retrieve", "put": "update", "delete": "destroy"})),
+    ]
+    ```
+
+  + views
+
+    ```python
+    from rest_framework.viewsets import ModelViewSet
+    class GoodsModelViewSet(ModelViewSet):
+        queryset = Goods.objects
+        serializer_class = GoodsSerializer
+    ```
+
+##### ReadOnlyModelViewSet
+
+继承自`GenericViewSet`，同时包括了ListModelMixin、RetrieveModelMixin。
+
+
+
+#### 视图集中定义附加action动作
+
+在视图集中，我们可以通过action对象属性来获取当前请求视图集时的action动作是哪个。
+
+```python
+from rest_framework.viewsets import ModelViewSet
+from students.models import Student
+from .serializers import StudentModelSerializer
+from rest_framework.response import Response
+class StudentModelViewSet(ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentModelSerializer
+
+    def get_new_5(self,request):
+        #通过路由访问到当前方法中.可以看到本次的action就是请求的方法名
+        print(self.action) # 获取本次请求的视图方法名
 ```
 
