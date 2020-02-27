@@ -142,7 +142,7 @@ conf  html  logs  sbin
 
   + CoreModule核心模块
 
-    ```
+    ```nginx
     user www;                       #Nginx进程所使用的用户
     worker_processes 1;             #Nginx运行的work进程数量(建议与CPU数量一致或auto)
     error_log /log/nginx/error.log  #Nginx错误日志存放路径
@@ -151,7 +151,7 @@ conf  html  logs  sbin
 
   + events事件模块
 
-    ```
+    ```nginx
     events {            
         worker_connections  //每个worker进程支持的最大连接数
         use epool;          //事件驱动模型, epoll默认
@@ -160,7 +160,7 @@ conf  html  logs  sbin
 
   + http内核模块-核心web功能配置点
 
-    ```shell
+    ```nginx
     //公共的配置定义在http{}
     http {  //http层开始
     ...    
@@ -190,7 +190,7 @@ conf  html  logs  sbin
 
 + Nginx配置文件nginx.conf中文详解
 
-  ```
+  ```nginx
   #定义Nginx运行的用户和用户组
   user www www;
   
@@ -674,7 +674,7 @@ linux在
 
   1. 打开nginx.conf，找到如下配置，打开注释即可(记录所有server的日志)
 
-     ```
+     ```nginx
      log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                        '$status $body_bytes_sent "$http_referer" '
                        '"$http_user_agent" "$http_x_forwarded_for"';
@@ -716,7 +716,7 @@ linux在
 
 1. 修改nginx.conf
 
-   ```
+   ```nginx
    #直接在对应server标签中加入即可，=号根据实际情况决定是否加入
    #存放位置，location下root根目录下
    
@@ -767,7 +767,7 @@ linux在
 
   3. 修改nginx.conf
 
-     ```
+     ```nginx
      #在server标签的location中修改
      #当请求是192.168.178.181的时候，进入这个location路径匹配
      #请求通过proxy_pass参数，转发给  另一台机器的地址
@@ -837,7 +837,7 @@ linux在
 
      2. 修改nginx如下配置，添加负载均衡参数
 
-        ```
+        ```nginx
         # 在server{}标签上面，添加一个负载均衡池  upstream{} 
         # 服务器地址池 名字是 s26_server
         
@@ -847,7 +847,7 @@ linux在
         }
         ```
 
-        ```
+        ```nginx
         #在server标签的location中修改
         
         location / {
@@ -871,15 +871,15 @@ linux在
 
   + 分发规则，自行决定，根据自己的服务器架构决定
 
-  + 最常用的就是权重，或者大家根本就不管，默认用轮训
+  + 最常用的就是权重，或者大家根本就不管，默认用轮循
 
   + 分发算法模式
 
-    + 默认是轮训模式，一台服务器一次
+    + 默认是轮循模式，一台服务器一次
 
     + 权重模式，配置如下
 
-      ```
+      ```nginx
       upstream s26_server {
       server 192.168.178.134:80 weight=1;
       server 192.168.178.134:81 weight=4;
@@ -890,7 +890,7 @@ linux在
 
       根据客户端的来源ip进行哈希，得到一个唯一值，永远只发给某一台机器了,就是指定某一个服务器来服务客户端
 
-      ```
+      ```nginx
       upstream s26_server {
       server 192.168.178.134:80 ;
       server 192.168.178.134:81 ;

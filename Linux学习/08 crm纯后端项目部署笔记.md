@@ -118,9 +118,9 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
        pip3 install -i https://pypi.douban.com/simple  django-multiselectfield
        ```
 
-  7. 启动了mariadb数据库，修改settings.py配置文件
+  7. 启动mariadb数据库，修改settings.py配置文件
 
-     ```
+     ```python
      DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.mysql',
@@ -166,7 +166,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
 
       2. 写入配置内容
 
-         ```
+         ```ini
          [uwsgi]
          # Django-related settings
          # the base directory (full path)
@@ -199,7 +199,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
 
   12. 使用uwsgi命令，指定uwsgi.ini配置文件，启动crm程序
 
-      ```
+      ```shell
       # 注意找到这个uwsgi.ini的路径 再执行如下命令
       # 注意，此时不能通过对应ip+端口进行访问了，需要配置nginx代理
       uwsgi --ini  uwsgi.ini
@@ -209,7 +209,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
 
 1. 修改nginx.conf，location中改为反向代理的参数，如下
 
-   ```
+   ```nginx
    server {
            #定义网站端口的参数
            listen       80;
@@ -236,7 +236,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
 
    1. 用命令收集crm项目所有的静态文件,在settings中添加如下参数
 
-      ```
+      ```python
       #这个参数，是统一收集所有的静态文件，放入一个文件夹
       STATIC_ROOT='/s26crm/mystatic'
       ```
@@ -249,7 +249,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
 
 4. 收集好了crm的所有静态文件之后，交给nginx去返回，再次修改nginx.conf为如下配置，添加一个静态文件处理的 locaiton
 
-   ```
+   ```nginx
    location / {
            # proxy_pass 转发的是http请求
            # 这里要用基于uwsgi协议的转发参数
@@ -303,7 +303,7 @@ centos7下由于mysql已经收费了，因此有开源组织，创建了一个my
 
   3. 修改配置文件，在最底行，输入如下内容，supervisor其实也就是帮助用户执行命令而已
 
-     ```
+     ```ini
      vim /etc/supervisord.conf
      #加入如下内容 
      # 这个program，就你管理任务的一个名字而已，随便叫什么，自己能够看的懂就好
