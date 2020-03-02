@@ -296,7 +296,7 @@ rest_framework.generics.GenericAPIView
 
     + 属性
 
-      + **queryset** 指明使用的数据查询集（即queryset对象/objects对象亦可）
+      + **queryset** 指明使用的数据查询集（即queryset对象/objects对象亦可-有的情况不适用）
 
         ```python
         #源码
@@ -335,7 +335,7 @@ rest_framework.generics.GenericAPIView
         
       +  **get_object(self)** --根据查询字段获取模型对象
   
-         在试图中可以调用该方法获取详情信息的模型类对象。**若详情访问的模型类对象不存在，会返回404。**
+         在视图中可以调用该方法获取详情信息的模型类对象。**若详情访问的模型类对象不存在，会返回404。**
   
          该方法会默认使用APIView提供的check_object_permissions方法检查当前对象是否有权限被访问。
   
@@ -806,7 +806,7 @@ urlpatterns = [
 
    ![image-20200223174414346]($%7Basserts%7D/image-20200223174414346.png)
 
-3.  然后我再看下as_view中的view方法
+3.  然后再看下as_view中的view方法
 
    1. 利用反射替换对应的请求方法
 

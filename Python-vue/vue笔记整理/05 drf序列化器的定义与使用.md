@@ -39,7 +39,7 @@ Django REST framework中的Serializer使用类来定义，须继承自rest_frame
   ]
   ```
 
-+ 创建模型model
++ 创建模型models
 
   ```python
   class Student(models.Model):
@@ -291,7 +291,7 @@ Django REST framework中的Serializer使用类来定义，须继承自rest_frame
           verbose_name_plural = verbose_name
   ```
 
-  **注意：因为当前模型中， 设置到图片上传处理，所以我们需要安装`PIL`库**
+  **注意：因为当前模型中， 涉及到图片上传处理，所以我们需要安装`PIL`库**
 
   ```
   pip install Pillow
@@ -341,18 +341,17 @@ Django REST framework中的Serializer使用类来定义，须继承自rest_frame
 
     + 常规使用--根据返回值判断后续操作
 
-      ```
+      ```python
       ret = serializer.is_valid()
-      #
       ```
-
-    + 调试使用--指定参数**raise_exception=True**
-
-      在验证失败时抛出异常serializers.ValidationError，REST framework接收到此异常，会向前端返回HTTP 400 Bad Request响应。
-
-  + 完整代码
-
-    ```python
+      
++ 调试使用--指定参数**raise_exception=True**
+    
+  在验证失败时抛出异常serializers.ValidationError，REST framework接收到此异常，会向前端返回HTTP 400 Bad Request响应。
+    
++ 完整代码
+  
+  ```python
     # Create your views here.
     from django.views import View
     from django.http.response import HttpResponse
@@ -579,7 +578,6 @@ class BookInfoModelSerializer(serializers.ModelSerializer):
         model = BookInfo
         # 继承那些字段过来
         fields = "__all__" # 表示继承所有字段
-
 ```
 
 - model 指明参照哪个模型类

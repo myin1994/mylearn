@@ -183,6 +183,30 @@
       //es6的类也是可以继承的，这里咱们就不做细讲了，将来你需要的时候，就去学一下吧，哈哈，我记得是用的extends和super
   ```
 
+## js中的本地存储
+
+本地存储与vue无关，是原生js里面的内容。主要作用是方便我们临时或者永久得在本地客户端中保存数据使用。
+
+```
+html5提供给开发者保存数据到客户端的两个新对象.
+window.localStorage    # 本地存储, 永久存储数据到客户端中
+window.sessionStorage  # 会话存储, 临时存储数据到客户端中,在用一个会话期保存数据
+
+这两个对象都是保存数据的，只是保存数据的周期不一样而已。
+
+这两个对象的用法也是一样的。
+localStorage.变量名 = 变量值              # 存储数据
+localStorage.setItem("变量名","变量值");  # 存储数据
+
+localStorage.变量名                      # 获取数据
+localStorage.getItem("变量名");          # 获取数据
+
+localStorage.removeItem("变量名");       # 删除数据
+localStorage.clear();                   # 清空本地存储中的所有数据
+```
+
+本地存储的作用： 减少请求服务端的次数，减轻服务器的存储压力
+
 # 1. vue.js的快速入门使用
 
 ## 1.1 vue.js库的下载
@@ -3134,21 +3158,20 @@ npm install -g vue-cli
 指令：
 
 ```js
- 1     //临时使用
- 2     npm install jquery --registry https://registry.npm.taobao.org
- 3 
- 4     //可以把这个选型配置到文件中，这样不用每一次都很麻烦
- 5     npm config set registry https://registry.npm.taobao.org
- 6 
- 7     //验证是否配置成功 
- 8     npm config list 或者 npm config get registry
- 9 
-10     //在任意目录下都可执行,--global是全局安装，不可省略
-11     npm install --global cnpm 或者 npm install -g cnpm --registry=https://registry.npm.taobao.org
-12 
-13     //安装后直接使用
-14     cnpm install jquery
+//临时使用
+npm install jquery --registry https://registry.npm.taobao.org
 
+//可以把这个选型配置到文件中，这样不用每一次都很麻烦
+npm config set registry https://registry.npm.taobao.org
+
+//验证是否配置成功 
+npm config list 或者 npm config get registry
+
+//在任意目录下都可执行,--global是全局安装，不可省略
+npm install --global cnpm 或者 npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+//安装后直接使用
+cnpm install jquery
 ```
 
 
@@ -3185,7 +3208,7 @@ npm run dev           # 运行这个命令就可以启动node提供的测试http
 ? Author oldboy
 ? Vue build (Use arrow keys)
 ❯ Runtime + Compiler: recommended for most users 
-? Install vue-router? (Y/n) n 
+? Install vue-router? (Y/n) y #最好选择安装
 ? Set up unit tests? (Y/n) n  # 是否安装单元测试组建
 ? Setup e2e tests with Nightwatch? (Y/n)n
 ? Should we run `npm install` for you after the project has been created? (recom
@@ -3237,12 +3260,6 @@ config是配置目录，
 build是项目打包时依赖的目录
 
 src/router   路由,后面需要我们在使用Router路由的时候,自己声明.
-
-
-
-
-
-
 
 ### 7.4.3 项目执行流程图
 
@@ -3342,7 +3359,7 @@ new Vue({
 
 创建Homes.vue
 
-```
+```vue
 <template>
   <div id="Home">
     <span @click="num--" class="sub">-</span>
@@ -3373,34 +3390,27 @@ new Vue({
 
 在App.vue组件中调用上面的组件
 
-```
+```vue
 <template>
-  <div id="Home">
-    <span @click="num--" class="sub">-</span>
-    <input type="text" size="1" v-model="num">
-    <span @click="num++" class="add">+</span>
+  <div id="App">
+    <Home/>
   </div>
 </template>
 
-
 <script>
-  export default {
-    name:"Home",
-    data: function(){
-      return {
-        num:0,
-      }
-    }
+import Home from './components/Home'
+
+export default {
+  name: 'App',
+  components: {
+		Home
   }
+}
 </script>
 
-<style scoped>
-  .sub,.add{
-    border: 1px solid red;
-    padding: 4px 7px;
-  }
-</style>
+<style>
 
+</style>
 ```
 
 在开发vue项目之前，需要手动把 App.vue的HelloWorld组件代码以及默认的css样式，清楚。
@@ -3546,7 +3556,7 @@ new Vue({
 ```javascript
 <script>
   export default{
-	。。。
+	……
 	methods:{
       get_data:function(){
          // 使用axios请求数据

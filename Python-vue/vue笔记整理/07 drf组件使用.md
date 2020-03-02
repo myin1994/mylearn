@@ -131,7 +131,7 @@ action装饰器相关参数：
         serializer_class = GoodsModelSerializer
     
         @action(methods=["get","post"],
-                detail=True,url_path="get_two",url_name="get_two")
+         detail=True,url_path="get_two",url_name="get_two")
         def get_two(self,request):
             return Response("get_two方法")
     ```
@@ -313,7 +313,7 @@ class GoodsModelViewSet(ModelViewSet):
 
 ## 全局配置
 
-+ 全局配置
++ 全局配置（前提）
 
   ```python
   REST_FRAMEWORK = {
@@ -552,7 +552,7 @@ class 视图类(ListAPIView):
 
   + default_limit 默认限制，默认值与`PAGE_SIZE`设置一致
   + limit_query_param limit参数名，默认'limit'
-  + offset_query_param offset参数名，默认'offset'
+  + offset_query_param offset偏移量参数名，默认'offset'
   + max_limit 最大limit限制，默认None
 
 + 实例
@@ -576,9 +576,7 @@ class 视图类(ListAPIView):
 
 # 异常处理 Exceptions
 
-REST framework提供了异常处理，我们可以自定义异常处理函数。例如我们想在要创建一个自定义异常函数，
-
-这个函数，我们保存到当前子应用opt中[注意，开发时，我们会找个独立的公共目录来保存这种公共的函数/工具/类库]。
+REST framework提供了异常处理，我们可以自定义异常处理函数。例如我们想在要创建一个自定义异常函数，这个函数，我们保存到当前子应用opt中[注意，开发时，我们会找个独立的公共目录来保存这种公共的函数/工具/类库]。
 
 ```python
 from rest_framework.views import exception_handler
@@ -604,9 +602,8 @@ REST_FRAMEWORK = {
 
 如果未声明，会采用默认的方式，如下
 
-rest_frame/settings.py
-
 ```python
+#rest_frame/settings.py
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
 }
@@ -663,11 +660,7 @@ def custom_exception_handler(exc, context):
 
 #  自动生成接口文档
 
-REST framework可以自动帮助我们生成接口文档。
-
-接口文档以网页的方式呈现。
-
-自动接口文档能生成的是继承自`APIView`及其子类的视图。
+REST framework可以自动帮助我们生成接口文档。接口文档以网页的方式呈现。自动接口文档能生成的是继承自`APIView`及其子类的视图。
 
 ## 安装依赖
 
@@ -703,8 +696,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
 }
 ```
-
-
 
 ## 文档描述说明的定义位置
 
