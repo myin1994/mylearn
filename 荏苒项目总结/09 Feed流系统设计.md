@@ -603,940 +603,751 @@ class RowAPIView(APIView):
 
 在文章详情页中判断当前用户是否关注了文章作者
 
+编写tablestore的utils工具
+
+```python
+from tablestore import *
+from django.conf import settings
+class TableStore(object):
+    """tablestore工具类"""
+    def __init__(self):
+        self.client = OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)
+
+    def get_one(self,table_name, primary_key,columns_to_get = []):
+        """根据主键获取一条数据"""
+        try:
+            consumed, return_row, next_token = self.client.get_row(table_name, primary_key, columns_to_get)
+        except:
+            return {}
+        if return_row is None:
+            return {}
+        else:
+            result = return_row.primary_key + return_row.attribute_columns
+            data = {}
+            for item in result:
+                data[item[0]] = item[1]
+            return data
+
+    def add_one(self, table_name, primary_key, attribute_columns):
+        """添加一条数据"""
+        row = Row(primary_key, attribute_columns)
+        condition = Condition(RowExistenceExpectation.IGNORE)
+        try:
+            # 调用put_row方法，如果没有指定ReturnType，则return_row为None。
+            consumed, return_row = self.client.put_row(table_name, row, condition)
+        # 客户端异常，一般为参数错误或者网络异常。
+        except OTSClientError as e:
+            print(e.get_error_message())
+            return False
+        # 服务端异常，一般为参数错误或者流控错误。
+        except OTSServiceError as e:
+            print("put row failed, http_status:%d, error_code:%s, error_message:%s, request_id:%s" % (
+            e.get_http_status(), e.get_error_code(), e.get_error_message(), e.get_request_id()))
+            return False
+        return True
+
+    def del_one(self, table_name, primary_key, ):
+        """删除一条数据"""
+        row = Row(primary_key)
+        try:
+            consumed, return_row = self.client.delete_row(table_name, row, None)
+            # 客户端异常，一般为参数错误或者网络异常。
+        except OTSClientError as e:
+            print("删除数据失败!, 状态吗:%d, 错误信息:%s" % (e.get_http_status(), e.get_error_message()))
+            return False
+        # 服务端异常，一般为参数错误或者流控错误。
+        except OTSServiceError as e:
+            print("update row failed, http_status:%d, error_code:%s, error_message:%s, request_id:%s" % (
+            e.get_http_status(), e.get_error_code(), e.get_error_message(), e.get_request_id()))
+            return False
+        return True
+```
+
+
+
+serializers 序列化器
+
+```python
+from users.models import User
+class AuthorModelSerializer(serializers.ModelSerializer):
+    """文章作者"""
+    class Meta:
+        model = User
+        fields = ["id","nickname","avatar","money"] # 自己编写需要显示的字段即可
+
+from .models import ArticleCollection
+class CollectionInfoModelSerializer(serializers.ModelSerializer):
+    """文集信息"""
+    class Meta:
+        model = ArticleCollection
+        fields = ["id","name"] # 自己编写需要显示的字段即可
+
+from renranapi.utils.tablestore import TableStore
+class ArticleInfoModelSerializer(serializers.ModelSerializer):
+    user = AuthorModelSerializer()
+    collection = CollectionInfoModelSerializer()
+    focus = serializers.SerializerMethodField()
+    class Meta:
+        model = Article
+        fields = [
+            "name", "render","content", "user",
+            "collection", "updated_time",
+            "read_count", "like_count",
+            "collect_count", "comment_count",
+            "reward_count","focus"
+        ]
+
+    def get_focus(self, obj):
+        """
+        获取当前用户是否关注了文章作者
+        (-1,"访问者和文章作者是同一个人")
+        (0,"未关注")
+        (1,"关注了")
+        :param obj:当前文章对象
+        :return:
+        """
+        # 访问者没有登陆
+        focus = 0  # 当前访问者没有登陆,默认没有关注
+        user = self.context["request"].user
+        if isinstance(user, User):
+            # 判断访问者是否曾经关注过作者
+            author = obj.user
+            # 如果访问者和文章作者是同一个人,则不存在关注
+            if author.id == user.id:
+                focus = -1
+            else:
+                # 从关系库中获取当前访问者与作者之间的关注关系
+                ts = TableStore()
+                data = ts.get_one(
+                    "user_relation_table",
+                    [('user_id', author.id), ('follow_user_id', user.id)])
+
+                if data:
+                    # 已经登陆并且关注了
+                    focus = 1
+                else:
+                    # 已经登陆了,没有关注
+                    focus = 0
+        return focus
+
+```
+
+
+
 article/views.py,代码;
 
 ```python
 from rest_framework.generics import RetrieveAPIView
 from .serializers import ArticleInfoModelSerializer
-from users.models import User
-from tablestore import *
-from django.conf import settings
-
 class ArticleInfoAPIView(RetrieveAPIView):
-    """文章详情"""
+    """文章详情信息"""
     serializer_class = ArticleInfoModelSerializer
-    queryset = Article.objects.exclude(pub_date=None)
-    @property
-    def client(self):
-        return OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)
-
-    def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        if isinstance(request.user, User):
-            """用户登录了"""
-            user = request.user                                    # 访问者
-            author_id = response.data.get("user").get("id")        # 文章作者
-
-            if author_id != user.id:
-                # 到tablestore里面查询当前访问者是否关注了文章作者
-                table_name = "user_relation_table"
-
-                primary_key = [('user_id', author_id), ('follow_user_id', user.id)]
-
-                columns_to_get = []
-
-                consumed, return_row, next_token = self.client.get_row(table_name, primary_key, columns_to_get)
-
-                if return_row is None:
-                    """没有关注"""
-                    is_follow = 1
-                else:
-                    """已经关注了"""
-                    is_follow = 2
-
-            else:
-                is_follow = 3 # 当前用户就是作者
-
-        else:
-            """用户未登录"""
-            is_follow = 0  # 当前访问者未登录
-
-
-        response.data["is_follow"] = is_follow
-        return response
-
-
+    queryset = Article.objects.filter(is_public=True)
 ```
 
-在客户端中根据返回的关注状态`is_follow`来判断显示关注按钮
+urls路由
+
+```python
+# 获取文章详细内容
+re_path("^detail/(?P<pk>\d+)/$", views.ArticleInfoAPIView.as_view()),
+```
+
+在客户端中根据返回的关注状态`focus`来判断显示关注按钮
 
 ```vue
-         <div class="_3U4Smb">
-          <span class="FxYr8x"><a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer">{{article.user.nickname}}</a></span>
-          <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-if="article.is_follow==2"><span>已关注</span></button>
-          <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-else-if="article.is_follow!=3"><span>关注</span></button>
-         </div>
-
+<button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-if="article.focus===1" @mouseover="user_focus_text='取消关注'" @mouseout="user_focus_text='已关注'" @click="change_focus(article.focus)"><span>{{user_focus_text}}</span></button>
+                  <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-if="article.focus===0" @click="change_focus(article.focus)"><span>关注</span></button>
 ```
 
 
 
-## 用户关注文章的作者
+## 用户关注或取消关注文章的作者
 
 服务端实现用户关注作者的api接口
 
 users/views.py,代码:
 
 ```python
-from tablestore import *
-from rest_framework.permissions import IsAuthenticated
-from datetime import datetime
-
-class FollowAPIView(APIView):
+from users.models import User
+from renranapi.utils.tablestore import TableStore
+class UserFocusAPIView(APIView):
+    """关注和取消关注"""
     permission_classes = [IsAuthenticated]
-
-    @property
-    def client(self):
-        return OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)
-
     def post(self,request):
-        """粉丝关注作者"""
-        follow = request.user # 粉丝ID
-        author_id = request.data.get("author_id") # 获取作者ID
+        # 关注者[粉丝]
+        user = request.user
+        # 作者
+        author_id = request.data.get("author_id")
+        try:
+            User.objects.get(pk=author_id)
+        except User.DoesNotExist:
+            return Response("对不起, 您关注的用户不存在!",status=status.HTTP_404_NOT_FOUND)
 
-        table_name = "user_relation_table"
-        # 主键列
-        primary_key = [('user_id', author_id), ('follow_user_id',follow.id)]
-        attribute_columns = [('timestamp', datetime.now().timestamp())]
-        row = Row(primary_key, attribute_columns)
-        self.client.put_row(table_name, row)
+        # 获取关注状态[0表示关注,1表示取消关注]
+        focus = request.data.get("focus")
+        ts = TableStore()
+        if not focus:
+            """关注"""
+            ret = ts.add_one(
+                "user_relation_table",
+                [('user_id', author_id), ('follow_user_id', user.id)],
+                [('focus_time', datetime.now().timestamp())]),
+        else:
+            """取消关注"""
+            ret = ts.del_one("user_relation_table",
+                [('user_id', author_id), ('follow_user_id', user.id)])
 
-        return Response({"message":"关注成功!"})
-
-    def delete(self,request):
-        """粉丝取关作者"""
-        follow = request.user # 粉丝ID
-        author_id = int(request.query_params.get("author_id")) # 获取作者ID
-        table_name = "user_relation_table"
-        # 主键列
-        primary_key = [('user_id', author_id), ('follow_user_id',follow.id)]
-        row = Row(primary_key)
-        consumed, return_row = self.client.delete_row(table_name, row, None)
-        return Response({"message": "取消关注成功!"})
-
+        if ret:
+            return Response("操作成功!")
+        else:
+            return Response("操作失败!",status=status.HTTP_400_BAD_REQUEST)
 ```
 
 路由代码:
 
 ```python
-from django.urls import path,re_path
-from rest_framework_jwt.views import obtain_jwt_token
-from . import views
-urlpatterns = [
-	# ...
-    path("follow/", views.FollowAPIView.as_view() ),
-]
-
+path("focus/", views.UserFocusAPIView.as_view()),
 ```
 
 客户端发送请求,申请 关注/取消关注
 
 ```vue
 <template>
-  <div class="_21bLU4 _3kbg6I">
-   <Header></Header>
-   <div class="_3VRLsv" role="main">
-    <div class="_gp-ck">
-     <section class="ouvJEz">
-      <h1 class="_1RuRku">{{article.title}}</h1>
-      <div class="rEsl9f">
-       <div class="_2mYfmT">
-        <a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer"><img class="_13D2Eh" :src="article.user.avatar" alt="" /></a>
-        <div style="margin-left: 8px;">
-         <div class="_3U4Smb">
-          <span class="FxYr8x"><a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer">{{article.user.nickname}}</a></span>
-          <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-if="article.is_follow==2" @click="follow_author(false)"><span>已关注</span></button>
-          <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-else-if="article.is_follow!=3" @click="follow_author(true)"><span>关注</span></button>
-         </div>
-         <div class="s-dsoj">
-          <time>{{article.pub_date|dateformat}}</time>
-          <span>字数 {{article.content.length}}</span>
-          <span>阅读 {{article.read_count}}</span>
-         </div>
-        </div>
-       </div>
-      </div>
-      <article class="_2rhmJa">
-       <div class="image-package">
-        <div class="image-container" style="max-width: 640px; max-height: 420px; background-color: transparent;">
-         <div class="image-container-fill" style="padding-bottom: 65.63%;"></div>
-         <div class="image-view" data-width="640" data-height="420">
-          <img src="https://upload-images.jianshu.io/upload_images/18529254-f62fac0d998cff23?imageMogr2/auto-orient/strip|imageView2/2/w/640/format/webp" />
-         </div>
-        </div>
-        <div class="image-caption"></div>
-       </div>
-       <p>文/小鸟飞过</p>
-       <p>罗曼&middot;罗兰说：“生活中最沉重的负担不是工作，而是无聊。”</p>
-       <div class="image-package">
-        <div class="image-container" style="max-width: 700px; max-height: 152px; background-color: transparent;">
-         <div class="image-container-fill" style="padding-bottom: 14.069999999999999%;"></div>
-         <div class="image-view" data-width="1080" data-height="152">
-          <img src="http://upload-images.jianshu.io/upload_images/18529254-a932f0ad8fbd51bb?imageMogr2/auto-orient/strip|imageView2/2/w/1080/format/webp" />
-         </div>
-        </div>
-        <div class="image-caption"></div>
-       </div>
-       <p><strong>废掉一个人最快的方法</strong></p>
-       <p><strong>就是让他闲着</strong></p>
-       <p>这段时间，综艺节目《妻子的浪漫旅行第三季3》正在热播，四对明星夫妻的相处模式曝光，也让观众更了解了曾经饱受争议的女人唐一菲。</p>
-       <p>有人很喜欢她大大咧咧的女侠性格，有人为她叫屈，当然还是有人骂她，说她旧事重提。</p>
-       <p>而我，则是觉得非常惋惜。</p>
-       <p>唐一菲是中央戏剧学院表演系毕业，真正的科班出身。</p>
-       <p>从2003年到2011年，基本保证每年都有作品，要么拍电视剧、要么拍电影，2008年出演新版《红楼梦》的秦可卿也是颇为动人。</p>
-       <div class="image-package">
-        <div class="image-container" style="max-width: 533px; max-height: 510px; background-color: transparent;">
-         <div class="image-container-fill" style="padding-bottom: 95.67999999999999%;"></div>
-         <div class="image-view" data-width="533" data-height="510">
-          <img src="http://upload-images.jianshu.io/upload_images/18529254-d92ace292d78aecb?imageMogr2/auto-orient/strip|imageView2/2/w/533/format/webp" />
-         </div>
-        </div>
-        <div class="image-caption"></div>
-       </div>
-       <p>可是自2012年结婚后，8年时间里，只拍了一部电视剧，就再也没了一点儿消息，仿佛整个人生都停滞了。</p>
-       <p>她在《妻子3》中展现出的婚姻状态是非常可悲的。</p>
-       <p>一喝酒，就是吐槽自己的人生被毁了。</p>
-       <div class="image-package">
-        <div class="image-container" style="max-width: 532px; max-height: 394px;">
-         <div class="image-container-fill" style="padding-bottom: 74.06%;"></div>
-         <div class="image-view" data-width="532" data-height="394">
-          <img data-original-src="//upload-images.jianshu.io/upload_images/18529254-5f20af5bb10bfa12" data-original-width="532" data-original-height="394" data-original-format="image/jpeg" data-original-filesize="17915" data-image-index="3" style="cursor: zoom-in;" class="image-loading" />
-         </div>
-        </div>
-        <div class="image-caption"></div>
-       </div>
-       <p>要么直接形容老公凌潇肃是缩头乌龟。</p>
-       <div class="image-package">
-        <div class="image-container" style="max-width: 506px; max-height: 360px;">
-         <div class="image-container-fill" style="padding-bottom: 71.15%;"></div>
-         <div class="image-view" data-width="506" data-height="360">
-          <img data-original-src="//upload-images.jianshu.io/upload_images/18529254-f2478cdc59c7e193" data-original-width="506" data-original-height="360" data-original-format="image/jpeg" data-original-filesize="23772" data-image-index="4" style="cursor: zoom-in;" class="image-loading" />
-         </div>
-        </div>
-        <div class="image-caption"></div>
-       </div>
-       <p>作者简介：小鸟飞过，富小书的人，富书专栏作者，写温暖的文字，传递美好的情感；本文首发富小书（ID：fxsfrc），你身边最好的闺蜜，富书2018重磅推出新书《好好生活》。</p>
-       <p><strong>注：本文章图片来源网络，如有侵权，请联系删除。</strong></p>
-      </article>
-      <div></div>
-      <div class="_1kCBjS">
-       <div class="_18vaTa">
-        <div class="_3BUZPB">
-         <div class="_2Bo4Th" role="button" tabindex="-1" aria-label="给文章点赞">
-          <i aria-label="ic-like" class="anticon">
-           <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
-            <use xlink:href="#ic-like"></use>
-           </svg></i>
-         </div>
-         <span class="_1LOh_5" role="button" tabindex="-1" aria-label="查看点赞列表">8人点赞<i aria-label="icon: right" class="anticon anticon-right">
-           <svg viewbox="64 64 896 896" focusable="false" class="" data-icon="right" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-            <path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path>
+  <div class="_21bLU4 _3kbg6I" @click.stop="is_show_reward_window=false">
+    <Header></Header>
+    <div class="_3VRLsv" role="main">
+      <div class="_gp-ck">
+        <section class="ouvJEz">
+          <h1 class="_1RuRku">{{article.name}}</h1>
+          <div class="rEsl9f">
+            <div class="_2mYfmT">
+              <router-link to="" class="_1OhGeD"><img class="_13D2Eh" :src="article.user.avatar" alt=""/></router-link>
+              <div style="margin-left: 8px;">
+                <div class="_3U4Smb">
+                  <span class="FxYr8x"><a class="_1OhGeD" href="">{{article.user.nickname}}</a></span>
+                  <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-if="article.focus===1" @mouseover="user_focus_text='取消关注'" @mouseout="user_focus_text='已关注'" @click="change_focus(article.focus)"><span>{{user_focus_text}}</span></button>
+                  <button data-locale="zh-CN" type="button" class="_3kba3h _1OyPqC _3Mi9q9 _34692-" v-if="article.focus===0" @click="change_focus(article.focus)"><span>关注</span></button>
+                </div>
+                <div class="s-dsoj">
+                  <time :datetime="article.updated_time">{{article.updated_time|timeformat}}</time>
+                  <span>字数 {{article.content && article.content.length}}</span>
+                  <span>阅读 {{article.read_count}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <mavon-editor
+              class="md v-show-content v-note-panel"
+              :value="article.render"
+              :subfield="prop.subfield"
+              :defaultOpen="prop.defaultOpen"
+              :toolbarsFlag="prop.toolbarsFlag"
+              :editable="prop.editable"
+              :scrollStyle="prop.scrollStyle"
+              :previewBackground="prop.previewBackground"
+              :boxShadow="false"
+            ></mavon-editor>
+          </div>
+          <div class="_1kCBjS">
+            <div class="_18vaTa">
+              <div class="_3BUZPB">
+                <div class="_2Bo4Th" role="button" tabindex="-1" aria-label="给文章点赞">
+                  <i aria-label="ic-like" class="anticon">
+                    <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
+                      <use xlink:href="#ic-like"></use>
+                    </svg>
+                  </i>
+                </div>
+                <span class="_1LOh_5" role="button" tabindex="-1" aria-label="查看点赞列表">{{article.like_count}}人点赞<i
+                  aria-label="icon: right" class="anticon anticon-right">
+           <svg viewbox="64 64 896 896" focusable="false" class="" data-icon="right" width="1em" height="1em"
+                fill="currentColor" aria-hidden="true">
+            <path
+              d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path>
            </svg></i></span>
+              </div>
+              <div class="_3BUZPB">
+                <div class="_2Bo4Th" role="button" tabindex="-1">
+                  <i aria-label="ic-dislike" class="anticon">
+                    <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
+                      <use xlink:href="#ic-dislike"></use>
+                    </svg>
+                  </i>
+                </div>
+              </div>
+            </div>
+            <div class="_18vaTa">
+              <a class="_3BUZPB _1x1ok9 _1OhGeD" href="/nb/38290018" target="_blank" rel="noopener noreferrer"><i
+                aria-label="ic-notebook" class="anticon">
+                <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
+                  <use xlink:href="#ic-notebook"></use>
+                </svg>
+              </i><span>{{article.collection.name}}</span></a>
+              <div class="_3BUZPB ant-dropdown-trigger">
+                <div class="_2Bo4Th">
+                  <i aria-label="ic-others" class="anticon">
+                    <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
+                      <use xlink:href="#ic-others"></use>
+                    </svg>
+                  </i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="_19DgIp" style="margin-top:24px;margin-bottom:24px"></div>
+          <div class="_13lIbp">
+            <div class="_191KSt">
+              &quot;小礼物走一走，来简书关注我&quot;
+            </div>
+            <button type="button" class="_1OyPqC _3Mi9q9 _2WY0RL _1YbC5u" @click.stop="is_show_reward_window=true">
+              <span>赞赏支持</span></button>
+            <span class="_3zdmIj" v-if="article.reward_count>0">已经有{{article.reward_count}}人赞赏，支持一下</span>
+            <span class="_3zdmIj" v-else>还没有人赞赏，支持一下</span>
+          </div>
+          <div class="d0hShY">
+            <a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer"><img class="_27NmgV"
+                                                                                                     :src="article.user.avatar"
+                                                                                                     alt="  "/></a>
+            <div class="Uz-vZq">
+              <div class="Cqpr1X">
+                <a class="HC3FFO _1OhGeD" href="/u/a70487cda447" :title="article.user.nickname" target="_blank"
+                   rel="noopener noreferrer">{{article.user.nickname}}</a>
+                <span class="_2WEj6j" title="你读书的样子真好看。">你读书的样子真好看。</span>
+              </div>
+              <div class="lJvI3S">
+                <span>总资产0</span>
+                <span>共写了78.7W字</span>
+                <span>获得6,072个赞</span>
+                <span>共1,308个粉丝</span>
+              </div>
+            </div>
+            <button data-locale="zh-CN" type="button" class="_1OyPqC _3Mi9q9"><span>关注</span></button>
+          </div>
+        </section>
+        <div id="note-page-comment">
+          <div class="lazyload-placeholder"></div>
         </div>
-        <div class="_3BUZPB">
-         <div class="_2Bo4Th" role="button" tabindex="-1">
-          <i aria-label="ic-dislike" class="anticon">
-           <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
-            <use xlink:href="#ic-dislike"></use>
-           </svg></i>
-         </div>
-        </div>
-       </div>
-       <div class="_18vaTa">
-        <a class="_3BUZPB _1x1ok9 _1OhGeD" href="/nb/38290018" target="_blank" rel="noopener noreferrer"><i aria-label="ic-notebook" class="anticon">
-          <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
-           <use xlink:href="#ic-notebook"></use>
-          </svg></i><span>随笔</span></a>
-        <div class="_3BUZPB ant-dropdown-trigger">
-         <div class="_2Bo4Th">
-          <i aria-label="ic-others" class="anticon">
-           <svg width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" class="">
-            <use xlink:href="#ic-others"></use>
-           </svg></i>
-         </div>
-        </div>
-       </div>
       </div>
-      <div class="_19DgIp" style="margin-top:24px;margin-bottom:24px"></div>
-      <div class="_13lIbp">
-       <div class="_191KSt">
-        &quot;小礼物走一走，来简书关注我&quot;
-       </div>
-       <button type="button" class="_1OyPqC _3Mi9q9 _2WY0RL _1YbC5u" @click="is_show_reward_window=true"><span>赞赏支持</span></button>
-       <span class="_3zdmIj">还没有人赞赏，支持一下</span>
+      <aside class="_2OwGUo">
+        <section class="_3Z3nHf">
+          <div class="_3Oo-T1">
+            <a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer"><img class="_3T9iJQ"
+                                                                                                     :src="article.user.avatar"
+                                                                                                     alt=""/></a>
+            <div class="_32ZTTG">
+              <div class="_2O0T_w">
+                <div class="_2v-h3G">
+                  <span class="_2vh4fr" :title="article.user.nickname"><a class="_1OhGeD" href="/u/a70487cda447"
+                                                                          target="_blank" rel="noopener noreferrer">{{article.user.nickname}}</a></span>
+                </div>
+                <button data-locale="zh-CN" type="button" class="tzrf9N _1OyPqC _3Mi9q9 _34692-"><span>关注</span>
+                </button>
+              </div>
+              <div class="_1pXc22">
+                总资产:{{article.user.money}}元
+              </div>
+            </div>
+          </div>
+          <div class="_19DgIp"></div>
+        </section>
+        <div>
+          <div class="">
+            <section class="_3Z3nHf">
+              <h3 class="QHRnq8 QxT4hD"><span>推荐阅读</span></h3>
+              <div class="cuOxAY" role="listitem">
+                <div class="_3L5YSq" title="这些话没人告诉你，但必须知道的社会规则">
+                  <a class="_1-HJSV _1OhGeD" href="/p/a3e56a0559ff" target="_blank" rel="noopener noreferrer">这些话没人告诉你，但必须知道的社会规则</a>
+                </div>
+                <div class="_19haGh">
+                  阅读 5,837
+                </div>
+              </div>
+              <div class="cuOxAY" role="listitem">
+                <div class="_3L5YSq" title="浙大学霸最美笔记曝光：真正的牛人，都“变态”到了极致">
+                  <a class="_1-HJSV _1OhGeD" href="/p/d2a3724e2839" target="_blank" rel="noopener noreferrer">浙大学霸最美笔记曝光：真正的牛人，都“变态”到了极致</a>
+                </div>
+                <div class="_19haGh">
+                  阅读 12,447
+                </div>
+              </div>
+              <div class="cuOxAY" role="listitem">
+                <div class="_3L5YSq" title="征服一个女人最好的方式：不是讨好她，而是懂得去折腾她">
+                  <a class="_1-HJSV _1OhGeD" href="/p/f6acf67f039b" target="_blank" rel="noopener noreferrer">征服一个女人最好的方式：不是讨好她，而是懂得去折腾她</a>
+                </div>
+                <div class="_19haGh">
+                  阅读 5,311
+                </div>
+              </div>
+              <div class="cuOxAY" role="listitem">
+                <div class="_3L5YSq" title="告别平庸的15个小方法">
+                  <a class="_1-HJSV _1OhGeD" href="/p/cff7eb6b232b" target="_blank" rel="noopener noreferrer">告别平庸的15个小方法</a>
+                </div>
+                <div class="_19haGh">
+                  阅读 7,040
+                </div>
+              </div>
+              <div class="cuOxAY" role="listitem">
+                <div class="_3L5YSq" title="轻微抑郁的人，会说这3句“口头禅”，若你一个不占，偷着乐吧">
+                  <a class="_1-HJSV _1OhGeD" href="/p/2a0ca1729b4b" target="_blank" rel="noopener noreferrer">轻微抑郁的人，会说这3句“口头禅”，若你一个不占，偷着乐吧</a>
+                </div>
+                <div class="_19haGh">
+                  阅读 16,411
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="_23ISFX-body" v-if="is_show_reward_window" @click.stop="is_show_reward_window=true">
+      <div class="_3uZ5OL">
+        <div class="_2PLkjk">
+          <img class="_2R1-48" src="" alt=""/>
+          <div class="_2h5tnQ">
+            给作者送糖
+          </div>
+        </div>
+        <div class="_1-bCJJ">
+          <div class="LMa6S_" :class="reward_info.money==num?'_1vONvL':''" @click="reward_info.money=num"
+               v-for="num in reward_list"><span>{{num}}</span></div>
+        </div>
+        <textarea class="_1yN79W" placeholder="给Ta留言..." v-model="reward_info.content"></textarea>
+        <div class="_1_B577">
+          选择支付方式
+        </div>
+        <div class="_1-bCJJ">
+          <div class="LMa6S_ _3PA8BN" :class="reward_info.pay_type==key?'_1vONvL':''"
+               @click="reward_info.pay_type=key" v-for="type,key in pay_type_list"><span>{{type}}</span></div>
+        </div>
+        <button type="button" class="_3A-4KL _1OyPqC _3Mi9q9 _1YbC5u" @click="payhandler">
+          <span>确认支付</span><span> ￥</span>{{reward_info.money}}
+        </button>
       </div>
-      <div class="d0hShY">
-       <a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer"><img class="_27NmgV" src="https://upload.jianshu.io/users/upload_avatars/18529254/.png?imageMogr2/auto-orient/strip|imageView2/1/w/100/h/100/format/webp" alt="  " /></a>
-       <div class="Uz-vZq">
-        <div class="Cqpr1X">
-         <a class="HC3FFO _1OhGeD" href="/u/a70487cda447" title="書酱" target="_blank" rel="noopener noreferrer">書酱</a>
-         <span class="_2WEj6j" title="你读书的样子真好看。">你读书的样子真好看。</span>
-        </div>
-        <div class="lJvI3S">
-         <span>总资产0</span>
-         <span>共写了78.7W字</span>
-         <span>获得6,072个赞</span>
-         <span>共1,308个粉丝</span>
-        </div>
-       </div>
-       <button data-locale="zh-CN" type="button" class="_1OyPqC _3Mi9q9"><span>关注</span></button>
-      </div>
-     </section>
-     <div id="note-page-comment">
-      <div class="lazyload-placeholder"></div>
-     </div>
     </div>
-    <aside class="_2OwGUo">
-     <section class="_3Z3nHf">
-      <div class="_3Oo-T1">
-       <a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer"><img class="_3T9iJQ" src="https://upload.jianshu.io/users/upload_avatars/18529254/.png?imageMogr2/auto-orient/strip|imageView2/1/w/90/h/90/format/webp" alt="" /></a>
-       <div class="_32ZTTG">
-        <div class="_2O0T_w">
-         <div class="_2v-h3G">
-          <span class="_2vh4fr" title="書酱"><a class="_1OhGeD" href="/u/a70487cda447" target="_blank" rel="noopener noreferrer">書酱</a></span>
-         </div>
-         <button data-locale="zh-CN" type="button" class="tzrf9N _1OyPqC _3Mi9q9 _34692-"><span>关注</span></button>
-        </div>
-        <div class="_1pXc22">
-         总资产0
-        </div>
-       </div>
-      </div>
-      <div class="_19DgIp"></div>
-     </section>
-     <div>
-      <div class="">
-       <section class="_3Z3nHf">
-        <h3 class="QHRnq8 QxT4hD"><span>推荐阅读</span></h3>
-        <div class="cuOxAY" role="listitem">
-         <div class="_3L5YSq" title="这些话没人告诉你，但必须知道的社会规则">
-          <a class="_1-HJSV _1OhGeD" href="/p/a3e56a0559ff" target="_blank" rel="noopener noreferrer">这些话没人告诉你，但必须知道的社会规则</a>
-         </div>
-         <div class="_19haGh">
-          阅读 5,837
-         </div>
-        </div>
-        <div class="cuOxAY" role="listitem">
-         <div class="_3L5YSq" title="浙大学霸最美笔记曝光：真正的牛人，都“变态”到了极致">
-          <a class="_1-HJSV _1OhGeD" href="/p/d2a3724e2839" target="_blank" rel="noopener noreferrer">浙大学霸最美笔记曝光：真正的牛人，都“变态”到了极致</a>
-         </div>
-         <div class="_19haGh">
-          阅读 12,447
-         </div>
-        </div>
-        <div class="cuOxAY" role="listitem">
-         <div class="_3L5YSq" title="征服一个女人最好的方式：不是讨好她，而是懂得去折腾她">
-          <a class="_1-HJSV _1OhGeD" href="/p/f6acf67f039b" target="_blank" rel="noopener noreferrer">征服一个女人最好的方式：不是讨好她，而是懂得去折腾她</a>
-         </div>
-         <div class="_19haGh">
-          阅读 5,311
-         </div>
-        </div>
-        <div class="cuOxAY" role="listitem">
-         <div class="_3L5YSq" title="告别平庸的15个小方法">
-          <a class="_1-HJSV _1OhGeD" href="/p/cff7eb6b232b" target="_blank" rel="noopener noreferrer">告别平庸的15个小方法</a>
-         </div>
-         <div class="_19haGh">
-          阅读 7,040
-         </div>
-        </div>
-        <div class="cuOxAY" role="listitem">
-         <div class="_3L5YSq" title="轻微抑郁的人，会说这3句“口头禅”，若你一个不占，偷着乐吧">
-          <a class="_1-HJSV _1OhGeD" href="/p/2a0ca1729b4b" target="_blank" rel="noopener noreferrer">轻微抑郁的人，会说这3句“口头禅”，若你一个不占，偷着乐吧</a>
-         </div>
-         <div class="_19haGh">
-          阅读 16,411
-         </div>
-        </div>
-       </section>
-      </div>
-     </div>
-    </aside>
-   </div>
-  <div class="_23ISFX-body" v-if="is_show_reward_window">
-   <div class="_3uZ5OL">
-    <div class="_2PLkjk">
-     <img class="_2R1-48" src="https://upload.jianshu.io/users/upload_avatars/9602437/8fb37921-2e4f-42a7-8568-63f187c5721b.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/100/h/100/format/webp" alt="" />
-     <div class="_2h5tnQ">
-      给作者送糖
-     </div>
-    </div>
-    <div class="_1-bCJJ">
-     <div class="LMa6S_" :class="reward_money==item?'_1vONvL':''" @click="reward_money=item" v-for="item in reward_money_list">
-      <span>{{item}}</span>
-     </div>
-    </div>
-    <textarea class="_1yN79W" placeholder="给Ta留言..." v-model="reward_message"></textarea>
-    <div class="_1_B577">
-     选择支付方式
-    </div>
-    <div class="_1-bCJJ">
-     <div class="LMa6S_ _3PA8BN" @click="reward_type=1" :class="reward_type==1?'_1vONvL':''">
-      <span>支付宝</span>
-     </div>
-     <div class="LMa6S_ _3PA8BN" @click="reward_type=2" :class="reward_type==2?'_1vONvL':''">
-      简书余额
-     </div>
-    </div>
-    <button type="button" class="_3A-4KL _1OyPqC _3Mi9q9 _1YbC5u" @click="gotopay"><span>确认支付</span><span> ￥</span>{{reward_money}}</button>
-   </div>
-  </div>
-   <Footer></Footer>
+
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
     import Header from "./common/Header";
     import Footer from "./common/Footer";
-    import '../../static/css/font-awesome/css/font-awesome.css';
+    import {mavonEditor} from 'mavon-editor'
+    import 'mavon-editor/dist/css/index.css'
+
     export default {
         name: "Article",
-        data(){
-          return {
-             reward_money_list:[
-                2,5,10,20,50
-             ],
-             reward_message: "", // 打赏的留言
-             reward_money: 0, // 用户打赏金额
-             reward_type: 1,  // 用户打赏的支付方式
-             is_show_reward_window: false, // 是否显示文章打赏的窗口
-             token: "",
-             article:{
-               content:"",
-               user:{},
-               collection:{},
-             },
-             article_id: 0,
-             is_follow: false,
-          }
+        components: {
+            Header,
+            Footer,
         },
-        components:{
-          Header,
-          Footer,
+        data() {
+            return {
+                token: "",
+                article_id: 0,
+                is_show_reward_window: false,
+                user_focus_text:"已关注",
+                article: {
+                    user: {},
+                    collection: {},
+                },
+                reward_list: [2, 5, 10, 20, 50, 100],
+                pay_type_list: ["支付宝", "余额支付"],
+                reward_info: {
+                    money: 2,
+                    content: "",
+                    pay_type: 0,
+                }
+            }
         },
-        filters:{
-          dateformat(date){
-            date = new Date(date);
-            return date.toLocaleDateString() + " " +date.toLocaleTimeString();
-          }
+        computed: {
+            prop() {
+                let markdown_data = {
+                    subfield: false,// 单双栏模式
+                    defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域
+                    editable: false,
+                    toolbarsFlag: false,
+                    scrollStyle: true,
+                    previewBackground: '#FFFFFF'
+                };
+                return markdown_data
+            }
         },
         created() {
-          this.article_id = this.$route.params.id;
-          this.token = this.get_login_user();
-          this.get_article();
+            this.token = localStorage.user_token || sessionStorage.user_token;
+            this.article_id = this.$route.params.id;
+            this.get_article();
         },
-        methods:{
-           get_login_user(){
-            // 获取登录用户
-            return localStorage.user_token || sessionStorage.user_token;
-          },
-          get_article(){
-            if(this.article_id<1){
-              this.$message.error("参数有误！"); // 返回上一页
-              return false;
-            }
-
-            let params = {};
-            if(this.token){
-              params = {
-                Authorization: "jwt "+ this.token,
-              }
-            }
-
-            this.$axios.get(`${this.$settings.Host}/article/${this.article_id}/`,{
-              headers:params
-            }).then(response=>{
-              this.article = response.data;
-            }).catch(error=>{
-              this.$message.error("无法获取当前文章的内容！");
-            })
-          },
-          gotopay(){
-            // 发起请求，获取支付链接
-            this.$axios.post(`${this.$settings.Host}/payments/alipay/`, {
-                  "money": this.reward_money,
-                  "article_id": this.article_id,
-                  "type": this.reward_type,
-                  "message": this.reward_message,
-                },{
-                    headers:{
-                      Authorization: "jwt " + this.token
-                    }
-                }).then(response=>{
-                  // 跳转到支付页面
-                  this.$message.success("跳转支付页面中...请稍候")
-                  setTimeout(()=>{
-                    // 新建窗口打开
-                    window.open(response.data,"_blank");
-                    // 关闭打赏窗口
-                    this.is_show_reward_window = false;
-                  },2000);
-                 }).catch(error=>{
-                  this.$message.error("无法发起赞赏！");
-                });
-          },
-          follow_author(opera){
-             // 判断用户是否登录
-            let self = this;　
-            if(!this.token){
-              this.$alert("对不起，您尚未登录，请登录后继续操作！","警告",{
-                callback(){
-                  self.$router.push("/user/login");
+        filters: {
+            timeformat(time) {
+                if (time) {
+                    return time.split(".")[0].replace("T", " ");
                 }
-              });
-              return false;
             }
-
-            if(opera){
-                // 关注作者
-                this.$axios.post(`${this.$settings.Host}/users/follow/`,{
-                  author_id: this.article.user.id,
-                },{
-                  headers:{
-                    Authorization: "jwt "+this.token,
-                  }
-                }).then(response=>{
-                  this.article.is_follow = 2;
-                }).catch(error=>{
-                  this.$message.error("关注失败！请刷新页面以后重新操作！");
-                });
-
-            }else{
-                // 取消关注
-                this.$axios.delete(`${this.$settings.Host}/users/follow/`,{
-                  params:{
-                    author_id: this.article.user.id,
-                  },
-                  headers:{
-                    Authorization: "jwt "+this.token,
-                  }
-                }).then(response=>{
-                  this.article.is_follow = 1;
-
-                }).catch(error=>{
-                  this.$message.error("取消关注失败！请刷新页面以后重新操作！");
-                });
-            }
-          }
         },
+        methods: {
+            get_article() {
+                // 获取文章信息
+                if (this.token) {
+                    this.$axios.get(`${this.$settings.Host}/article/detail/${this.article_id}/`, {
+                        headers: {
+                            Authorization: "jwt " + this.token,
+                        }
+                    }).then(response => {
+                        this.article = response.data;
+                    }).catch(error => {
+                        this.$message.error("当前文章已删除!");
+                        this.$router.go(-1);
+                    });
+                } else {
+                    this.$axios.get(`${this.$settings.Host}/article/detail/${this.article_id}/`).then(response => {
+                        this.article = response.data;
+                    }).catch(error => {
+                        this.$message.error("当前文章已删除!");
+                        this.$router.go(-1);
+                    });
+                }
+            },
+            payhandler() {
+                // 支付处理
+                this.reward_info.article_id = this.article_id;
+                this.$axios.post(`${this.$settings.Host}/payments/alipay/`, this.reward_info, {
+                    headers: {
+                        Authorization: "jwt " + this.token,
+                    }
+                }).then(response => {
+                    location.href = response.data;
+                }).catch(error => {
+                    this.$message.error("发起打赏请求失败!");
+                })
+
+            },
+            change_focus(focus_status) {
+                // 关注
+                this.token = this.$settings.check_user_login();
+                if (this.token) {
+                    // 已经登陆的情况下
+                    // 发送ajax
+                    this.$axios.post(`${this.$settings.Host}/article/focus/`, {
+                        author_id: this.article.user.id,
+                        focus: focus_status, // 这里提供给服务端
+                    }, {
+                        headers: {
+                            Authorization: "jwt " + this.token,
+                        }
+                    }).then(response => {
+                        if (focus_status) {
+                            this.article.focus = 0;
+                        } else {
+                            this.article.focus = 1; // 这里提供给客户端判断用的
+                            this.user_focus_text = "已关注";
+                        }
+
+                    }).catch(error => {
+                        this.$message.error("关注失败!");
+                    })
+
+                }
+            },
+        }
+
     }
 </script>
-
-<style scoped>
-input,button{
-  outline: 0;
-}
-</style>
-
 ```
 
 
 
-### 作者发布文章以后, 推送Feed流
-
-视图代码:
-
-```python
-# Create your views here.
-
-from .models import ArticleImage
-from rest_framework.generics import CreateAPIView
-from .serializers import ArticleImageModelSerializer
-class ImageAPIView(CreateAPIView):
-    queryset = ArticleImage.objects.all()
-    serializer_class = ArticleImageModelSerializer
-
-
-from .models import ArticleCollection
-from .serializers import ArticleCollectionModelSerializer
-from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-
-class CollecionAPIView(CreateAPIView, ListAPIView):
-    """文集的视图接口"""
-    queryset = ArticleCollection.objects.all()
-    serializer_class = ArticleCollectionModelSerializer
-    permission_classes = [IsAuthenticated]
-
-    def list(self, request, *args, **kwargs):
-        user = request.user
-        queryset = self.filter_queryset(self.get_queryset().filter(user=user))
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-from rest_framework.generics import UpdateAPIView
-from .serializers import ArticleCollectionDetailModelSerializer
-class CollecionDetailAPIView(UpdateAPIView):
-    """文集的视图接口"""
-    queryset = ArticleCollection.objects.all()
-    serializer_class = ArticleCollectionDetailModelSerializer
-    permission_classes = [IsAuthenticated]
-
-
-from rest_framework.viewsets import ModelViewSet
-from .models import Article
-from .serializers import ArticleModelSerializer
-from rest_framework.decorators import action
-from rest_framework import status
-from django_redis import get_redis_connection
-from datetime import datetime
-from django.db import transaction
-
-class ArticleAPIView(ModelViewSet):
-    """文章的视图集接口"""
-    queryset = Article.objects.all()
-    serializer_class = ArticleModelSerializer
-    permission_classes = [IsAuthenticated]
-
-    @property
-    def client(self):
-        return OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)
-
-    @action(methods=["PUT"], detail=True)
-    def save_article(self,request,pk):
-        # 接收文章内容，标题，编辑次数，文章ID
-        content = request.data.get("content")
-        title = request.data.get("title")
-        save_id = int( request.data.get("save_id") )
-        collection_id = request.data.get("collection_id")
-        user = request.user
-        if save_id is None:
-            save_id = 1
-        else:
-            save_id += 1
-
-        # 验证文章是否存在
-        try:
-            article = Article.objects.get(pk=pk)
-        except Article.DoesNotExist:
-            return Response({"message":"当前文章不存在！"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # 写入到redis中[先配置redis库]
-        redis_conn = get_redis_connection("article")
-        """
-        article_<user_id>_<article>_<save_id>:{
-            "title":   title,
-            "content": content,
-            "update_time": 1929293,
-            "collection_id":collection_id,
-        }
-        """
-        new_timestamp = datetime.now().timestamp()
-        data = {
-            "title": title,
-            "content": content,
-            "updated_time": new_timestamp,
-            "collection_id": collection_id,
-        }
-        redis_conn.hmset("article_%s_%s_%s" % (user.id, pk, save_id), data)
-        # 把用户针对当前文章的最新编辑记录ID保存起来
-        redis_conn.hset("article_history_%s" % (user.id), pk, save_id )
-        # 实现查看当前文章的编辑历史的思路：
-        # article_edit_history = redis_conn.keys("article_%s_%s*" % (user.id, pk) )
-        # data_list = []
-        # for item in article_edit_history:
-        #     ret = redis_conn.hgetall(item)
-        #     data_list.append({
-        #         "title": ret.get("title".encode()).decode(),
-        #         "content": ret.get("content".encode()).decode(),
-        #         "updated_time": ret.get("updated_time".encode()).decode(),
-        #     })
-        # print(data_list)
-        # 返回结果
-        return Response({"message":"保存成功！","save_id": save_id})
-
-    def list(self, request, *args, **kwargs):
-        user = request.user
-        collection_id = request.query_params.get("collection")
-        try:
-            ArticleCollection.objects.get(pk=collection_id)
-        except ArticleCollection.DoesNotExist:
-            return Response({"message":"对不起，当前文集不存在！"})
-
-        # 先到redis中查询
-        redis_conn = get_redis_connection("article")
-        history_dist = redis_conn.hgetall("article_history_%s" % (user.id) )
-        data = []
-        exclude_id = []
-        if history_dist is not None:
-            for article_id, save_id in history_dist.items():
-                article_id = article_id.decode()
-                save_id = save_id.decode()
-                article_data_byte = redis_conn.hgetall("article_%s_%s_%s" % (user.id, article_id, save_id) )
-                if article_data_byte["collection_id".encode()].decode() == collection_id:
-                    data.append({
-                        "id": article_id,
-                        "title": article_data_byte["title".encode()].decode(),
-                        "content": article_data_byte["content".encode()].decode(),
-                        "save_id": save_id,
-                        "collection": collection_id,
-                    })
-                    exclude_id.append(article_id)
-
-        # 然后把redis中已经编辑过的内容结果排除出来，然后到MySQL中查询
-
-        queryset = self.filter_queryset(self.get_queryset().filter(user=user, collection_id=collection_id).exclude(id__in=exclude_id) )
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-
-        data +=serializer.data
-
-        return Response(data)
-
-    @action(methods=["patch"],detail=True)
-    def pub_article(self,request,pk):
-        """发布文章"""
-        user    = request.user
-        status  = request.data.get("is_pub")
-
-        with transaction.atomic():
-            save_id = transaction.savepoint()
-            try:
-                article = Article.objects.get(user=user, pk=pk)
-            except:
-                transaction.savepoint_rollback(save_id)
-                return Response({"message":"当前文章不存在或者您没有修改的权限！"})
-
-            if status:
-                """发布文章"""
-                article.pub_date = datetime.now()
-
-                # 先查询到当前作者的粉丝 user_relation_table中查询　
-                fens_list = self.get_fens(user.id)
-
-                # 循环结果，把Feed进行推送
-                if len(fens_list) > 0:
-                    ret = self.push_feed(fens_list, user.id, article.id)
-                    if not ret:
-                        transaction.savepoint_rollback(save_id)
-                        message = {"message": "发布文章失败！"}
-                    else:
-                        message = {"message": "发布文章成功！"}
-                else:
-                    message = {"message":"发布文章成功"}
-            else:
-                """私密文章，取消发布"""
-                article.pub_date = None
-                message = {"message":"取消发布成功"}
-
-            # 从redis的编辑记录中提取当前文章的最新记录
-            redis_conn = get_redis_connection("article")
-            user_history_dist = redis_conn.hgetall("article_history_%s" % user.id)
-            save_id = user_history_dist.get(pk.encode()).decode()
-            article_dict = redis_conn.hgetall("article_%s_%s_%s" % (user.id, pk, save_id) )
-            if article_dict is not None:
-                article.title = article_dict["title".encode()].decode()
-                article.content = article_dict["content".encode()].decode()
-                timestamp = datetime.fromtimestamp(int(float(article_dict["updated_time".encode()].decode())))
-                article.updated_time = timestamp
-                article.save_id = save_id
-            article.save()
-
-            return Response(message)
-
-    def push_feed(self, fens_list,author_id, article_id):
-        """推送Feed给粉丝"""
-        table_name = "user_message_table"
-
-        put_row_items = []
-
-        for i in fens_list:
-            # 主键列
-            primary_key = [  # ('主键名', 值),
-                ('user_id', i),  # 接收Feed的用户ID
-                ('sequence_id', PK_AUTO_INCR),  # 如果是自增主键，则值就是 PK_AUTO_INCR
-                ("sender_id", author_id),  # 发布Feed的用户ID
-                ("message_id", article_id),  # 文章ID
-            ]
-
-            attribute_columns = [('recevice_time', datetime.now().timestamp()), ('read_status', False)]
-            row = Row(primary_key, attribute_columns)
-            condition = Condition(RowExistenceExpectation.IGNORE)
-            item = PutRowItem(row, condition)
-            put_row_items.append(item)
-
-        request = BatchWriteRowRequest()
-        request.add(TableInBatchWriteRowItem(table_name, put_row_items))
-        result = self.client.batch_write_row(request)
-
-        return result.is_all_succeed()
-
-    def get_fens(self, user_id):
-        """获取当前用户的所有粉丝，后面自己整理下这个方法到工具库中"""
-        table_name = "user_relation_table"
-
-        # 范围查询的起始主键
-        inclusive_start_primary_key = [
-            ('user_id', user_id),
-            ('follow_user_id', INF_MIN)
-        ]
-
-        # 范围查询的结束主键
-        exclusive_end_primary_key = [
-            ('user_id', user_id),
-            ('follow_user_id', INF_MAX)
-        ]
-
-        # 查询所有列
-        columns_to_get = [] # 表示返回所有列
-
-        # 范围查询接口
-        consumed, next_start_primary_key, row_list, next_token = self.client.get_range(
-            table_name,  # 操作表明
-            Direction.FORWARD,  # 范围的方向，字符串格式，取值包括'FORWARD'和'BACKWARD'。
-            inclusive_start_primary_key, exclusive_end_primary_key,  # 取值范围
-            columns_to_get,  # 返回字段列
-            max_version=1  # 返回版本数量
-        )
-
-        fens_list = []
-        for row in row_list:
-            fens_list.append( row.primary_key[1][1] )
-
-        return fens_list
-
-    @action(methods=["patch"], detail=True)
-    def change_collection(self, request, pk):
-        """切换当前文章的文集ID"""
-        user = request.user
-        collection_id = request.data.get("collection_id")
-        try:
-            article = Article.objects.get(user=user, pk=pk)
-        except:
-            return Response({"message": "当前文章不存在或者您没有修改的权限！"})
-
-        try:
-            ArticleCollection.objects.get(user=user, pk=collection_id)
-        except:
-            return Response({"message": "当前文集不存在或者您没有修改的权限！"})
-
-        # 当前文章如果之前有曾经被编辑，则需要修改redis中的缓存
-        redis_conn = get_redis_connection("article")
-        save_id_bytes = redis_conn.hget("article_history_%s" % (user.id),pk)
-        if save_id_bytes is not None:
-            save_id = save_id_bytes.decode()
-            redis_conn.hset("article_%s_%s_%s" % (user.id, pk, save_id ), "collection_id", collection_id )
-        article.collection_id = collection_id
-        article.save()
-
-        return Response({"message":"切换文章的文集成功！"})
-
-from .models import Special,SpecialArticle
-from .serializers import SpecialModelSerializer
-class SpecialListAPIView(ListAPIView):
-    queryset = Special.objects.all()
-    serializer_class = SpecialModelSerializer
-    permission_classes = [IsAuthenticated]
-
-    def list(self, request, *args, **kwargs):
-        user = request.user
-        ret = self.get_queryset().filter(mymanager__user=user)
-        article_id = request.query_params.get("article_id")
-        # 验证文章
-
-        queryset = self.filter_queryset(ret)
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        # 返回专题对于当前文章的收录状态
-        data = []
-        for special in serializer.data:
-            try:
-                SpecialArticle.objects.get(article_id=article_id, special_id=special.get("id"))
-                special["post_status"] = True # 表示当前文章已经被专题收录了
-            except SpecialArticle.DoesNotExist:
-                special["post_status"] = False  # 表示当前文章已经被专题收录了
-            data.append(special)
-        return Response(data)
-
-class ArticlePostSpecialAPIView(CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    def post(self,request):
-        """收录到我管理的专题"""
-        article_id = request.data.get("article_id")
-        special_id = request.data.get("special_id")
-        user = request.user
-        try:
-            Article.objects.get(user=user, pk=article_id)
-        except Article.DoesNotExist:
-            return Response({"message": "当前文章不存在或者您没有操作的权限！"})
-
-        try:
-            Special.objects.get(mymanager__user=user, pk=special_id)
-        except Article.DoesNotExist:
-            return Response({"message": "当前专题不存在或者您没有操作的权限！"})
-
-        SpecialArticle.objects.create(article_id=article_id,special_id=special_id)
-
-        return Response({"message":"收录成功！"})
-
-from rest_framework.generics import RetrieveAPIView
-from .serializers import ArticleInfoModelSerializer
-from users.models import User
-from tablestore import *
-from django.conf import settings
-
-class ArticleInfoAPIView(RetrieveAPIView):
-    """文章详情"""
-    serializer_class = ArticleInfoModelSerializer
-    queryset = Article.objects.exclude(pub_date=None)
-    @property
-    def client(self):
-        return OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)
-
-    def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-        if isinstance(request.user, User):
-            """用户登录了"""
-            user = request.user                                    # 访问者
-            author_id = response.data.get("user").get("id")        # 文章作者
-
-            if author_id != user.id:
-                # 到tablestore里面查询当前访问者是否关注了文章作者
-                table_name = "user_relation_table"
-
-                primary_key = [('user_id', author_id), ('follow_user_id', user.id)]
-
-                columns_to_get = []
-
-                consumed, return_row, next_token = self.client.get_row(table_name, primary_key, columns_to_get)
-
-                if return_row is None:
-                    """没有关注"""
-                    is_follow = 1
-                else:
-                    """已经关注了"""
-                    is_follow = 2
-
-            else:
-                is_follow = 3 # 当前用户就是作者
-
-        else:
-            """用户未登录"""
-            is_follow = 0  # 当前访问者未登录
-
-
-        response.data["is_follow"] = is_follow
-        return response
-
-```
-
-
+## 作者发布文章以后, 推送Feed流
+
++ views视图
+
+  ```python
+  from rest_framework.views import APIView
+  from rest_framework import status
+  import logging
+  from renranapi.utils.tablestore import TableStore
+  from tablestore import *
+  
+  class ArticlePublicStatusAPIView(APIView):
+      """切换文章的发布状态"""
+      permission_classes = [IsAuthenticated]
+  
+      def put(self, request, pk):
+          user = request.user
+          try:
+              article = Article.objects.get(pk=pk, user=user)
+          except Article.DoesNotExist:
+              return Response("对不起,当前文章不存在!", status=status.HTTP_400_BAD_REQUEST)
+          article.is_public = not article.is_public
+          article.pub_date = None
+          article.save()
+  
+          # 获取当前作者的粉丝列表
+          fans_list = self.get_fans_list(article.user.id)
+          if article.is_public:
+              """在作者发布内容以后, 把feed推送粉丝"""
+              ret = self.push_feed(article.user.id, article.id, fans_list)
+              if not ret:
+                  logging.error("推送Feed失败!")
+          return Response("操作成功!")
+  
+      def push_feed(self, author_id, message_id, fans_list):
+          """推送Feed流"""
+          put_row_items = []
+          ts = TableStore()
+          for fans in fans_list:
+              primary_key = [  # ('主键名', 值),
+                  ('user_id', fans),  # 接收Feed的用户ID
+                  ('sequence_id', PK_AUTO_INCR),  # 如果是自增主键，则值就是 PK_AUTO_INCR
+                  ("sender_id", author_id),  # 发布Feed的用户ID
+                  ("message_id", message_id),  # 文章ID
+              ]
+              attribute_columns = [('recevice_time', datetime.now().timestamp()), ('read_status', False)]
+              put_row_items.append( ts.add_all(primary_key, attribute_columns) )
+  
+          return ts.do_all("user_message_table", put_row_items)
+  
+  
+      def get_fans_list(self, author_id):
+          """获取作者的粉丝"""
+          print("author",author_id)
+          ts = TableStore()
+          inclusive_start_primary_key = [
+              ('user_id', author_id),
+              ('follow_user_id', INF_MIN),
+          ]
+  
+          # 范围查询的结束主键
+          exclusive_end_primary_key = [
+              ('user_id', author_id),
+              ('follow_user_id', INF_MAX),
+          ]
+          ret = ts.get_all("user_relation_table",inclusive_start_primary_key, exclusive_end_primary_key)
+          fans_list = []
+          if len(ret) > 0:
+              for item in ret:
+                  fans_list.append(item["follow_user_id"])
+          return fans_list
+  
+  ```
+
++ tablestore的utils工具
+
+  ```python
+  from tablestore import *
+  from django.conf import settings
+  class TableStore(object):
+      """tablestore工具类"""
+      def __init__(self):
+          self.client = OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)
+  
+      def get_one(self,table_name, primary_key,columns_to_get = []):
+          """根据主键获取一条数据"""
+          try:
+              consumed, return_row, next_token = self.client.get_row(table_name, primary_key, columns_to_get)
+          except:
+              return {}
+          if return_row is None:
+              return {}
+          else:
+              result = return_row.primary_key + return_row.attribute_columns
+              data = {}
+              for item in result:
+                  data[item[0]] = item[1]
+              return data
+  
+      def add_one(self, table_name, primary_key, attribute_columns):
+          """添加一条数据"""
+          row = Row(primary_key, attribute_columns)
+          condition = Condition(RowExistenceExpectation.IGNORE)
+          try:
+              # 调用put_row方法，如果没有指定ReturnType，则return_row为None。
+              consumed, return_row = self.client.put_row(table_name, row, condition)
+          # 客户端异常，一般为参数错误或者网络异常。
+          except OTSClientError as e:
+              print(e.get_error_message())
+              return False
+          # 服务端异常，一般为参数错误或者流控错误。
+          except OTSServiceError as e:
+              print("put row failed, http_status:%d, error_code:%s, error_message:%s, request_id:%s" % (
+              e.get_http_status(), e.get_error_code(), e.get_error_message(), e.get_request_id()))
+              return False
+          return True
+  
+      def del_one(self, table_name, primary_key, ):
+          """删除一条数据"""
+          row = Row(primary_key)
+          try:
+              consumed, return_row = self.client.delete_row(table_name, row, None)
+              # 客户端异常，一般为参数错误或者网络异常。
+          except OTSClientError as e:
+              print("删除数据失败!, 状态吗:%d, 错误信息:%s" % (e.get_http_status(), e.get_error_message()))
+              return False
+          # 服务端异常，一般为参数错误或者流控错误。
+          except OTSServiceError as e:
+              print("update row failed, http_status:%d, error_code:%s, error_message:%s, request_id:%s" % (
+              e.get_http_status(), e.get_error_code(), e.get_error_message(), e.get_request_id()))
+              return False
+          return True
+  
+  
+      def get_all(self, table_name, inclusive_start_primary_key, exclusive_end_primary_key, limit=None,columns_to_get = None, cond=None):
+          """获取多条数据"""
+          consumed, next_start_primary_key, row_list, next_token = self.client.get_range(
+              table_name,  # 操作表明
+              Direction.FORWARD,  # 范围的方向，字符串格式，取值包括'FORWARD'和'BACKWARD'。
+              inclusive_start_primary_key, exclusive_end_primary_key,  # 取值范围
+              columns_to_get,  # 返回字段列
+              limit,  # 结果数量
+              column_filter=cond, # 条件
+              max_version=1  # 返回版本数量
+          )
+  
+          if len(row_list) > 0:
+              data = []
+              for row in row_list:
+                  result = row.primary_key + row.attribute_columns
+                  item_data = {}
+                  data.append(item_data)
+                  for item in result:
+                      item_data[item[0]] = item[1]
+              return data
+          else:
+              return []
+  
+      def do_all(self,table_name,put_row_items=[]):
+          """操作多条数据"""
+          request = BatchWriteRowRequest()
+          request.add(TableInBatchWriteRowItem(table_name, put_row_items))
+          result = self.client.batch_write_row(request)
+          return result.is_all_succeed()
+  
+      def add_all(self,primary_key,attribute_columns):
+          """添加多条数据"""
+          row = Row(primary_key, attribute_columns)
+          condition = Condition(RowExistenceExpectation.IGNORE)
+          item = PutRowItem(row, condition)
+          return item
+  
+      def del_all(self,primary_key):
+          """删除多条数据"""
+          row = Row(primary_key)
+          condition = Condition(RowExistenceExpectation.IGNORE)
+          item = DeleteRowItem(row, condition)
+          return item
+  ```
+
++ urls 路由
+
+  ```python
+  # 切换文章发布状态
+      re_path("^public/(?P<pk>\d+)/$", views.ArticlePublicStatusAPIView.as_view()),
+  ```
+
+  
 
 ## 首页数据内容展示
 

@@ -25,9 +25,13 @@ def get_detail_id_list(total_page):
     return detail_id_list
 
 
-def get_detail(detail_id_list, write_to_excel=False):
+def get_detail(total_page, write_to_excel=False):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
+    }
     DETAIL_url = "http://125.35.6.84:81/xk/itownet/portalAction.do?method=getXkzsById"
     all_detail_message = {}
+    detail_id_list = get_detail_id_list(total_page)
     for detail_id in detail_id_list:
         detail_data = {
             "id": detail_id
@@ -58,6 +62,4 @@ def get_detail(detail_id_list, write_to_excel=False):
         pd.DataFrame(all_detail_message).T.to_excel("data.xls", index=False)
     return all_detail_message
 
-
-detail_id_list = get_detail_id_list(5)
-detail = get_detail(detail_id_list, write_to_excel=True)
+detail = get_detail(5, write_to_excel=True)
