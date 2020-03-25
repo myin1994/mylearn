@@ -55,7 +55,7 @@
 
 
 
-# 偏函数functools.partial
+## 偏函数functools.partial
 
 + 概念
 
