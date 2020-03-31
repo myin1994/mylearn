@@ -201,7 +201,7 @@ select <db>
 
     >append key value
 
-  + 获取：根据键获取值，如果不存在此键则返回`nil
+  + 获取：根据键获取值，如果不存在此键则返回`nil`
 
     >get key
 
@@ -379,6 +379,8 @@ select <db>
     例1：向键`a3`的集合中添加元素`zhangsan`、`lisi`、`wangwu`
 
     > sadd a3 zhangsan sili wangwu
+    >
+    > 添加成功返回1，失败返回0
 
   - 返回所有的元素
 

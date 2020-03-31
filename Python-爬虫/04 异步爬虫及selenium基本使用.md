@@ -613,3 +613,187 @@
   browser.quit()
   ```
 
+## 案例
+
+### 12306模拟登录
+
++ url:<https://kyfw.12306.cn/otn/login/init>
+
++ 分析：主要是对验证码的处理
+
+  - 基于selenium实现。
+  - 需要使用selenium将登录页面打开
+  - 我们即将实现的模拟登录页面和验证码图片一定是一一匹配
+    - 验证码每次请求都会发生变化
+  - 如何保证我们捕获的验证码和当次登录是一一匹配？
+    - 将当前selenium打开的登录页面中的验证码图片裁剪下来即可。
+    - 然后使用大码平台获取结果坐标
+
++ 代码实现
+
+  + 引入环境及工具
+
+    ```python
+    #!/usr/bin/env python
+    # coding:utf-8
+    
+    import requests
+    from hashlib import md5
+    
+    class Chaojiying_Client(object):
+    
+        def __init__(self, username, password, soft_id):
+            self.username = username
+            password =  password.encode('utf8')
+            self.password = md5(password).hexdigest()
+            self.soft_id = soft_id
+            self.base_params = {
+                'user': self.username,
+                'pass2': self.password,
+                'softid': self.soft_id,
+            }
+            self.headers = {
+                'Connection': 'Keep-Alive',
+                'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)',
+            }
+    
+        def PostPic(self, im, codetype):
+            """
+            im: 图片字节
+            codetype: 题目类型 参考 http://www.chaojiying.com/price.html
+            """
+            params = {
+                'codetype': codetype,
+            }
+            params.update(self.base_params)
+            files = {'userfile': ('ccc.jpg', im)}
+            r = requests.post('http://upload.chaojiying.net/Upload/Processing.php', data=params, files=files, headers=self.headers)
+            return r.json()
+    
+        def ReportError(self, im_id):
+            """
+            im_id:报错题目的图片ID
+            """
+            params = {
+                'id': im_id,
+            }
+            params.update(self.base_params)
+            r = requests.post('http://upload.chaojiying.net/Upload/ReportError.php', data=params, headers=self.headers)
+            return r.json()
+    
+    def tranformImgCode(imgPath,imgType):
+        chaojiying = Chaojiying_Client('prcrmb', '1994429zm', '904147')
+        im = open(imgPath, 'rb').read()
+        return chaojiying.PostPic(im,imgType)['pic_str']
+    
+    
+    from selenium import webdriver
+    from selenium.webdriver import ActionChains
+    from time import sleep
+    from PIL import Image
+    import re
+    ```
+
+  + 主逻辑
+
+    ```python
+    bro = webdriver.Chrome(executable_path='./chromedriver')
+    bro.get('https://kyfw.12306.cn/otn/login/init')
+    sleep(2)
+    bro.maximize_window()
+    sleep(2)
+    #将当次登录对应的验证码图片进行裁剪
+    bro.save_screenshot('main.png')#当前登录页面对应的完整图片
+    #定位到了验证码图片对应的标签
+    img_tag = bro.find_element_by_xpath('//*[@id="loginForm"]/div/ul[2]/li[4]/div/div/div[3]/img')
+    #裁剪出验证码图片
+    x, y = img_tag.location.values()#img_tag表示的图片在当前页面中左下角坐标
+    x = x *1.25 #windows下按照具体情况进行同比例缩放
+    y = y *1.25
+    h, w = img_tag.size.values() #验证码图片的尺寸
+    h = h * 1.25
+    w = w * 1.25
+    #基于location和size制定出裁剪的范围
+    rangle = (x,y,x+w,y+h)
+    #根据rangle表示的裁剪范围进行图片的裁剪
+    #基于图片进行裁剪：pip install PIL/Pillow
+    i = Image.open('./main.png')
+    frame = i.crop(rangle)
+    frame.save('./code.png')
+    #识别验证码图片
+    #result是返回需要点击的坐标
+    result = tranformImgCode('./code.png',9004)
+    print(result)
+    #61,71|118,137==>[[61,71],[118,137]]
+    all_list = [re.findall("\d+",i) for i in result.split("|")]
+    all_list = [[int(i[0])/1.25,int(i[1])/1.25] for i in all_list] #windows下按照具体情况进行同比例缩放
+    for xy in all_list:
+        x = xy[0]
+        y = xy[1]
+        ActionChains(bro).move_to_element_with_offset(img_tag,x,y).click().perform()
+        sleep(1)
+    print(all_list)
+    bro.find_element_by_id('username').send_keys('bobo123')
+    sleep(1)
+    bro.find_element_by_id('password').send_keys('123456')
+    sleep(1)
+    bro.find_element_by_id('loginSub').click()
+    sleep(2)
+    bro.quit()
+    ```
+
+    
+
+### 12306余票检测
+
+```python
+import requests
+headers = {
+    'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+}
+city = {
+        '北京北': 'VAP',
+        '北京东': 'BOP',
+        '北京': 'BJP',
+        '北京南': 'VNP',
+        '北京西': 'BXP',
+        '广州南': 'IZQ',
+        '重庆北': 'CUW',
+        '重庆': 'CQW',
+        '重庆南': 'CRW',
+        '广州东': 'GGQ',
+        '上海': 'SHH',
+        '上海南': 'SNH',
+        '上海虹桥': 'AOH',
+        "乌鲁木齐":"WAR",
+}
+
+session = requests.Session()
+t = input('enter a time:(yyyy-mm-dd):')
+start = input('enter a start city:')
+start = city[start]
+end = input('enter a end city:')
+end = city[end]
+url = 'https://kyfw.12306.cn/otn/leftTicket/init'
+session.get(url=url)
+params = {
+    'leftTicketDTO.train_date': t,
+    'leftTicketDTO.from_station': start,
+    'leftTicketDTO.to_station': end,
+    'purpose_codes': 'ADULT'
+}
+url = 'https://kyfw.12306.cn/otn/leftTicket/query'
+json_data_list = session.get(url=url,headers=headers,params=params).json()['data']['result']
+for s in json_data_list:
+    print(s)
+    
+
+"""
+enter a time:(yyyy-mm-dd):2020-04-24
+enter a start city:北京西
+enter a end city:乌鲁木齐
+OgpOKePFaIjq4JeKlrzGQYuo%2FNQ9IGBT60pOey84b65LmERid5BrugNc5Li4PfZQU6tHM5Sx8t2A%0AVfgPML3fb%2Fnw4cy6rlTO59v10zpy3c0dA826Lgfgv3EGzLgqMJPp5WIl8ASgBlqJ9cQCUifvB3ad%0ADIsa48V%2BT6llCFT%2F0Twf8c%2FcL0UskOyl2jvRmJxFA0V7sf38B96sTTuMydQUZAxqY6jLn4FlaP3a%0Ai4v81hVkYQnaa9%2FRl0kopLA2XOajWxMacbpS%2FLmzpzxDygxKSJBI%2BXNOLNru7%2FoaIV9JUsqzJZoq%0A07qAG344Kx%2BI6%2BLF|预订|2400000Z690S|Z69|BXP|WAR|BXP|WAR|10:00|16:47|30:47|Y|eeRCyC%2F6EjF3PP9KoPD9V5EKgf6pRtorhMls9NXFBd3Ew2asV6G3jXGLL8U%3D|20200424|3|P4|01|20|0|0||||19|||无||有|有|||||10401030|1413|1|0|||||||||
+kmrJdlx7XXleamfpUC3Vlbj3AeTkEqidnSKEwZ8pd5mPcKlD8iw2DUP4JO8NtZzvyz6keEjihPrx%0AMutL95TonNq%2F4jnZl1xxjG5h11GjmiHAdYkwCXOlybftAbRKvX%2B747X0BmS%2B5NAhcCiSJVg4Smu8%0ADXpp4%2FYNGZz21tXGTLA8oQuix1cN7wU7hmuhR5EL12tNonPYE%2FnEIVJO0i3XQOjADfN8v2Ri1bpO%0ACeH%2FYl9ZnYkp%2F00hLAwIur%2B0H%2Fcrm9bTFqupkuFtN0vn%2FsKKpkFRiyqH51e5qJPSkkcFeNWF76Oy%0AAgOQ3w%3D%3D|预订|240000Z1790K|Z179|BXP|WAR|BXP|WAR|21:04|10:55|37:51|Y|uDOA4FNZyGE3qYiqIxYSUeuz5eVfI24JnfTryd2a4XYZE%2FLI|20200424|3|P4|01|20|0|0||||17|||||有|有|||||104030|143|0|0|||||||||
+"""
+```
+
