@@ -34,7 +34,7 @@
   plt.imsave('2.jpg',a)
   ```
 
-  <img src='.\04 Numpy应用案例.assets\image-20191226134322204.png'>
+  <img src='.\asserts\image-20191226134322204.png'>
 
 ### 显示纯色图像
 
@@ -52,7 +52,7 @@
   plt.imshow(x)
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226135319855.png">
+  <img src=".\asserts\image-20191226135319855.png">
 
 + 显示黑色图像
 
@@ -65,7 +65,7 @@
   plt.imshow(x)
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226135358844.png">
+  <img src=".\asserts\image-20191226135358844.png">
 
 + 显示指定颜色图像
 
@@ -89,7 +89,7 @@
   plt.imshow(x)
   ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226140516582.png">
+<img src=".\asserts\image-20191226140516582.png">
 
 ### 转换为灰度图
 
@@ -106,7 +106,7 @@ plt.imshow(np.dot(x,y),cmap="gray")
 plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
 ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226141747623.png">
+<img src=".\asserts\image-20191226141747623.png">
 
 ### 灰度图（2）
 
@@ -141,7 +141,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   ax[1,1].imshow(np.mean(a,axis=2),cmap="gray")
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226143111893.png">
+  <img src=".\asserts\image-20191226143111893.png">
 
 ### 图像颜色通道
 
@@ -167,7 +167,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   ax[1,1].imshow(b+c+d)#叠加
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226153435680.png">
+  <img src=".\asserts\image-20191226153435680.png">
 
 ### 图像重复
 
@@ -180,7 +180,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   plt.imshow(np.concatenate((a,a,a),axis=1))
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226153900651.png">
+  <img src=".\asserts\image-20191226153900651.png">
 
 - 将图像沿着垂直方向重复两次。
 
@@ -189,7 +189,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   plt.imshow(np.concatenate((a,a,a),axis=0))
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226153938452.png">
+  <img src=".\asserts\image-20191226153938452.png">
 
 - 将图像沿着水平方向重复两次，垂直重复三次。
 
@@ -198,7 +198,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   plt.imshow(np.vstack((b,b,b)))
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226154027460.png">
+  <img src=".\asserts\image-20191226154027460.png">
 
 ### 图像镜面对称
 
@@ -211,7 +211,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   plt.imshow(b[:,-1::-1])
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226162426093.png">
+  <img src=".\asserts\image-20191226162426093.png">
 
 - 将图像垂直镜面转换。（第一维度）
 
@@ -222,7 +222,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
   plt.imshow(b[-1::-1])
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226162546537.png">
+  <img src=".\asserts\image-20191226162546537.png">
 
 ### 左右旋转
 
@@ -241,7 +241,7 @@ plt.imshow(np.dot(a,[0.299,0.574,0.114]),cmap="gray")
     plt.imshow(b[:,::-1].swapaxes(0,1))
     ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226165909349.png">
+  <img src=".\asserts\image-20191226165909349.png">
 
 - 将图像向右旋转90 / 180度。
 
@@ -270,7 +270,7 @@ ax[1,0].imshow(a.swapaxes(0,1)[:,::-1])#右
 ax[1,1].imshow(a.swapaxes(0,1)[:,::-1].swapaxes(0,1)[:,::-1])#180
 ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226170755451.png">
+<img src=".\asserts\image-20191226170755451.png">
 
 ### 颜色转换
 
@@ -280,7 +280,7 @@ ax[1,1].imshow(a.swapaxes(0,1)[:,::-1].swapaxes(0,1)[:,::-1])#180
 plt.imshow(a[:,:,[1,2,0]])
 ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226174753437.png">
+<img src=".\asserts\image-20191226174753437.png">
 
 ### 颜色遮挡 / 叠加
 
@@ -292,7 +292,7 @@ plt.imshow(a[:,:,[1,2,0]])
   plt.imshow(b)
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226175332854.png">
+  <img src=".\asserts\image-20191226175332854.png">
 
 - 在指定的区域使用随机生成的图像去遮挡图像。
 
@@ -303,7 +303,7 @@ plt.imshow(a[:,:,[1,2,0]])
   plt.imshow(b)
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226175759811.png">
+  <img src=".\asserts\image-20191226175759811.png">
 
 - 使用小图像放在大图像上。
 
@@ -314,7 +314,7 @@ plt.imshow(a[:,:,[1,2,0]])
   plt.imshow(b)
   ```
 
-  <img src=".\04 Numpy应用案例.assets\image-20191226180039607.png">
+  <img src=".\asserts\image-20191226180039607.png">
 
 ### 图像分块乱序
 
@@ -326,7 +326,7 @@ random.shuffle(splites)
 plt.imshow(np.vstack(splites))
 ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226190626254.png">
+<img src=".\asserts\image-20191226190626254.png">
 
 ```
 splites = np.split(a,10,axis=0)
@@ -338,7 +338,7 @@ c = np.hstack(splites)
 plt.imshow(c)
 ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226190834374.png">
+<img src=".\asserts\image-20191226190834374.png">
 
 ```python
 splites = np.split(a,range(100,1080,100),axis=0)#指定序列
@@ -346,4 +346,4 @@ random.shuffle(splites)
 plt.imshow(np.vstack(splites))
 ```
 
-<img src=".\04 Numpy应用案例.assets\image-20191226191244940.png">
+<img src=".\asserts\image-20191226191244940.png">
