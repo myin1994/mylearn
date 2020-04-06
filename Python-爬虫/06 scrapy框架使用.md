@@ -38,8 +38,8 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
 
 1. 引擎询问蜘蛛需要处理哪个网站，并让蜘蛛将第一个需要处理的URL交给它。
 2. 引擎让调度器将需要处理的URL放在队列中。
-3. 引擎从调度那获取接下来进行爬取的页面。
-4. 调度将下一个爬取的URL返回给引擎，引擎将它通过下载中间件发送到下载器。
+3. 引擎从调度器那获取接下来进行爬取的页面。
+4. 调度器将下一个爬取的URL返回给引擎，引擎将它通过下载中间件发送到下载器。
 5. 当网页被下载器下载完成以后，响应内容通过下载中间件被发送到引擎；如果下载失败了，引擎会通知调度器记录这个URL，待会再重新下载。
 6. 引擎收到下载器的响应并将它通过蜘蛛中间件发送到蜘蛛进行处理。
 7. 蜘蛛处理响应并返回爬取到的数据条目，此外还要将需要跟进的新的URL发送给引擎。
@@ -49,7 +49,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
 
 ## 环境的安装
 
-+ mac、linum
++ mac、linux
 
   ```bash
   pip install scrapy
@@ -61,7 +61,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
   2. 下载twisted文件，下载地址：http://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted
   3. 进入下载目录，执行 pip install Twisted‑17.1.0‑cp35‑cp35m‑win_amd64.whl
      + Twisted:就是一个异步的架构。被作用在了scrapy中。
-     + 安装报错：需要更换另一个版本的twisted文件进行安装即可。
+     + 安装报错：更换另一个版本的twisted文件进行安装即可。
   4. `pip install pywin32`
   5. `pip install scrapy`
 
@@ -101,7 +101,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
       cmdline.execute("scrapy crawl spiderName".split())
       ```
 
-    + 配置一下pycharm了。点击Run->Edit Configurations，新建一个运行的python模块 
+    + 配置一下pycharm。点击Run->Edit Configurations，新建一个运行的python模块 
 
       <img src="${asserts}/20161024145918443">
 
@@ -252,7 +252,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
 
   + 在items.py中定义相关属性
 
-    + 需要解析出几个字段的数据，在此就定义几个属性
+    需要解析出几个字段的数据，在此就定义几个属性
 
     ```python
     #items.py
@@ -669,7 +669,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
 
     + 返回Response(可以与传入的response相同，也可以是全新的对象)：该response会被在链中的其他中间件的 process_response() 方法处理。
     + 返回一个 Request 对象，则中间件链停止， 返回的request会被重新调度下载。处理类似于 process_request() 返回request所做的那样。
-    + 出一个 IgnoreRequest 异常，则调用request的errback(Request.errback)。 如果没有代码处理抛出的异常，则该异常被忽略且不记录(不同于其他异常那样)。
+    + 返回一个 IgnoreRequest 异常，则调用request的errback(Request.errback)。 如果没有代码处理抛出的异常，则该异常被忽略且不记录(不同于其他异常那样)。
 
     ```python
     	#拦截所有的响应对象
@@ -811,7 +811,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
 
       ```python
       link = LinkExtractor(allow=r'list3\d+\.html')
-      #实际是先将所有链接解析出，再通过正则进行匹配
+      #实际是先将所有链接解析出，再通过正则进行匹配，特殊字符需要使用\转义
       ```
 
     + 规则解析器：Rule对象
@@ -942,7 +942,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
   + 每一个板块对应的页面中的新闻标题是动态加载的
     + 爬取新闻标题+详情页的url
   + 每一条新闻详情页面中的数据不是动态加载的
-    + 爬取的新闻内容
+    + 爬取新闻内容
 
 + selenium在scrapy中的使用流程
 
@@ -1220,7 +1220,7 @@ Scrapy的整个数据处理流程由Scrapy引擎进行控制，通常的运转�
 
   + 爬取过的相关信息：每一部电影详情页的url
 
-  + 只需要使用某一组数据，该组数据如果可以作为该部电影的唯一标识即可，刚好电影详情页的url就可以作为电影的唯一标识。只要可以表示电影唯一标识的数据我们统称为数据指纹。
+  + 只要是可以表示电影唯一标识的数据我们统称为数据指纹。
 
     + 数据指纹一般是经过加密的
 

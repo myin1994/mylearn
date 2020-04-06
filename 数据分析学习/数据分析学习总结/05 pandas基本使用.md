@@ -259,7 +259,7 @@ Series在操作上，与Numpy数据具有如下的相似性：
     - isnull 空返回True
     - notnull 空返回False
 
-    ```
+    ```python
     a = pd.Series([1,float("NaN"),None,np.nan])
     print(a.notnull())
     >>>
@@ -620,7 +620,7 @@ Series索引-数值CRUD操作（因为Series内部也是基于Mapping映射的�
 
 假设df为DataFrame类型的对象。
 
-```
+```python
 df = pd.DataFrame({'a':[1,2,3],'b':[3.1,4.2,5.3],'c':['b','d','e']})
 ```
 
@@ -793,6 +793,8 @@ df = pd.DataFrame({'a':[1,2,3],'b':[3.1,4.2,5.3],'c':['b','d','e']})
 
     通过标签数组提取元素，可以访问（返回）多个列。
 
+  - 要对原数据进行修改时必须使用loc进行切片取值
+
 ### DataFrame结构
 
 + DataFrame的一行或一列，都是Series类型的对象。
@@ -921,6 +923,23 @@ Series与DataFrame对象可以使用`sort_values`方法对值进行排序。
 + axis=1,按某一列进行排序
 
 + 指定inplace=True原地修改
+
+#### 排序实现的随机抽样
+
+- take(indices,axis) 打乱数组
+
+  - indices只能作用隐式索引
+  - axis=1打乱列，0打乱行
+
+- 示例
+
+  ```python
+  df = DataFrame(data=np.random.randint(0,100,size=(100,3)),columns=['A','B','C'])
+  #先打乱列再打乱行
+  random_df = df.take(indices=np.random.permutation(3),axis=1).take(indices=np.random.permutation(100),axis=0)
+  #抽样
+  random_df[0:10]
+  ```
 
 ### 索引对象
 

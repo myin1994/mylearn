@@ -1,4 +1,4 @@
-# scrapy爬虫框架常用setting配置
+# scrapy爬虫框架常用settings配置
 
 ## 降低log级别
 
@@ -90,7 +90,7 @@ DOWMLOAD_DELY=3,设置延迟下载可以避免被发现
 
 **只需要在setting.py中JOB_DIR=file_name其中填的是你的文件目录，注意这里的目录不允许共享，只能存储单独的一个spdire的运行状态，如果你不想在从中断的地方开始运行，只需要将这个文件夹删除即可**
 
- 
+
 **当然还有其他的放法：scrapy crawl somespider -s JOBDIR=crawls/somespider-1，这个是在终端启动爬虫的时候调用的，可以通过ctr+c中断，恢复还是输入上面的命令**
 
  
@@ -122,7 +122,7 @@ DEFAULT_REQUEST_HEADERS={{
 
  
 
-```
+```python
 SPIDER_MIDDLEWARES：爬虫中间层
 DOWNLOADER_MIDDLEWARES：下载中间层
 
@@ -148,29 +148,29 @@ CONCURRENT_REQUESTS_PER_IP 不为0时，这个延时是针对每个IP，而不�
 
 ## pipelines的使用
 
- 
+
 **必须在settings中，添加**
 
-```
+```python
 ITEM_PIPELINES = {
     'first_scrapy.pipelines.FirstScrapyPipeline': 300, # 优先级，数字越小，
                                                     优先级越高，越早调用范围 0-1000
 }
 ```
 
- 
+
 **对象如下：**
 
-```
+```python
 class FirstScrapyPipeline(object):
     def process_item(self, item, spider):
         return item
 ```
 
- 
+
 **process_item**
 
-```
+```python
 process_item(self, item, spider)： 处理item的方法， 必须有的！！！
 
 参数：
@@ -179,28 +179,28 @@ spider (Spider object) ： 获取到item的spider
 返回    一个dict或者item
 ```
 
- 
+
 **open_spider**
 
-```
+```python
 open_spider(self, spider) ： 当spider启动时，调用这个方法
 参数：
 spider (Spider object) – 启动的spider
 ```
 
- 
+
 **close_spider**
 
-```
+```python
 close_spider(self, spider)： 当spider关闭时，调用这个方法
 参数：
 spider (Spider object) – 关闭的spider
 ```
 
- 
+
 **from_crawler**
 
-```
+```python
 @classmethod
 from_crawler(cls, crawler)
 参数：
@@ -211,10 +211,10 @@ crawler (Crawler object) – 使用这个pipe的爬虫crawler`
 
 #### 以下为pipelines文件，根据需要添加方法
 
- 
+
 [pipelines.py](http://pipelines.py/)
 
-```
+```python
 # pipelines.py
 from pymongo import MongoClient
 
@@ -248,7 +248,7 @@ class FirstScrapyPipeline(object):
 
 ##### 运行单个爬虫
 
-```
+```python
 # -*- coding: utf-8 -*-
 # @Time    : 2019/4/22 18:07
 # @Author  : 甄超锋
@@ -263,7 +263,7 @@ cmdline.execute("scrapy crawl lvdunspider".split())
 
 ##### 运行多个爬虫
 
-```
+```python
 # -*- coding: utf-8 -*-
 # @Time    : 2019/4/22 18:07
 # @Author  : 甄超锋
@@ -290,18 +290,18 @@ process.start()
 
 ## scrapy使用随机User-Agent
 
- 
+
 **使用python模块 fake-useragent 生成user-agent**
 
 **安装：**
 
-```
+```python
 pip install fake-useragent
 ```
 
 **简单使用：**
 
-```
+```python
 from fake_useragent import UserAgent
 ua = UserAgent()
 #ie浏览器的user agent
@@ -326,7 +326,7 @@ print(ua.random)
 
 **在middleware中使用**
 
-```
+```python
 import random
 from scrapy import signals
 from fake_useragent import UserAgent
@@ -344,11 +344,11 @@ class RandomUserAgentMiddleware(object):
         request.headers.setdefault('User-Agent', self.agent.random)
 ```
 
-# 在settings.py中启用
+**在settings.py中启用**
 
 **在 ‘DOWNLOADER_MIDDLEWARES’ 项中启用中间件**
 
-```
+```python
 DOWNLOADER_MIDDLEWARES = {
    'LvdunSpider.middlewares.RandomUserAgentMiddleware': 543,
 }

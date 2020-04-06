@@ -176,7 +176,7 @@ print(np.show_config())#查看配置说明
   
     创建对数（指数）的等比数列
   
-    ```
+    ```python
     np.logspace(
         start,
         stop,
@@ -370,6 +370,8 @@ print(b.dtype)#int32
 ```
 
 注：不能通过对象的dtype属性直接进行修改类型。在计算机中， 整数类型与浮点类型的存储机制是不同的。
+
+![](asserts/下载.png)
 
 ### 改变形状
 
@@ -689,12 +691,23 @@ print(b.dtype)#int32
 
 + sqrt
 
++ around(a,decimals) 函数返回指定数字的四舍五入值。
+
+  - 参数说明
+    - a: 数组
+    - decimals: 舍入的小数位数。 默认值为0。 如果为负，整数将四舍五入到小数点左侧的位置
+
 ### 统计函数
 
 + mean/sum 平均值/求和
 + max/min 最大值/最小值
 + argmax/argmin 最大值/最小值对应的索引
++ amin() /amax()，用于计算数组中的元素沿指定轴的最小、最大值。
++ ptp():计算数组中元素最大值与最小值的差（最大值 - 最小值）。
++ median() 函数用于计算数组 a 中元素的中位数（中值）
 + std/var 标准差/方差
+  + 公式：std = sqrt(mean((x - x.mean())**2))
+  + 如果数组是 [1，2，3，4]，则其平均值为 2.5。 因此，差的平方是 [2.25,0.25,0.25,2.25]，并且其平均值的平方根除以 4，即 sqrt(5/4) ，结果为 1.1180339887498949。
 + cumsum/cumprod 累积和/累积乘积
 
 ```python
@@ -822,6 +835,15 @@ print(np.cumsum(x),np.cumprod(x))#求累积和/累积乘积
 + np.random.uniform(low=0.0, high=1.0, size=None)
 
   产生在指定范围内的随机小数值（包含起始点，不包含终止点）
+
++ np.random.permutation(x) 生成顺序随机的一维数组
+
+  ```python
+  np.random.permutation(5)
+  #array([0, 4, 3, 2, 1])
+  ```
+
+  
 
 
 
