@@ -12,11 +12,11 @@
 | xreadlines    |                                                              |                                                              |
 | 迭代器        | 只有iter()  next()                                           | iter() next()和____iter__    _next__                         |
 | `__init__.py` | 导入包时没有会报错                                           | 不会报错                                                     |
-|               |                                                              |                                                              |
-|               |                                                              |                                                              |
-|               |                                                              |                                                              |
-|               |                                                              |                                                              |
-|               |                                                              |                                                              |
+| 字符串        | unicode  & str                                               | str　＆　bytes                                               |
+| 解释器编码    | ascii                                                        | utf-8                                                        |
+| 字典          | v.keys()，得到列表                                           v.values()，得到列表                                          v.items()，得到列表 | v.keys()，迭代器        v.values()，迭代器        v.items()，迭代器 |
+| map、filter   | 立即得到结果                                                 | 迭代器                                                       |
+| 类            | 经典类、新式类（直接或间接继承object）                       | 新式类                                                       |
 |               |                                                              |                                                              |
 |               |                                                              |                                                              |
 |               |                                                              |                                                              |
