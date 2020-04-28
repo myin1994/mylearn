@@ -27,7 +27,8 @@
    mysql -uroot -p
    ```
 
-   
+
+> 注：直接安装MariaDB也可以
 
 ## MySQL主从复制
 
@@ -120,7 +121,11 @@
 
    3. 配置slave节点，相关信息使用主库中的信息，在mysql中执行
 
-      ```python
+      ```mysql
+      reset slave;
+      ```
+
+      ```mysql
       change master to 
       master_host='192.168.188.135',
       master_user='root',
@@ -172,13 +177,17 @@
 
    1. 配置master中的slave节点，相关信息使用从库中的信息，在mysql中执行
 
+      ```mysql
+      reset slave;
+      ```
+
       ```python
       change master to 
       master_host='192.168.188.136',
       master_user='root',
       master_password='admin',
-      master_log_file='mysql-bin.000002',
-      master_log_pos=107;
+      master_log_file='mysql-bin.000008',
+      master_log_pos=1482;
       ```
 
    2. 启动从服务

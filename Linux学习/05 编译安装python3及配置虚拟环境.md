@@ -252,3 +252,10 @@ systemctl stop firewalld  #关闭防火墙服务
 systemctl disable firewalld  #禁用防火墙开机自启
 ```
 
+关闭se-linux
+
+```shell
+vim /etc/selinux/config
+```
+
+![1587699333979](asserts/1587699333979.png)

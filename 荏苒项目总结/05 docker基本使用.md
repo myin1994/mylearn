@@ -6,6 +6,14 @@ docker可以通过git从docker官网仓库中下载各种各样的镜像到本�
 
 # Docker 安装
 
++ 官网：https://docs.docker.com/
++ Docker 提供了两个版本：社区版 (CE) 和企业版 (EE)
++ docker palyground
+  + 地址：https://labs.play-with-docker.com/
+  + 直接使用云端的docker
+
+## ubuntu安装
+
 > 更新ubuntu的apt源索引
 
 ```shell
@@ -61,7 +69,56 @@ sudo docker run hello-world
 
 我们获取镜像文件，可以直接去官方网站上获取: https://hub.docker.com/
 
+## centos安装
 
+> 卸载旧的版本
+
+```shell
+yum remove docker \
+docker-client \
+docker-client-latest \
+docker-common \
+docker-latest \
+docker-latest-logrotate \
+docker-logrotate \
+docker-selinux \
+docker-engine-selinux \
+docker-engine
+```
+
+> 安装依赖
+
+```shell
+yum install -y yum-utils \
+device-mapper-persistent-data \
+lvm2
+```
+
+> 添加repository
+
+```shell
+yum-config-manager \
+--add-repo \
+https://download.docker.com/linux/centos/docker-ce.repo
+```
+
+> 查询可以装什么docker版本
+
+```shell
+yum list docker-ce --showduplicates | sort -r
+```
+
+> 安装指定版本
+
+```shell
+yum -y install docker-ce-18.06.1.ce-3.el7
+```
+
+> 查看版本信息
+
+```shell
+docker version
+```
 
 # Docker 命令
 
@@ -74,6 +131,8 @@ docker --version  # 查看整个docker的版本。
 docker version
 ```
 
+### 启动docker
+
 ```bash
 # 启动docker
 sudo service docker start
@@ -83,6 +142,9 @@ sudo service docker stop
 
 # 重启docker
 sudo service docker restart
+
+#设置开机自启
+systemctl enable docker
 ```
 
 
@@ -97,6 +159,12 @@ docker image ls
 docker image ls --all
 ```
 
+> 根据镜像id，查看到镜像分层信息
+
+```shell
+docker history <镜像名称:版本号>
+```
+
 ### 拉取镜像
 
 下载镜像，默认从官网镜像库下载镜像的，也可以修改docker的源，让docker从国内其他镜像库下载镜像回来。
@@ -105,7 +173,7 @@ docker image ls --all
 
 例如，使用阿里云的镜像源：
 
-```
+```shell
 sudo vim /etc/docker/daemon.json   # 文件如果不存在，则创建
 # 添加如下内容：
 
@@ -113,12 +181,20 @@ sudo vim /etc/docker/daemon.json   # 文件如果不存在，则创建
 {
   "registry-mirrors": ["https://2xdmrl8d.mirror.aliyuncs.com"]
 }
-
+或者
+{
+"registry-mirrors": [
+"https://kfwkfulq.mirror.aliyuncs.com",
+"https://2lqq34jg.mirror.aliyuncs.com",
+"https://pee6w651.mirror.aliyuncs.com",
+"https://registry.docker-cn.com",
+"http://hub-mirror.c.163.com"
+],
+"dns": ["8.8.8.8","8.8.4.4"]
+}
 # 重启docker即可。
 
 ```
-
-
 
 如果不指定版本号，默认拉取最新版本的镜像
 
@@ -138,7 +214,26 @@ docker image rm <镜像名称/镜像ID>:版本号
 
 ![1563504236734](F:/Python%E5%AD%A6%E4%B9%A0/%E8%80%81%E7%94%B7%E5%AD%A9%E7%9B%B8%E5%85%B3/%E6%AD%A3%E5%BC%8F%E5%AD%A6%E4%B9%A0%E8%A7%86%E9%A2%91/Python-vue-%E8%8D%8F%E8%8B%92%E9%A1%B9%E7%9B%AEday109/day023/assets/1563504236734.png)
 
+### 制作镜像
 
+> 创建源文件,命名固定
+
+```shell
+vim Dockerfile
+```
+
+> 写入内容
+
+```shell
+FROM ubuntu
+CMD echo "hello my"
+```
+
+> 编译镜像
+
+```shell
+docker build -t my/hello-world .
+```
 
 ### 把docker中的镜像打包成文件
 
@@ -148,21 +243,83 @@ docker image rm <镜像名称/镜像ID>:版本号
 docker save -o <文件名.tar.gz>  <镜像名>
 ```
 
-
-
 ### 把镜像文件加载到docker中
 
 ```shell
 docker load -i <文件名.tar>
 ```
 
+### Dockerfile详解
 
++ FROM：从哪开始，从一个系统开始
+
+  ```shell
+  FROM scratch         # 最小系统
+  FROM centos         
+  FROM ubuntu:14.04
+  ```
+
++ LABEL：注释
+
+  ```shell
+  LABEL version=”1.0”
+  LABEL auther=”sjc”
+  ```
+
++ RUN：执行命令，每RUN一次，会多一个系统分层，尽量少一些层
+
+  ```shell
+  RUN yum -y update && install lrzsz \ 
+  net-tools
+  ```
+
++ WORKDIR：进入或创建目录，尽量不要用相对路径
+
+  ```shell
+  WORKDIR /root     # 进入 /root 目录
+  WORKDIR /test     # 会在根下，创建 /test 并进入
+  WORKDIR demo    # 创建demo，进入
+  RUN pwd          # /test/demo
+  ```
+
++ ADD and COPY：将本地的文件，添加到image里，COPY和ADD区别是不会解压
+
+  ```shell
+  ADD hello /  # 将当前目录下hello，添加到容器的根下
+  ADD tt.tar.gz /  # 压缩包扔进去，并解压
+  ```
+
++ ENV，增加Dockerfile的可读性，健壮性
+
++ CMD and ENTRYPOINT：执行命令或运行某个脚本
+
+  + Shell和Exec格式
+
+    ```shell
+    FROM centos
+    #shell格式
+    CMD echo "hello docker"
+    #exec格式
+    CMD ["/bin/echo","hello docker"]
+    ENTRYPOINT ["/bin/echo","hello docker"]
+    ```
+
+  + ENTRYPOINT与CMD：容器启动时，运行什么命令
+
+    ```shell
+    ENTRYPOINT ["docker-entrypoint.sh"]
+    CMD ["mysqld"]
+    ```
+
+    **ENTRYPOINT比CMD用的多，因为CMD有可能执行完前面的，把后面定义的CMD给忽略不执行了**
 
 ## 容器操作[container]
 
 ### 创建容器
 
-必须先有镜像，才能运行创建容器，需要指定使用的镜像名，并且设置创建容器以后，执行对应的第一条命令 
+必须先有镜像，才能运行创建容器，需要指定使用的镜像名，并且设置创建容器以后，执行对应的第一条命令 ，
+
+如果本地不存在则去仓库下载创建。
 
 ```shell
 docker run <参数选项> <镜像名称> <命令>
@@ -182,8 +339,6 @@ docker run -it --name=ubuntu1 ubuntu:18.04 bash
 ```
 
 注意：必须启动的时候，让容器运行bash解析器，才能在接下来的操作让容器不会立刻关闭，而且也能够让我们可以输入linux终端命令， 如果我们一般创建一个容器，选项都是： -itd
-
-
 
 ### docker run的选项
 
@@ -211,8 +366,6 @@ docker run -it --name=ubuntu1 ubuntu:18.04 bash
 docker run -itd --name=ubuntu ubuntu<:版本>
 ```
 
-
-
 ### 列出所有容器
 
 ```shell
@@ -221,9 +374,9 @@ docker container ls                      # 所有正在启动运行的容器
 docker container ls --all                # 所有容器[不管是否在启动运行中]
 ```
 
+### 启动容器
 
-
-### 启动容器【可以同时启动多个容器，容器之间使用空格隔开】
+> 可以同时启动多个容器，容器之间使用空格隔开
 
 ```shell
 # 启动一个容器
@@ -232,8 +385,6 @@ docker container start <容器名称/容器ID>
 # 启动多个容器
 docker container start <容器名称/容器ID>  <容器名称/容器ID> <容器名称/容器ID>
 ```
-
-
 
 ### 停止容器
 
@@ -261,8 +412,22 @@ docker container exec -it <容器名称/容器ID>  <第一个命令>
 
 ### 删除容器
 
+> 删除某个容器
+
 ```shell
 docker  container rm <容器名称/容器ID>
+```
+
+> 删除所有容器
+
+```shell
+docker rm $(docker container ls -aq)
+```
+
+> 删除没有在运行的容器
+
+```shell
+docker rm $(docker container ls -f "status=exited" -q)
 ```
 
 ### 复制文件
@@ -290,8 +455,6 @@ docker  container rm <容器名称/容器ID>
 ```shell
 docker commit <容器名称/容器ID>  <新镜像名>:<版本号>
 ```
-
-
 
 ## 扩展
 
