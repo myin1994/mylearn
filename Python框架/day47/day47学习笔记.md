@@ -86,7 +86,7 @@ INSTALLED_APPS = [
 
 ## urls路由
 
-```
+```python
 urlpatterns = [
     # 循环进行匹配,一旦匹配成功,就会执行后面的函数,并且不再往下面进行匹配了
     url(r'^admin/', admin.site.urls), #第一个参数:正则   第二个参数:视图函数

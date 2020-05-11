@@ -32,7 +32,7 @@ CBV中url写法
 
 视图写法
 
-```
+```python
 from django.views import View
 
 class LoginView(View):
@@ -52,7 +52,7 @@ class LoginView(View):
 
 源码重点
 
-```
+```python
     def dispatch(self, request, *args, **kwargs):  #根据请求方法去分发对应的类发放来执行
         # Try to dispatch to the right method; if a method doesn't exist,
         # defer to the error handler. Also defer to the error handler if the
@@ -67,7 +67,7 @@ class LoginView(View):
 
 重写dispatch方法
 
-```
+```python
 class LoginView(View):
     def dispatch(self, request, *args, **kwargs):
         print(11111)
@@ -91,7 +91,7 @@ class LoginView(View):
 
 ### CBV和FBV的装饰器
 
-```
+```python
 def func(f):
     def foo(request):
         print(1111)
@@ -180,7 +180,7 @@ class Upload(View):
 
 ### settings配置
 
-```
+```python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

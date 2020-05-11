@@ -954,6 +954,7 @@ docker commit <容器名称/容器ID>  <新镜像名>:<版本号>
 
   ```shell
   docker exec -it mysql1 /bin/sh
+  docker exec -it mysql_my env LANG=C.UTF-8 /bin/bash
   ```
 
   ![1588232095551](asserts/1588232095551.png)

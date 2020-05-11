@@ -4,7 +4,7 @@
 
   + 序列化
 
-    序列化器会把模型对象转换成字典,将来提供给视图经过response以后变成json字符串
+    > 序列化器会把模型对象转换成字典,将来提供给视图经过response以后变成json字符串
 
   + 反序列化
 
@@ -344,11 +344,11 @@ Django REST framework中的Serializer使用类来定义，须继承自rest_frame
       ```python
       ret = serializer.is_valid()
       ```
-      
+  
 + 调试使用--指定参数**raise_exception=True**
-    
+  
   在验证失败时抛出异常serializers.ValidationError，REST framework接收到此异常，会向前端返回HTTP 400 Bad Request响应。
-    
+  
 + 完整代码
   
   ```python
@@ -389,7 +389,7 @@ Django REST framework中的Serializer使用类来定义，须继承自rest_frame
                 {'comment': [ErrorDetail(string='Ensure this value is greater than or equal to 0.', code='min_value')]}
                 """
             return HttpResponse("ok")
-    ```
+  ```
 
 #### 钩子函数
 

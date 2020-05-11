@@ -156,7 +156,7 @@
 
 + 尽量不使用范围查询，范围越小效率越高
 
-  + limit初始值越大越慢，使用between and代替
+  > limit初始值越大越慢，使用between and代替
 
 + 使用like "a%" 效率高于 like "%a"
 
